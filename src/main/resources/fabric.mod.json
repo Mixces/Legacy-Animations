@@ -1,42 +1,44 @@
 {
 	"schemaVersion": 1,
-	"id": "nametagtweaks",
+	"id": "oldanimations",
 	"version": "${version}",
-	"name": "Nametag Tweaks",
-	"description": "Small tweaks to Minecraft's nametags!",
+	"name": "Old Animations",
+	"description": "Brings back the old animations and visuals from versions before 1.9!",
 	"authors": [
+		"Mixces",
+		"Wyvest",
 		"Microcontrollers"
 	],
 	"contact": {
-		"homepage": "https://github.com/MicrocontrollersDev",
-		"sources": "https://github.com/MicrocontrollersDev/NametagTweaks",
-		"issues": "https://github.com/MicrocontrollersDev/NametagTweaks/issues"
+		"homepage": "https://github.com/Mixces",
+		"sources": "https://github.com/Mixces/Legacy-Animations",
+		"issues": "https://github.com/Mixces/Legacy-Animations/issues"
 	},
 	"license": "LGPLV3",
-	"icon": "assets/nametagtweaks/icon.png",
+	"icon": "assets/oldanimations/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"dev.microcontrollers.nametagtweaks.NametagTweaks"
+			"com.mixces.oldanimations.OldAnimations"
 		],
 		"modmenu": [
-			"dev.microcontrollers.nametagtweaks.config.ModMenuIntegration"
+			"com.mixces.oldanimations.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"nametagtweaks.mixins.json"
+		"oldanimations.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.14.21",
+		"yet_another_config_lib_v3": "*",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*",
-		"yet_another_config_lib_v3": "*"
+		"fabric-api": "*"
 	},
 	"custom": {
 		"modmenu": {
 			"links": {
-				"modmenu.discord": "https://discord.gg/rejfv9kFJj"
+				"modmenu.discord": "https://discord.gg/polyfrost"
 			},
 			"update_checker": true
 		}

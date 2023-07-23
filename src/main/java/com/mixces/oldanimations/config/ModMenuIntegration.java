@@ -1,4 +1,4 @@
-package dev.microcontrollers.nametagtweaks.config;
+package com.mixces.oldanimations.config;
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
@@ -9,6 +9,6 @@ import net.fabricmc.api.Environment;
 public class ModMenuIntegration implements ModMenuApi {
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return NametagTweaksConfig::configScreen;
+        return OldAnimationsSettings::configScreen;
     }
 }
