@@ -1,41 +1,44 @@
 {
 	"schemaVersion": 1,
-	"id": "modid",
+	"id": "nametagtweaks",
 	"version": "${version}",
-	"name": "Example mod",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"name": "Nametag Tweaks",
+	"description": "Small tweaks to Minecraft's nametags!",
 	"authors": [
-		"Me!"
+		"Microcontrollers"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/MicrocontrollersDev",
+		"sources": "https://github.com/MicrocontrollersDev/NametagTweaks",
+		"issues": "https://github.com/MicrocontrollersDev/NametagTweaks/issues"
 	},
-	"license": "CC0-1.0",
-	"icon": "assets/modid/icon.png",
+	"license": "LGPLV3",
+	"icon": "assets/nametagtweaks/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.example.ExampleMod"
+			"dev.microcontrollers.nametagtweaks.NametagTweaks"
 		],
-		"client": [
-			"com.example.ExampleModClient"
+		"modmenu": [
+			"dev.microcontrollers.nametagtweaks.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"modid.mixins.json",
-		{
-			"config": "modid.client.mixins.json",
-			"environment": "client"
-		}
+		"nametagtweaks.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.14.21",
 		"minecraft": "~1.20.1",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"yet_another_config_lib_v3": "*"
 	},
-	"suggests": {
-		"another-mod": "*"
+	"custom": {
+		"modmenu": {
+			"links": {
+				"modmenu.discord": "https://discord.gg/rejfv9kFJj"
+			},
+			"update_checker": true
+		}
 	}
 }
