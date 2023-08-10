@@ -2,7 +2,7 @@
 	"required": true,
 	"package": "com.mixces.oldanimations.mixin",
 	"compatibilityLevel": "JAVA_17",
-	"mixins": [
+	"client": [
 		"CameraMixin",
 		"ClientPlayerInteractionManagerMixin",
 		"HeldItemRendererMixin",
@@ -10,7 +10,12 @@
 		"BuiltinModelItemRendererMixin",
 		"PlayerEntityRendererMixin",
 		"LivingEntityMixin",
-		"BipedEntityModelMixin"
+		"PotionItemMixin",
+		"PlayerEntityMixin",
+		"SwordItemMixin",
+		"BipedEntityModelMixin",
+		"LivingEntityRendererMixin",
+		"LivingEntityInvoker"
 	],
 	"injectors": {
 		"defaultRequire": 1

@@ -17,21 +17,20 @@ public class OldAnimationsSettings {
     public static final ConfigInstance<OldAnimationsSettings> INSTANCE = GsonConfigInstance.createBuilder(OldAnimationsSettings.class)
             .setPath(FabricLoader.getInstance().getConfigDir().resolve("oldanimations.json"))
             .build();
-
     @ConfigEntry
-    public boolean swordHitAnimation = true;
-
+    public boolean punchDuringUsage = true;
     @ConfigEntry
-    public boolean bowHitAnimation = true;
-
+    public boolean oldSwordBlock = true;
     @ConfigEntry
-    public boolean tridentHitAnimation = true;
-
+    public boolean hideShields = true;
     @ConfigEntry
-    public boolean crossBowHitAnimation = true;
-
+    public boolean noCooldown = true;
     @ConfigEntry
-    public boolean eatDrinkHitAnimation = true;
+    public boolean oldSneaking = true;
+    @ConfigEntry
+    public boolean oldWalking = true;
+    @ConfigEntry
+    public boolean oldDeath = true;
 
 
     @SuppressWarnings("deprecation")
@@ -41,18 +40,45 @@ public class OldAnimationsSettings {
                 .category(ConfigCategory.createBuilder()
                         .name(Text.literal("Old Animations"))
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Sword Block-Hitting Animation"))
-                                .description(OptionDescription.of(Text.of("Brings back the old block-hitting animation to swords!")))
-                                .binding(defaults.swordHitAnimation, () -> config.swordHitAnimation, newVal -> config.swordHitAnimation = newVal)
+                                .name(Text.literal("Punching Blocks Whilst Using Items Animation"))
+                                .description(OptionDescription.of(Text.of("Brings back the old block-hitting animation to swords/bows/consumable/blocks!")))
+                                .binding(defaults.punchDuringUsage, () -> config.punchDuringUsage, newVal -> config.punchDuringUsage = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
-                        .build())
-                .category(ConfigCategory.createBuilder()
-                        .name(Text.literal("Old Animations"))
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Bow Punch During Usage Animation"))
-                                .description(OptionDescription.of(Text.of("Brings back the old bow pulling back whilst punching animation!")))
-                                .binding(defaults.bowHitAnimation, () -> config.bowHitAnimation, newVal -> config.bowHitAnimation = newVal)
+                                .name(Text.literal("Old Sword Blocking"))
+                                .description(OptionDescription.of(Text.of("Adds the ability to block with your sword! This option is purely visual.")))
+                                .binding(defaults.oldSwordBlock, () -> config.oldSwordBlock, newVal -> config.oldSwordBlock = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Hide Shield Model"))
+                                .description(OptionDescription.of(Text.of("Hides the shield model from rendering.")))
+                                .binding(defaults.hideShields, () -> config.hideShields, newVal -> config.hideShields = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Remove Swing Cooldown Animation"))
+                                .description(OptionDescription.of(Text.of("Visually removes the swing cooldown animation!")))
+                                .binding(defaults.noCooldown, () -> config.noCooldown, newVal -> config.noCooldown = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Sneaking Animation Descent"))
+                                .description(OptionDescription.of(Text.of("Makes the descent of the sneaking animation faster than it's ascent.")))
+                                .binding(defaults.oldSneaking, () -> config.oldSneaking, newVal -> config.oldSneaking = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Backwards Walking Animation"))
+                                .description(OptionDescription.of(Text.of("Reverts the backwards walking animation to it's former glory.")))
+                                .binding(defaults.oldWalking, () -> config.oldWalking, newVal -> config.oldWalking = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Entity Death Animation"))
+                                .description(OptionDescription.of(Text.of("Allows dead entity corpse limbs to move.")))
+                                .binding(defaults.oldDeath, () -> config.oldDeath, newVal -> config.oldDeath = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())
