@@ -123,4 +123,5 @@ public class OldAnimationsSettings {
     public static void load() {
         OldAnimationsSettings.CONFIG.serializer().load();
     }
+
 }
