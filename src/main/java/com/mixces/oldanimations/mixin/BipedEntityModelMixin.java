@@ -18,7 +18,7 @@ public abstract class BipedEntityModelMixin {
 //
 //    @Inject(method = {"positionLeftArm"}, at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;rightArm:Lnet/minecraft/client/model/ModelPart;", ordinal = 0))
 //    private void positionLeftArm_oldBowSwing(CallbackInfo ci) {
-//        if (OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage) {
+//        if (OldAnimationsSettings.CONFIG.instance()..punchDuringUsage) {
 //            rightArm.roll = 0.0F;
 //            leftArm.roll = 0.0F;
 //        }
@@ -26,7 +26,7 @@ public abstract class BipedEntityModelMixin {
 //
 //    @Inject(method = "positionRightArm", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;rightArm:Lnet/minecraft/client/model/ModelPart;", ordinal = 10))
 //    private void positionRightArm_oldBowSwing(CallbackInfo ci) {
-//        if (OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage) {
+//        if (OldAnimationsSettings.CONFIG.instance().punchDuringUsage) {
 //            rightArm.roll = 0.0F;
 //            leftArm.roll = 0.0F;
 //        }

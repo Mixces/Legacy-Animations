@@ -17,7 +17,7 @@ public abstract class CameraMixin {
 
     @Inject(method = "updateEyeHeight", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getStandingEyeHeight()F"), cancellable = true)
     private void updateEyeHeight_oldSneak(CallbackInfo ci) {
-        if (OldAnimationsSettings.INSTANCE.getConfig().oldSneaking && getFocusedEntity().getStandingEyeHeight() < cameraY) {
+        if (OldAnimationsSettings.CONFIG.instance().oldSneaking && getFocusedEntity().getStandingEyeHeight() < cameraY) {
             cameraY = getFocusedEntity().getStandingEyeHeight();
             ci.cancel();
         }

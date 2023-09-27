@@ -32,7 +32,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V", shift = At.Shift.AFTER), cancellable = true)
     public void updateBlockBreakingProgress_cancelDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
-        if (OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage && client.player.isUsingItem()) {
+        if (OldAnimationsSettings.CONFIG.instance().punchDuringUsage && client.player.isUsingItem()) {
             cancelBlockBreaking();
             blockBreakingCooldown = 5;
             cir.setReturnValue(true);

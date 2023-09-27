@@ -12,7 +12,7 @@ public abstract class LivingEntityRendererMixin {
 
     @Redirect(method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;isAlive()Z"))
     private boolean render_oldDeath(LivingEntity instance) {
-        return OldAnimationsSettings.INSTANCE.getConfig().oldDeath || instance.isAlive();
+        return OldAnimationsSettings.CONFIG.instance().oldDeath || instance.isAlive();
     }
 
 }

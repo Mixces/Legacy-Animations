@@ -30,7 +30,7 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"))
 	public void handleBlockBreaking_blockHitAnimation(boolean breaking, CallbackInfo ci) {
-		if (OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage && player.isUsingItem()) {
+		if (OldAnimationsSettings.CONFIG.instance().punchDuringUsage && player.isUsingItem()) {
 			interactionManager.cancelBlockBreaking();
 			if (breaking && crosshairTarget != null && crosshairTarget.getType() == HitResult.Type.BLOCK) {
 				Hand hand = player.preferredHand;
@@ -52,7 +52,7 @@ public class MinecraftClientMixin {
 
 	@Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
 	private boolean doItemUse_allowPunching(ClientPlayerInteractionManager instance) {
-		return !OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage && instance.isBreakingBlock();
+		return !OldAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isBreakingBlock();
 	}
 
 }

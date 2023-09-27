@@ -16,7 +16,7 @@ public class PlayerEntityRendererMixin  {
 
     @Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
     private static void getArmPose_blockArm(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
-        if (OldAnimationsSettings.INSTANCE.getConfig().hideShields && player.getStackInHand(hand).getItem() instanceof ShieldItem) {
+        if (OldAnimationsSettings.CONFIG.instance().hideShields && player.getStackInHand(hand).getItem() instanceof ShieldItem) {
             cir.setReturnValue(BipedEntityModel.ArmPose.EMPTY);
         }
     }

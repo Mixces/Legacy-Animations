@@ -1,5 +1,6 @@
 package com.mixces.oldanimations.mixin;
 
+import com.mixces.oldanimations.config.OldAnimationsSettings;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.PotionItem;
@@ -18,7 +19,7 @@ public class PotionItemMixin extends Item {
      */
     @Override
     public boolean hasGlint(ItemStack stack) {
-        return !PotionUtil.getPotionEffects(stack).isEmpty();
+        return OldAnimationsSettings.CONFIG.instance().potionGlint && !PotionUtil.getPotionEffects(stack).isEmpty();
     }
 
 }

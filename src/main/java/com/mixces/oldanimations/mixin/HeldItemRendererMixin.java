@@ -31,7 +31,7 @@ public abstract class HeldItemRendererMixin {
         boolean bl2 = arm == Arm.RIGHT;
         int side = bl && bl2 ? 1 : -1;
         if (player.isUsingItem() && player.getItemUseTimeLeft() > 0 && player.getActiveHand() == hand) {
-            if (OldAnimationsSettings.INSTANCE.getConfig().punchDuringUsage && item.getUseAction() != UseAction.NONE) {
+            if (OldAnimationsSettings.CONFIG.instance().punchDuringUsage && item.getUseAction() != UseAction.NONE) {
                 applySwingOffset2(player, tickDelta, hand, matrices);
             }
             if (item.getUseAction() == UseAction.BLOCK) {
@@ -42,14 +42,14 @@ public abstract class HeldItemRendererMixin {
 
     @Redirect(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"))
     public float simplified$renderItemInFirstPerson(ClientPlayerEntity instance, float v) {
-        if (OldAnimationsSettings.INSTANCE.getConfig().noCooldown)
+        if (OldAnimationsSettings.CONFIG.instance().noCooldown)
             return 1.0F;
         return instance.getAttackCooldownProgress(v);
     }
 
     @Inject(method = "resetEquipProgress", at = @At("HEAD"), cancellable = true)
     private void resetEquipProgress_removeDelay(Hand hand, CallbackInfo ci) {
-        if (OldAnimationsSettings.INSTANCE.getConfig().noCooldown) {
+        if (OldAnimationsSettings.CONFIG.instance().noCooldown) {
             ci.cancel();
         }
     }

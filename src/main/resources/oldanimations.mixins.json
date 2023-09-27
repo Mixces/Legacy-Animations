@@ -1,23 +1,25 @@
 {
-	"required": true,
-	"package": "com.mixces.oldanimations.mixin",
-	"compatibilityLevel": "JAVA_17",
-	"client": [
-		"CameraMixin",
-		"ClientPlayerInteractionManagerMixin",
-		"HeldItemRendererMixin",
-		"MinecraftClientMixin",
-		"BuiltinModelItemRendererMixin",
-		"PlayerEntityRendererMixin",
-		"LivingEntityMixin",
-		"PotionItemMixin",
-		"PlayerEntityMixin",
-		"SwordItemMixin",
-		"BipedEntityModelMixin",
-		"LivingEntityRendererMixin",
-		"LivingEntityInvoker"
-	],
-	"injectors": {
-		"defaultRequire": 1
+  "required": true,
+  "package": "com.mixces.oldanimations.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "BipedEntityModelMixin",
+    "BuiltinModelItemRendererMixin",
+    "CameraMixin",
+    "ClientPlayerInteractionManagerMixin",
+    "DebugHudMixin",
+    "HeldItemRendererMixin",
+    "InGameHudMixin",
+    "LivingEntityInvoker",
+    "LivingEntityMixin",
+    "LivingEntityRendererMixin",
+    "MinecraftClientMixin",
+    "PlayerEntityMixin",
+    "PlayerEntityRendererMixin",
+    "PotionItemMixin",
+    "SwordItemMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
 	}
 }
