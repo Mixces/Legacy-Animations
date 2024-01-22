@@ -7,7 +7,7 @@ public class OldAnimations implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		OldAnimationsSettings.load();
+		OldAnimationsSettings.CONFIG.load();
 	}
 
 }

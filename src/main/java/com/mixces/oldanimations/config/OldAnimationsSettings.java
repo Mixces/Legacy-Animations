@@ -120,8 +120,4 @@ public class OldAnimationsSettings {
         )).generateScreen(parent);
     }
 
-    public static void load() {
-        OldAnimationsSettings.CONFIG.serializer().load();
-    }
-
 }
