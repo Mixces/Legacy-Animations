@@ -1,5 +1,7 @@
 package com.mixces.oldanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.oldanimations.config.OldAnimationsSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -16,7 +18,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
@@ -50,9 +51,9 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@Redirect(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
-	private boolean doItemUse_allowPunching(ClientPlayerInteractionManager instance) {
-		return !OldAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isBreakingBlock();
+	@WrapOperation(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
+	private boolean doItemUse_allowPunching(ClientPlayerInteractionManager instance, Operation<Boolean> original) {
+		return !OldAnimationsSettings.CONFIG.instance().punchDuringUsage && original.call(instance);
 	}
 
 }

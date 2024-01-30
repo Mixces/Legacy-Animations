@@ -24,10 +24,16 @@ public abstract class ClientPlayerInteractionManagerMixin {
         syncSelectedSlot();
     }
 
+    // can probably be done with WrapOperation (see below) but I don't know exactly what this is for and don't know how to test
     @Redirect(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isCurrentlyBreaking(Lnet/minecraft/util/math/BlockPos;)Z"))
     public boolean updateBlockBreakingProgress_fixDestroy(ClientPlayerInteractionManager instance, BlockPos pos) {
         return isCurrentlyBreaking(pos) && isBreakingBlock();
     }
+
+//    @WrapOperation(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isCurrentlyBreaking(Lnet/minecraft/util/math/BlockPos;)Z"))
+//    public boolean updateBlockBreakingProgress_fixDestroy(ClientPlayerInteractionManager instance, BlockPos pos, Operation<Boolean> original) {
+//        return original.call(instance, pos) && isBreakingBlock();
+//    }
 
     @SuppressWarnings("ConstantConditions")
     @Inject(method = "updateBlockBreakingProgress", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;syncSelectedSlot()V", shift = At.Shift.AFTER), cancellable = true)

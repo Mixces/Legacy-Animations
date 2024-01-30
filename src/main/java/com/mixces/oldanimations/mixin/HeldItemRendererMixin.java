@@ -1,8 +1,8 @@
 package com.mixces.oldanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.oldanimations.config.OldAnimationsSettings;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
@@ -40,11 +39,11 @@ public abstract class HeldItemRendererMixin {
         }
     }
 
-    @Redirect(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"))
-    public float simplified$renderItemInFirstPerson(ClientPlayerEntity instance, float v) {
+    @ModifyExpressionValue(method = "updateHeldItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"))
+    public float simplified$renderItemInFirstPerson(float original) {
         if (OldAnimationsSettings.CONFIG.instance().noCooldown)
             return 1.0F;
-        return instance.getAttackCooldownProgress(v);
+        return original;
     }
 
     @Inject(method = "resetEquipProgress", at = @At("HEAD"), cancellable = true)
