@@ -1,4 +1,4 @@
-package com.mixces.oldanimations.config;
+package com.mixces.legacyanimations.config;
 
 import dev.isxander.yacl3.api.ConfigCategory;
 import dev.isxander.yacl3.api.Option;
@@ -12,11 +12,11 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
 
-public class OldAnimationsSettings {
+public class LegacyAnimationsSettings {
 
-    public static final ConfigClassHandler<OldAnimationsSettings> CONFIG = ConfigClassHandler.createBuilder(OldAnimationsSettings.class)
+    public static final ConfigClassHandler<LegacyAnimationsSettings> CONFIG = ConfigClassHandler.createBuilder(LegacyAnimationsSettings.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                .setPath(FabricLoader.getInstance().getConfigDir().resolve("oldanimations.json"))
+                .setPath(FabricLoader.getInstance().getConfigDir().resolve("legacyanimations.json"))
                 .build())
             .build();
 
@@ -39,9 +39,13 @@ public class OldAnimationsSettings {
     @SerialEntry
     public boolean oldDeath = true;
     @SerialEntry
-    public boolean potionGlint = true;
+    public boolean oldSwim = true;
+    @SerialEntry
+    public boolean oldHearts = true;
     @SerialEntry
     public boolean oldDebug = true;
+    @SerialEntry
+    public boolean perspectiveCrosshair = true;
 
 
     @SuppressWarnings("deprecation")
@@ -105,15 +109,27 @@ public class OldAnimationsSettings {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Potion Glint Effect"))
-                                .description(OptionDescription.of(Text.of("Returns the glint effect on potions.")))
-                                .binding(defaults.potionGlint, () -> config.potionGlint, newVal -> config.potionGlint = newVal)
+                                .name(Text.literal("Old Swimming Animation"))
+                                .description(OptionDescription.of(Text.of("Reverts the swimming animation to it's former glory.")))
+                                .binding(defaults.oldSwim, () -> config.oldSwim, newVal -> config.oldSwim = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Old Debug Menu"))
                                 .description(OptionDescription.of(Text.of("Removes the background of the F3 menu text and uses text shadow instead.")))
                                 .binding(defaults.oldDebug, () -> config.oldDebug, newVal -> config.oldDebug = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Health Flashing"))
+                                .description(OptionDescription.of(Text.of("Brings back the old hotbar health flashing appearance.")))
+                                .binding(defaults.oldHearts, () -> config.oldHearts, newVal -> config.oldHearts = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Third Person Mode Crosshair"))
+                                .description(OptionDescription.of(Text.of("Brings back the crosshair in third person mode.")))
+                                .binding(defaults.perspectiveCrosshair, () -> config.perspectiveCrosshair, newVal -> config.perspectiveCrosshair = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())

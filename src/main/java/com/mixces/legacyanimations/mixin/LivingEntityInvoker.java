@@ -1,4 +1,4 @@
-package com.mixces.oldanimations.mixin;
+package com.mixces.legacyanimations.mixin;
 
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;

@@ -1,12 +1,11 @@
 {
 	"schemaVersion": 1,
-	"id": "oldanimations",
+	"id": "legacyanimations",
 	"version": "${version}",
-	"name": "Old Animations",
-	"description": "Brings back the old animations and visuals from versions before 1.9!",
+	"name": "Legacy Animations",
+	"description": "Brings back the legacy animations and visuals from versions before 1.9!",
 	"authors": [
 		"Mixces",
-		"Wyvest",
 		"Microcontrollers"
 	],
 	"contact": {
@@ -15,18 +14,18 @@
 		"issues": "https://github.com/Mixces/Legacy-Animations/issues"
 	},
 	"license": "LGPLV3",
-	"icon": "assets/oldanimations/icon.png",
+	"icon": "assets/legacyanimations/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"com.mixces.oldanimations.OldAnimations"
+			"com.mixces.legacyanimations.LegacyAnimations"
 		],
 		"modmenu": [
-			"com.mixces.oldanimations.config.ModMenuIntegration"
+			"com.mixces.legacyanimations.config.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"oldanimations.mixins.json"
+      "legacyanimations.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.15.6",

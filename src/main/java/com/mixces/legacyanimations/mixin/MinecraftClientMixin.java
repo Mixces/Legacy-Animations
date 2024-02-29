@@ -1,12 +1,12 @@
-package com.mixces.oldanimations.mixin;
+package com.mixces.legacyanimations.mixin;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import com.mixces.oldanimations.config.OldAnimationsSettings;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
@@ -31,7 +31,7 @@ public class MinecraftClientMixin {
 
 	@Inject(method = "handleBlockBreaking", at = @At("HEAD"))
 	public void handleBlockBreaking_blockHitAnimation(boolean breaking, CallbackInfo ci) {
-		if (OldAnimationsSettings.CONFIG.instance().punchDuringUsage && player.isUsingItem()) {
+		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && player.isUsingItem()) {
 			interactionManager.cancelBlockBreaking();
 			if (breaking && crosshairTarget != null && crosshairTarget.getType() == HitResult.Type.BLOCK) {
 				Hand hand = player.preferredHand;
@@ -51,9 +51,11 @@ public class MinecraftClientMixin {
 		}
 	}
 
-	@WrapOperation(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
-	private boolean doItemUse_allowPunching(ClientPlayerInteractionManager instance, Operation<Boolean> original) {
-		return !OldAnimationsSettings.CONFIG.instance().punchDuringUsage && original.call(instance);
+	@Shadow @Final private RenderTickCounter renderTickCounter;
+
+	@ModifyExpressionValue(method = "doItemUse", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"))
+	private boolean interruptBlockBreaking(boolean original) {
+		return !LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && original;
 	}
 
 }
