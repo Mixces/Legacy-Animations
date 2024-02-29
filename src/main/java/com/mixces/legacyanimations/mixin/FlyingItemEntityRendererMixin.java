@@ -11,7 +11,6 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FlyingItemEntityRenderer.class)
@@ -26,7 +25,7 @@ public class FlyingItemEntityRendererMixin<T extends Entity> {
             )
     )
     public int disableCleanView(Entity instance, Operation<Integer> original) {
-        return 2;
+        return LegacyAnimationsSettings.CONFIG.instance().oldProjectiles ? 2 : original.call(instance);
     }
 
     @Inject(
@@ -37,7 +36,9 @@ public class FlyingItemEntityRendererMixin<T extends Entity> {
             )
     )
     public void shiftProjectile(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        matrices.translate(0.25F, 0.0F, 0.0F);
+        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles) {
+            matrices.translate(0.25F, 0.0F, 0.0F);
+        }
     }
 
 }
