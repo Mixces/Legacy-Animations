@@ -58,6 +58,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
         return !LegacyAnimationsSettings.CONFIG.instance().oldSneaking;
     }
 
+
     @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
             at = @At(

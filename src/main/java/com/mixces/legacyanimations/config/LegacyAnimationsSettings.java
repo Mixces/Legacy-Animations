@@ -46,6 +46,8 @@ public class LegacyAnimationsSettings {
     public boolean oldDebug = true;
     @SerialEntry
     public boolean perspectiveCrosshair = true;
+    @SerialEntry
+    public boolean oldProjectiles = true;
 
 
     @SuppressWarnings("deprecation")
@@ -130,6 +132,12 @@ public class LegacyAnimationsSettings {
                                 .name(Text.literal("Third Person Mode Crosshair"))
                                 .description(OptionDescription.of(Text.of("Brings back the crosshair in third person mode.")))
                                 .binding(defaults.perspectiveCrosshair, () -> config.perspectiveCrosshair, newVal -> config.perspectiveCrosshair = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Projectiles"))
+                                .description(OptionDescription.of(Text.of("Reverts the projectile's positions back to the older style.")))
+                                .binding(defaults.oldProjectiles, () -> config.oldProjectiles, newVal -> config.oldProjectiles = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())
