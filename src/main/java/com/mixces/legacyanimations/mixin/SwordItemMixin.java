@@ -1,7 +1,9 @@
 package com.mixces.legacyanimations.mixin;
 
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
+import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(SwordItem.class)

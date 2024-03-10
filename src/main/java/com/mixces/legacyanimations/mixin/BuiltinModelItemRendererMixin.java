@@ -1,26 +1,38 @@
 package com.mixces.legacyanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import com.mixces.legacyanimations.util.ItemUtils;
+import com.mixces.legacyanimations.util.TransformationModeUtils;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltinModelItemRendererMixin {
 
-//    @Inject(method = "render", at = @At(value = "HEAD"), cancellable = true)
-//    private void render_disableShield(ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, CallbackInfo ci) {
-//        if (LegacyAnimationsSettings.CONFIG.instance().hideShields) {
-//            if (
-//                    mode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND ||
-//                            mode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND ||
-//                            mode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND ||
-//                            mode == ModelTransformationMode.THIRD_PERSON_RIGHT_HAND
-//            )
-//            {
-//                if (stack.isOf(Items.SHIELD)) {
-//                    ci.cancel();
-//                }
-//            }
-//        }
-//    }
+    @ModifyExpressionValue(
+            method = "render",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z",
+                    ordinal = 0
+            )
+    )
+    private boolean disableShieldRendering(boolean original, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
+        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && MinecraftClient.getInstance().player != null && TransformationModeUtils.isValidPerspective(mode)) {
+            ItemStack heldStack = MinecraftClient.getInstance().player.getMainHandStack();
+            UseAction action = heldStack.getUseAction();
+            if (ItemUtils.isValidItem(heldStack, action))
+                return false;
+        }
+        return original;
+    }
 
 }

@@ -3,15 +3,24 @@
   "package": "com.mixces.legacyanimations.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "AccessorCamera",
+    "ArmorFeatureRendererMixin",
     "BipedEntityModelMixin",
     "BuiltinModelItemRendererMixin",
     "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "DebugHudMixin",
+    "EntityMixin",
+    "EntityRenderDispatcherMixin",
     "FishingBobberEntityRendererMixin",
     "FlyingItemEntityRendererMixin",
+    "FoodComponentAccessor",
+    "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "InvokerEntity",
+    "ItemEntityRendererMixin",
+    "ItemRendererMixin",
     "LivingEntityInvoker",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
@@ -22,9 +31,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "AccessorCamera",
-    "EntityMixin"
-  ]
+  }
 }

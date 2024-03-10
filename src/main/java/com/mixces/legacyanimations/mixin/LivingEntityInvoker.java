@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(LivingEntity.class)
 public interface LivingEntityInvoker {
 
-    @Invoker("getHandSwingDuration")
-    int getHandSwing();
+    @Invoker int invokeGetHandSwingDuration();
+
+    @Invoker float invokeGetHealth();
 
 }

@@ -19,9 +19,15 @@ public class EntityMixin {
     @Final @Shadow protected DataTracker dataTracker;
     @Final @Shadow protected static TrackedData<EntityPose> POSE;
 
-    @ModifyReturnValue(method = "getPose", at = @At("RETURN"))
+    @ModifyReturnValue(
+            method = "getPose",
+            at = @At(
+                    value = "RETURN"
+            )
+    )
     public EntityPose revertSwimPose(EntityPose original) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwim && type == EntityType.PLAYER) {
+        Entity entity = (Entity) (Object) this;
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSwim && type == EntityType.PLAYER && entity.isSwimming()) {
             EntityPose pose = dataTracker.get(POSE);
             if (pose == EntityPose.SWIMMING) {
                 pose = EntityPose.STANDING;
