@@ -1,9 +1,3 @@
-# Fabric Example Mod
+# Legacy Animations
 
-## Setup
-
-For setup instructions please see the [fabric wiki page](https://fabricmc.net/wiki/tutorial:setup) that relates to the IDE that you are using.
-
-## License
-
-This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
+Brings back the various animations and visuals from pre 1.9!
