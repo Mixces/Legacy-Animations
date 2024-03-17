@@ -15,13 +15,13 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
     @Unique public float legacyAnimations$prevCameraPitch;
     @Unique public float legacyAnimations$cameraPitch;
 
-//    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-//    private int isBlocking_fixSync(int constant) {
-//        if (LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
-//            return 0;
-//        }
-//        return constant;
-//    }
+    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
+    private int isBlocking_fixSync(int constant) {
+        if (LegacyAnimationsSettings.CONFIG.instance().noShieldCooldown) {
+            return 0;
+        }
+        return constant;
+    }
 
     @ModifyConstant(
             method = "tick",

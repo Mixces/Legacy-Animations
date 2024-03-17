@@ -4,14 +4,28 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.EquipmentSlot;
+import net.minecraft.item.ItemConvertible;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.item.SwordItem;
+import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
+
+	@Shadow @Nullable public ClientPlayerEntity player;
+
+	@Shadow private static MinecraftClient instance;
 
 	@ModifyExpressionValue(
 			method = "doItemUse",
@@ -51,6 +65,28 @@ public class MinecraftClientMixin {
 		} else {
 			instance.swingHand(hand);
 		}
+	}
+
+	@Inject(
+			method = "tick",
+			at = @At(
+					value = "HEAD"
+			)
+	)
+	private void fakeShield(CallbackInfo ci) {
+//		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isUsingItem()) {
+//			legacyAnimations$fakeSwingHand(instance, hand);
+//		} else {
+//			instance.swingHand(hand);
+//		}
+
+		if (player == null) return;
+
+		if (player.getInventory().offHand.isEmpty()) {
+
+			player.getInventory().offHand.set(EquipmentSlot.OFFHAND.getEntitySlotId(), new ItemStack(Items.SHIELD));
+		}
+
 	}
 
 	@Unique

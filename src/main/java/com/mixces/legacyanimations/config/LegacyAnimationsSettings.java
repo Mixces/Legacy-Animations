@@ -26,6 +26,7 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean hideShields = true;
     @SerialEntry public boolean hideShieldHotbar = true;
     @SerialEntry public boolean noCooldown = true;
+    @SerialEntry public boolean noShieldCooldown = true;
     @SerialEntry public boolean oldSneaking = true;
     @SerialEntry public boolean oldWalking = true;
     @SerialEntry public boolean oldDeath = true;
@@ -76,6 +77,12 @@ public class LegacyAnimationsSettings {
                                 .name(Text.literal("Hide Shield Offhand Hotbar"))
                                 .description(OptionDescription.of(Text.of("Hides the offhand hotbar if the item held is a shield.")))
                                 .binding(defaults.hideShieldHotbar, () -> config.hideShieldHotbar, newVal -> config.hideShieldHotbar = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("No Shield Cooldown"))
+                                .description(OptionDescription.of(Text.of("Removes the shield activation delay.")))
+                                .binding(defaults.noShieldCooldown, () -> config.noShieldCooldown, newVal -> config.noShieldCooldown = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())
