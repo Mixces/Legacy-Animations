@@ -2,9 +2,12 @@ package com.mixces.legacyanimations.mixin;
 
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.duck.PlayerPitchInterface;
+import com.mixces.legacyanimations.util.ServerUtils;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.item.ItemStack;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,12 +15,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements PlayerPitchInterface {
 
+    @Shadow public abstract boolean isBlocking();
+
+    @Shadow public abstract ItemStack getMainHandStack();
+
+    @Shadow public abstract boolean isUsingItem();
+
     @Unique public float legacyAnimations$prevCameraPitch;
     @Unique public float legacyAnimations$cameraPitch;
 
     @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
     private int isBlocking_fixSync(int constant) {
-        if (LegacyAnimationsSettings.CONFIG.instance().noShieldCooldown) {
+        if (ServerUtils.INSTANCE.isOnHypixel()) {
             return 0;
         }
         return constant;

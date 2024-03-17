@@ -2,30 +2,24 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import com.mixces.legacyanimations.util.ServerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.item.ItemConvertible;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
-import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 
-	@Shadow @Nullable public ClientPlayerEntity player;
+	@Shadow public ClientPlayerEntity player;
 
-	@Shadow private static MinecraftClient instance;
+	@Shadow public int attackCooldown;
 
 	@ModifyExpressionValue(
 			method = "doItemUse",
@@ -68,25 +62,15 @@ public class MinecraftClientMixin {
 	}
 
 	@Inject(
-			method = "tick",
+			method = "doAttack",
 			at = @At(
 					value = "HEAD"
 			)
 	)
-	private void fakeShield(CallbackInfo ci) {
-//		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isUsingItem()) {
-//			legacyAnimations$fakeSwingHand(instance, hand);
-//		} else {
-//			instance.swingHand(hand);
-//		}
-
-		if (player == null) return;
-
-		if (player.getInventory().offHand.isEmpty()) {
-
-			player.getInventory().offHand.set(EquipmentSlot.OFFHAND.getEntitySlotId(), new ItemStack(Items.SHIELD));
+	private void allowWhileUsingItema(CallbackInfoReturnable<Boolean> cir) {
+		if (ServerUtils.INSTANCE.isOnHypixel()) {
+			attackCooldown = 0;
 		}
-
 	}
 
 	@Unique

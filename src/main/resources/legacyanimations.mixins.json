@@ -27,12 +27,10 @@
     "MinecraftClientMixin",
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
+    "ShieldItemMixin",
     "SwordItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "PlayerEntityAccessor"
-  ]
+  }
 }
