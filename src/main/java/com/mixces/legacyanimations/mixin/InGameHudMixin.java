@@ -25,7 +25,7 @@ public abstract class InGameHudMixin {
         if (player != null) {
             ItemStack stack = player.getMainHandStack();
             UseAction action = stack.getUseAction();
-            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.isValidItem(stack, action)) {
+            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(stack, action)) {
                 return original.call(itemStack) || player.getOffHandStack().isOf(Items.SHIELD);
             }
         }

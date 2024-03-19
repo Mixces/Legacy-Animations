@@ -15,12 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements PlayerPitchInterface {
 
-    @Shadow public abstract boolean isBlocking();
-
     @Shadow public abstract ItemStack getMainHandStack();
-
     @Shadow public abstract boolean isUsingItem();
-
     @Unique public float legacyAnimations$prevCameraPitch;
     @Unique public float legacyAnimations$cameraPitch;
 

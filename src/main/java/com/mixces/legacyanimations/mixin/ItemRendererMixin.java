@@ -33,7 +33,7 @@ public class ItemRendererMixin {
     @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
     private List<BakedQuad> changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0) BakedModel model) {
         if (LegacyAnimationsSettings.CONFIG.instance().fastItems && client.player != null && TransformationModeUtils.shouldBeSprite() && !model.hasDepth()) {
-            boolean isLeftHand = HandUtils.isLeftHand(client.player, client.getEntityRenderDispatcher());
+            boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(client.player, client.getEntityRenderDispatcher());
             boolean isFrontView = client.getEntityRenderDispatcher().gameOptions.getPerspective().isFrontView();
             Direction perspectiveFace = legacyAnimations$determineDirection(isFrontView, isLeftHand);
             if (TransformationModeUtils.getTransformationMode() == ModelTransformationMode.GROUND) {

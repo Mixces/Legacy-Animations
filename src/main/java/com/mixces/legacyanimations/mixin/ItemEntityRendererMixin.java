@@ -47,11 +47,11 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
     private void rotateItemAccordingly(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci, @Local(ordinal = 0) boolean bl) {
         if (LegacyAnimationsSettings.CONFIG.instance().fastItems && MinecraftClient.getInstance().player != null && !bl) {
             if (dispatcher.gameOptions.getPerspective().isFrontView()) {
-                if (HandUtils.isLeftHand(MinecraftClient.getInstance().player, dispatcher)) {
+                if (HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher)) {
                     matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                 }
             } else {
-                if (HandUtils.isRightHand(MinecraftClient.getInstance().player, dispatcher)) {
+                if (HandUtils.INSTANCE.isRightHand(MinecraftClient.getInstance().player, dispatcher)) {
                     matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                 }
             }

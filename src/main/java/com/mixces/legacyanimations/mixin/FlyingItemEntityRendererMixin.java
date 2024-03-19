@@ -61,7 +61,7 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     private float rotateProjectileAccordingly(float deg) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && MinecraftClient.getInstance().player != null) {
-            boolean isLeftHand = HandUtils.isLeftHand(MinecraftClient.getInstance().player, dispatcher);
+            boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher);
             if (!dispatcher.gameOptions.getPerspective().isFrontView()) {
                 return isLeftHand ? deg - 180.0F : deg;
             } else {

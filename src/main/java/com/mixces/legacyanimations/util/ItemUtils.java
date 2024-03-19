@@ -1,6 +1,8 @@
 package com.mixces.legacyanimations.util;
 
 import com.mixces.legacyanimations.mixin.FoodComponentAccessor;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -8,8 +10,10 @@ import net.minecraft.util.UseAction;
 
 public class ItemUtils {
 
-    public static boolean isValidItem(ItemStack heldStack, UseAction action) {
-        if (isValidHeldItem(heldStack) ||
+    public static ItemUtils INSTANCE = new ItemUtils();
+
+    public boolean isValidItem(ItemStack heldStack, UseAction action) {
+        if (ItemUtils.INSTANCE.isValidHeldItem(heldStack) ||
                 (action == UseAction.EAT && heldStack.getItem().getFoodComponent() != null &&
                         ((FoodComponentAccessor) heldStack.getItem().getFoodComponent()).getAlwaysEdible())) {
             return true;
@@ -19,8 +23,12 @@ public class ItemUtils {
         return false;
     }
 
-    public static boolean isValidHeldItem(ItemStack heldStack) {
+    public boolean isValidHeldItem(ItemStack heldStack) {
         return heldStack.getItem() instanceof SwordItem || heldStack.getItem() instanceof FishingRodItem;
+    }
+
+    public boolean isUsing(ClientPlayerEntity player) {
+        return ServerUtils.INSTANCE.isOnHypixel() ? MinecraftClient.getInstance().options.useKey.isPressed() : player.isUsingItem();
     }
 
 }

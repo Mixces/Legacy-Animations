@@ -29,7 +29,7 @@ public class BuiltinModelItemRendererMixin {
         if (LegacyAnimationsSettings.CONFIG.instance().hideShields && MinecraftClient.getInstance().player != null && TransformationModeUtils.isValidPerspective(mode)) {
             ItemStack heldStack = MinecraftClient.getInstance().player.getMainHandStack();
             UseAction action = heldStack.getUseAction();
-            if (ItemUtils.isValidItem(heldStack, action))
+            if (ItemUtils.INSTANCE.isValidItem(heldStack, action))
                 return false;
         }
         return original;

@@ -8,7 +8,9 @@ import net.minecraft.util.Hand;
 
 public class HandUtils {
 
-    public static int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public static HandUtils INSTANCE = new HandUtils();
+
+    public int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
         Hand hand = MoreObjects.firstNonNull(player.preferredHand, Hand.MAIN_HAND);
         boolean bl = hand == Hand.MAIN_HAND;
         Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
@@ -18,11 +20,11 @@ public class HandUtils {
         return bl2 ? perspectiveMultiplier : -perspectiveMultiplier;
     }
 
-    public static boolean isLeftHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public boolean isLeftHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
         return handMultiplier(player, dispatcher) == -1;
     }
 
-    public static boolean isRightHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public boolean isRightHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
         return handMultiplier(player, dispatcher) == 1;
     }
 

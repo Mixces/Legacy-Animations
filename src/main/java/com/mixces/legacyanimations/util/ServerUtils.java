@@ -2,7 +2,6 @@ package com.mixces.legacyanimations.util;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ServerInfo;
-import net.minecraft.world.World;
 
 public class ServerUtils {
 

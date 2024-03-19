@@ -5,8 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.util.ServerUtils;
-import net.minecraft.client.MinecraftClient;
+import com.mixces.legacyanimations.util.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -67,8 +66,7 @@ public abstract class HeldItemRendererMixin {
             )
     )
     private void addSwordBlock(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        boolean isUsing = ServerUtils.INSTANCE.isOnHypixel() ? MinecraftClient.getInstance().options.useKey.isPressed() : player.isUsingItem();
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock && item.getItem() instanceof SwordItem && player.getOffHandStack().getItem() instanceof ShieldItem && isUsing) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock && item.getItem() instanceof SwordItem && player.getOffHandStack().getItem() instanceof ShieldItem && ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player)) {
             boolean bl = hand == Hand.MAIN_HAND;
             Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
             boolean bl2 = arm == Arm.RIGHT;
@@ -89,8 +87,7 @@ public abstract class HeldItemRendererMixin {
             )
     )
     private boolean disableSwingTranslation(MatrixStack instance, float x, float y, float z, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
-        boolean isUsing = ServerUtils.INSTANCE.isOnHypixel() ? MinecraftClient.getInstance().options.useKey.isPressed() : player.isUsingItem();
-        return !LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock || !(item.getItem() instanceof SwordItem) || !(player.getOffHandStack().getItem() instanceof ShieldItem) || !isUsing;
+        return !LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock || !(item.getItem() instanceof SwordItem) || !(player.getOffHandStack().getItem() instanceof ShieldItem) || !ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player);
     }
 
     @WrapOperation(
