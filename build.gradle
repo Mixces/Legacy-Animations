@@ -27,7 +27,7 @@ loom {
 }
 
 dependencies {
-	modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${yacl_version}")
+	modImplementation("dev.isxander:yet-another-config-lib:${yacl_version}-fabric")
 
 	modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
