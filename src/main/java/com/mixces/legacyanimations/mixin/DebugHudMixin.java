@@ -1,6 +1,6 @@
 package com.mixces.legacyanimations.mixin;
 
-import com.llamalad7.mixinextras.injector.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.DebugHud;
