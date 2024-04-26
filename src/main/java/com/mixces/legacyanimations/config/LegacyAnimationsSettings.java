@@ -165,7 +165,7 @@ public class LegacyAnimationsSettings {
                                 .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Fast/2D Items"))
-                                .description(OptionDescription.of(Text.of("Reverts the projectile's positions back to the older style.")))
+                                .description(OptionDescription.of(Text.of("Changes dropped items to always face towards the player.")))
                                 .binding(defaults.fastItems, () -> config.fastItems, newVal -> config.fastItems = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
