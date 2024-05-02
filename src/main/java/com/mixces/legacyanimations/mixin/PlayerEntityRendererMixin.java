@@ -3,11 +3,13 @@ package com.mixces.legacyanimations.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.PlayerEntityRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerEntityRenderer.class)
 public class PlayerEntityRendererMixin  {
@@ -31,6 +33,12 @@ public class PlayerEntityRendererMixin  {
 //            return original || itemStack.isOf(Items.SHIELD);
 //        }
 //        return original;
+//    }
+
+//    @Redirect(method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;",
+//            at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isInSneakingPose()Z"))
+//    private boolean disableSneakPositionOffset(AbstractClientPlayerEntity player) {
+//        return false && player.isInSneakingPose();
 //    }
 
 }

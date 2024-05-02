@@ -11,10 +11,8 @@
     "ClientPlayerInteractionManagerMixin",
     "DebugHudMixin",
     "EntityMixin",
-    "EntityRenderDispatcherMixin",
     "FishingBobberEntityRendererMixin",
     "FlyingItemEntityRendererMixin",
-    "FoodComponentAccessor",
     "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
@@ -26,9 +24,7 @@
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "PlayerEntityMixin",
-    "PlayerEntityRendererMixin",
-    "ShieldItemMixin",
-    "SwordItemMixin"
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

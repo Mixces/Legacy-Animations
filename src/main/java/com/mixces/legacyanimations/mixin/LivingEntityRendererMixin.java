@@ -25,7 +25,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                     target = "Lnet/minecraft/entity/LivingEntity;isAlive()Z"
             )
     )
-    private boolean oldDeathLimbs(boolean original) {
+    private boolean legacyAnimations$oldDeathLimbs(boolean original) {
         return LegacyAnimationsSettings.CONFIG.instance().oldDeath || original;
     }
 
@@ -37,7 +37,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                     ordinal = 1
             )
     )
-    private void updateThirdPersonSneak(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    private void legacyAnimations$updateThirdPersonSneak(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
             PlayerEntity clientPlayer = MinecraftClient.getInstance().player;
             if (livingEntity instanceof PlayerEntity && clientPlayer != null) {

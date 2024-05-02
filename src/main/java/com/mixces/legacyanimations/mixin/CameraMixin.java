@@ -16,8 +16,16 @@ public abstract class CameraMixin {
     @Shadow private float cameraY;
     @Shadow private Entity focusedEntity;
 
-    @Inject(method = "updateEyeHeight", at = @At(value = "FIELD", opcode = Opcodes.PUTFIELD, target = "Lnet/minecraft/client/render/Camera;cameraY:F"), cancellable = true)
-    private void addOldSneakCalculation(CallbackInfo ci) {
+    @Inject(
+            method = "updateEyeHeight",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.PUTFIELD,
+                    target = "Lnet/minecraft/client/render/Camera;cameraY:F"
+            ),
+            cancellable = true
+    )
+    private void legacyAnimations$addOldSneakCalculation(CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking && focusedEntity.getStandingEyeHeight() < cameraY) {
             cameraY = focusedEntity.getStandingEyeHeight();
             ci.cancel();

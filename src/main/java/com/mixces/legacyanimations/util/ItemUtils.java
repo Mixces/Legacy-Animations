@@ -1,8 +1,8 @@
 package com.mixces.legacyanimations.util;
 
-import com.mixces.legacyanimations.mixin.FoodComponentAccessor;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.SwordItem;
@@ -14,8 +14,8 @@ public class ItemUtils {
 
     public boolean isValidItem(ItemStack heldStack, UseAction action) {
         if (ItemUtils.INSTANCE.isValidHeldItem(heldStack) ||
-                (action == UseAction.EAT && heldStack.getItem().getFoodComponent() != null &&
-                        ((FoodComponentAccessor) heldStack.getItem().getFoodComponent()).getAlwaysEdible())) {
+                (action == UseAction.EAT && heldStack.get(DataComponentTypes.FOOD) != null &&
+                        heldStack.get(DataComponentTypes.FOOD).canAlwaysEat())) {
             return true;
         } else if (action != UseAction.EAT) {
             return action != UseAction.NONE;

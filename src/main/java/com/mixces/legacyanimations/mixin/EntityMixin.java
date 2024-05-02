@@ -25,7 +25,7 @@ public class EntityMixin {
                     value = "RETURN"
             )
     )
-    public EntityPose revertSwimPose(EntityPose original) {
+    public EntityPose legacyAnimations$revertSwimPose(EntityPose original) {
         Entity entity = (Entity) (Object) this;
         if (LegacyAnimationsSettings.CONFIG.instance().oldSwim && type == EntityType.PLAYER && entity.isSwimming()) {
             EntityPose pose = dataTracker.get(POSE);

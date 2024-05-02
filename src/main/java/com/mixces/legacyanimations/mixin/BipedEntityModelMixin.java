@@ -20,16 +20,19 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
     @Shadow @Final public ModelPart rightArm;
     @Shadow @Final public ModelPart leftArm;
     @Shadow @Final public ModelPart head;
+    @Shadow @Final public ModelPart rightLeg;
+    @Shadow @Final public ModelPart leftLeg;
 
     @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
             at = @At(
-                    value = "JUMP",
-                    opcode = Opcodes.IF_ACMPEQ,
-                    ordinal = 0
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;rightArmPose:Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;",
+                    opcode = Opcodes.GETFIELD,
+                    ordinal = 1
             )
     )
-    private void fixIncorrectArmPlacement(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+    private void legacyAnimations$fixIncorrectArmPlacement(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage) {
             rightArm.roll = 0.0F;
             leftArm.roll = 0.0F;
@@ -48,48 +51,105 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
         }
     }
 
-    @ModifyConstant(
+    @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
-            constant = @Constant(
-                    floatValue = 12.2F
-            )
-    )
-    private float oldSneakValue1(float constant) {
-        return LegacyAnimationsSettings.CONFIG.instance().oldSneaking ? 9.0F : constant;
-    }
-
-    @ModifyConstant(
-            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;leftLeg:Lnet/minecraft/client/model/ModelPart;"
+            ),
             slice = @Slice(
                     from = @At(
                             value = "FIELD",
-                            opcode = Opcodes.PUTFIELD,
-                            target = "Lnet/minecraft/client/model/ModelPart;pitch:F",
-                            ordinal = 15
+                            opcode = Opcodes.GETFIELD,
+                            target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;rightLeg:Lnet/minecraft/client/model/ModelPart;",
+                            ordinal = 7
                     ),
                     to = @At(
                             value = "FIELD",
-                            opcode = Opcodes.PUTFIELD,
-                            target = "Lnet/minecraft/client/model/ModelPart;pivotY:F",
-                            ordinal = 6
+                            opcode = Opcodes.GETFIELD,
+                            target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;body:Lnet/minecraft/client/model/ModelPart;",
+                            ordinal = 2
                     )
-            ),
-            constant = @Constant(
-                    floatValue = 0.0F
             )
     )
-    private float oldSneakValue2(float constant) {
-        return LegacyAnimationsSettings.CONFIG.instance().oldSneaking ? 0.1F : constant;
+    private void legacyAnimations$oldSneakValue1(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+            rightLeg.pivotY = 9.0f;
+        }
     }
 
-    @ModifyConstant(
+    @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
-            constant = @Constant(
-                    floatValue = 4.2F
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;head:Lnet/minecraft/client/model/ModelPart;"
+            ),
+            slice = @Slice(
+                    from = @At(
+                            value = "FIELD",
+                            opcode = Opcodes.GETFIELD,
+                            target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;leftLeg:Lnet/minecraft/client/model/ModelPart;",
+                            ordinal = 7
+                    ),
+                    to = @At(
+                            value = "FIELD",
+                            opcode = Opcodes.GETFIELD,
+                            target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;leftArm:Lnet/minecraft/client/model/ModelPart;",
+                            ordinal = 7
+                    )
             )
     )
-    private float oldSneakValue3(float constant) {
-        return LegacyAnimationsSettings.CONFIG.instance().oldSneaking ? 1.0F : constant;
+    private void legacyAnimations$oldSneakValue2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+            leftLeg.pivotY = 9.0f;
+        }
+    }
+
+    @Inject(
+            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;leftLeg:Lnet/minecraft/client/model/ModelPart;",
+                    ordinal = 9
+            )
+    )
+    private void legacyAnimations$oldSneakValue3(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+            rightLeg.pivotZ = 0.1f;
+        }
+    }
+
+    @Inject(
+            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;head:Lnet/minecraft/client/model/ModelPart;",
+                    ordinal = 5
+            )
+    )
+    private void legacyAnimations$oldSneakValue4(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+            leftLeg.pivotZ = 0.1f;
+        }
+    }
+
+    @Inject(
+            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;body:Lnet/minecraft/client/model/ModelPart;",
+                    ordinal = 2
+            )
+    )
+    private void legacyAnimations$oldSneakValue5(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+            head.pivotY = 1.0f;
+        }
     }
 
     @WrapWithCondition(
@@ -114,7 +174,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
                     target = "Lnet/minecraft/client/model/ModelPart;pivotY:F"
             )
     )
-    public boolean removeConflictingFields(ModelPart instance, float value) {
+    public boolean legacyAnimations$removeConflictingFields1(ModelPart instance, float value) {
         return !LegacyAnimationsSettings.CONFIG.instance().oldSneaking;
     }
 
@@ -140,39 +200,20 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
                     target = "Lnet/minecraft/client/model/ModelPart;pivotY:F"
             )
     )
-    public boolean removeFields2(ModelPart instance, float value) {
+    public boolean legacyAnimations$removeConflictingFields2(ModelPart instance, float value) {
         return !LegacyAnimationsSettings.CONFIG.instance().oldSneaking;
     }
 
-    @Redirect(
+    @Inject(
             method = "positionBlockingArm",
             at = @At(
-                    value = "FIELD",
-                    opcode = Opcodes.PUTFIELD,
-                    target = "Lnet/minecraft/client/model/ModelPart;pitch:F"
+                    value = "TAIL"
             )
     )
-    public void oldBlockingArmPitch(ModelPart instance, float value) {
+    public void legacyAnimations$oldBlockingArm(ModelPart arm, boolean rightArm, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock) {
-            instance.pitch = instance.pitch * 0.5F - (float) (Math.PI / 3);
-        } else {
-            instance.pitch = value;
-        }
-    }
-
-    @Redirect(
-            method = "positionBlockingArm",
-            at = @At(
-                    value = "FIELD",
-                    opcode = Opcodes.PUTFIELD,
-                    target = "Lnet/minecraft/client/model/ModelPart;yaw:F"
-            )
-    )
-    public void oldBlockingArmYaw(ModelPart instance, float value) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock) {
-            instance.yaw = 0.0F;
-        } else {
-            instance.yaw = value;
+            arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 3);
+            arm.yaw = 0.0F;
         }
     }
 
@@ -184,7 +225,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
             ),
             index = 0
     )
-    private ModelPart switchBlockingArm(ModelPart arm) {
+    private ModelPart legacyAnimations$switchBlockingArm1(ModelPart arm) {
         return LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock ? rightArm : arm;
     }
 
@@ -196,7 +237,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
             ),
             index = 0
     )
-    private ModelPart switchBlockingArm2(ModelPart arm) {
+    private ModelPart legacyAnimations$switchBlockingArm2(ModelPart arm) {
         return LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock ? leftArm : arm;
     }
 

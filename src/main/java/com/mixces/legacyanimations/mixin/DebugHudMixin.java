@@ -18,7 +18,7 @@ public class DebugHudMixin {
                     target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"
             )
     )
-    private boolean removeDebugBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color) {
+    private boolean legacyAnimations$removeDebugBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color) {
         return !LegacyAnimationsSettings.CONFIG.instance().oldDebug;
     }
 
@@ -30,7 +30,7 @@ public class DebugHudMixin {
             ),
             index = 5
     )
-    private boolean addDebugShadow(boolean shadow) {
+    private boolean legacyAnimations$addDebugShadow(boolean shadow) {
         return LegacyAnimationsSettings.CONFIG.instance().oldDebug;
     }
 

@@ -1,12 +1,18 @@
 package com.mixces.legacyanimations.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 
 import java.util.EnumSet;
 
+
 public class TransformationModeUtils {
 
+    @Setter
+    @Getter
     public static ModelTransformationMode transformationMode;
+
     private static final EnumSet<ModelTransformationMode> cameraTypes =
             EnumSet.of(
                     ModelTransformationMode.GROUND,
@@ -20,20 +26,16 @@ public class TransformationModeUtils {
                 mode == ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
     }
 
-    public static ModelTransformationMode getTransformationMode() {
-        return transformationMode;
-    }
-
     public static boolean shouldBeSprite() {
         return shouldNotHaveGlint() || isRenderingInGUI();
     }
 
     public static boolean isRenderingInGUI() {
-        return transformationMode == ModelTransformationMode.GUI;
+        return getTransformationMode() == ModelTransformationMode.GUI;
     }
 
     public static boolean shouldNotHaveGlint() {
-        return cameraTypes.contains(transformationMode);
+        return cameraTypes.contains(getTransformationMode());
     }
 
 }

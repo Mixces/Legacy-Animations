@@ -25,7 +25,7 @@ public class GameRendererMixin {
                     shift = At.Shift.AFTER
             )
     )
-    private void addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity) {
+    private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob) {
             float h = MathHelper.lerp(
                     tickDelta,

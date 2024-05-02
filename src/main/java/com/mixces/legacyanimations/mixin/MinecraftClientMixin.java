@@ -28,7 +28,7 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"
 			)
 	)
-	private boolean interruptBlockBreaking(boolean original) {
+	private boolean legacyAnimations$interruptBlockBreaking(boolean original) {
 		return !LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && original;
 	}
 
@@ -39,7 +39,7 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"
 			)
 	)
-	private boolean allowWhileUsingItem(ClientPlayerEntity instance) {
+	private boolean legacyAnimations$allowWhileUsingItem(ClientPlayerEntity instance) {
 		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage) {
 			return !instance.canModifyBlocks();
 		}
@@ -53,7 +53,7 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"
 			)
 	)
-	private void swapForFakeSwing(ClientPlayerEntity instance, Hand hand) {
+	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand) {
 		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isUsingItem()) {
 			legacyAnimations$fakeSwingHand(instance, hand);
 		} else {
@@ -67,7 +67,7 @@ public class MinecraftClientMixin {
 					value = "HEAD"
 			)
 	)
-	private void allowWhileUsingItema(CallbackInfoReturnable<Boolean> cir) {
+	private void legacyAnimations$removeMissPenalty(CallbackInfoReturnable<Boolean> cir) {
 		if (ServerUtils.INSTANCE.isOnHypixel()) {
 			attackCooldown = 0;
 		}

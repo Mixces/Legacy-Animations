@@ -23,10 +23,10 @@ public abstract class InGameHudMixin {
     private boolean cancelOffhandHotbar(ItemStack itemStack, Operation<Boolean> original) {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
-            ItemStack stack = player.getMainHandStack();
-            UseAction action = stack.getUseAction();
-            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(stack, action)) {
-                return original.call(itemStack) || player.getOffHandStack().isOf(Items.SHIELD);
+            ItemStack mainStack = player.getMainHandStack();
+            UseAction action = mainStack.getUseAction();
+            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action)) {
+                return original.call(itemStack) || itemStack.isOf(Items.SHIELD);
             }
         }
         return original.call(itemStack);
@@ -51,7 +51,7 @@ public abstract class InGameHudMixin {
                     target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"
             )
     )
-    private boolean removePerspectiveCheck(boolean original) {
+    private boolean legacyAnimations$removePerspectiveCheck(boolean original) {
         return LegacyAnimationsSettings.CONFIG.instance().perspectiveCrosshair || original;
     }
 

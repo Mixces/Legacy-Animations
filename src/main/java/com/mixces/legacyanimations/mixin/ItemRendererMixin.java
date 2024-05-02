@@ -31,7 +31,7 @@ public class ItemRendererMixin {
     @Shadow @Final private MinecraftClient client;
 
     @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
-    private List<BakedQuad> changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0) BakedModel model) {
+    private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model) {
         if (LegacyAnimationsSettings.CONFIG.instance().fastItems && client.player != null && TransformationModeUtils.shouldBeSprite() && !model.hasDepth()) {
             boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(client.player, client.getEntityRenderDispatcher());
             boolean isFrontView = client.getEntityRenderDispatcher().gameOptions.getPerspective().isFrontView();
@@ -50,9 +50,9 @@ public class ItemRendererMixin {
                     value = "HEAD"
             )
     )
-    private void getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
+    private void legacyAnimations$getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().fastItems) {
-            TransformationModeUtils.transformationMode = renderMode;
+            TransformationModeUtils.setTransformationMode(renderMode);
         }
     }
 

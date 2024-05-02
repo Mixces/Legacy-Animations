@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
     @Unique public float legacyAnimations$cameraPitch;
 
     @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-    private int isBlocking_fixSync(int constant) {
+    private int legacyAnimations$fixSync(int constant) {
         if (ServerUtils.INSTANCE.isOnHypixel()) {
             return 0;
         }
@@ -45,7 +45,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
                     )
             )
     )
-    private float revertBackwardsWalk(float constant) {
+    private float legacyAnimations$revertBackwardsWalk(float constant) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldWalking)
             return 0.0F;
         return constant;
@@ -60,7 +60,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
                     ordinal = 0
             )
     )
-    private void setPrevCameraPitch(CallbackInfo ci) {
+    private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob) {
             legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
         }

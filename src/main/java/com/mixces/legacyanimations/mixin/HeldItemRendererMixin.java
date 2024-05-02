@@ -51,7 +51,7 @@ public abstract class HeldItemRendererMixin {
                     )
             )
     )
-    private void addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm) {
+    private void legacyAnimations$addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm) {
         if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage) {
             applySwingOffset(matrices, arm, swingProgress);
         }
@@ -65,7 +65,7 @@ public abstract class HeldItemRendererMixin {
                     ordinal = 1
             )
     )
-    private void addSwordBlock(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+    private void legacyAnimations$addSwordBlock(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock && item.getItem() instanceof SwordItem && player.getOffHandStack().getItem() instanceof ShieldItem && ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player)) {
             boolean bl = hand == Hand.MAIN_HAND;
             Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
@@ -86,7 +86,7 @@ public abstract class HeldItemRendererMixin {
                     ordinal = 12
             )
     )
-    private boolean disableSwingTranslation(MatrixStack instance, float x, float y, float z, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
+    private boolean legacyAnimations$disableSwingTranslation(MatrixStack instance, float x, float y, float z, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light) {
         return !LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock || !(item.getItem() instanceof SwordItem) || !(player.getOffHandStack().getItem() instanceof ShieldItem) || !ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player);
     }
 
@@ -97,14 +97,14 @@ public abstract class HeldItemRendererMixin {
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"
             )
     )
-    public float removeCoolDownSpeed(ClientPlayerEntity instance, float v, Operation<Float> original) {
+    public float legacyAnimations$removeCoolDownSpeed(ClientPlayerEntity instance, float v, Operation<Float> original) {
         if (LegacyAnimationsSettings.CONFIG.instance().noCooldown)
             return 1.0F;
         return original.call(instance, v);
     }
 
     @Inject(method = "resetEquipProgress", at = @At("HEAD"), cancellable = true)
-    private void removeStartDelay(Hand hand, CallbackInfo ci) {
+    private void legacyAnimations$removeStartDelay(Hand hand, CallbackInfo ci) {
         if (LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
             ci.cancel();
         }
@@ -119,7 +119,7 @@ public abstract class HeldItemRendererMixin {
             ),
             index = 0
     )
-    private float conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack) {
+    private float legacyAnimations$conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack) {
         if (LegacyAnimationsSettings.CONFIG.instance().hideShields && offHand.getItem() instanceof ShieldItem) {
             return (mainHand == itemStack ? 1.0F : 0.0F) - equipProgressOffHand;
         }

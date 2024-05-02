@@ -26,7 +26,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isCurrentlyBreaking(Lnet/minecraft/util/math/BlockPos;)Z"
             )
     )
-    public boolean fixBreakingBlockCheck(boolean original) {
+    public boolean legacyAnimations$fixBreakingBlockCheck(boolean original) {
         return (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage || isBreakingBlock()) && original;
     }
 
@@ -38,7 +38,7 @@ public abstract class ClientPlayerInteractionManagerMixin {
                     shift = At.Shift.AFTER
             ),
             cancellable = true)
-    public void cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
+    public void legacyAnimations$cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
         if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && client.player != null && client.player.isUsingItem()) {
             cir.setReturnValue(true);
         }
