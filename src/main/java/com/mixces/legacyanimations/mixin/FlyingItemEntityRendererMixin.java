@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.HandUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -36,9 +37,13 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
                     target = "Lnet/minecraft/entity/Entity;age:I"
             )
     )
-    public int legacyAnimations$disableCleanView(Entity instance, Operation<Integer> original)
+    public int legacyAnimations$disableDelay(Entity instance, Operation<Integer> original)
     {
-        return LegacyAnimationsSettings.CONFIG.instance().oldProjectiles ? original.call(instance) + 2 : original.call(instance);
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        {
+            return original.call(instance);
+        }
+        return original.call(instance) + 2;
     }
 
     @Inject(
@@ -50,11 +55,15 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     public void legacyAnimations$shiftProjectile(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
         {
-            matrices.translate((!dispatcher.gameOptions.getPerspective().isFrontView() ? 1 : -1) * 0.25F, 0.0F, 0.0F);
+            return;
         }
+
+        matrices.translate((!dispatcher.gameOptions.getPerspective().isFrontView() ? 1 : -1) * 0.25F, 0.0F, 0.0F);
     }
+
+    //todo: shit is missing in left handed mode
 
     @ModifyArg(
             method = "render",
@@ -66,19 +75,28 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     private float legacyAnimations$rotateProjectileAccordingly(float deg)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && MinecraftClient.getInstance().player != null)
+        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
         {
-            boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher);
-            if (!dispatcher.gameOptions.getPerspective().isFrontView())
-            {
-                return isLeftHand ? deg - 180.0F : deg;
-            }
-            else
-            {
-                return isLeftHand ? deg : deg - 180.0F;
-            }
+            return deg;
         }
-        return deg;
+
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return deg;
+        }
+
+        final boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher);
+
+        if (dispatcher.gameOptions.getPerspective().isFrontView())
+        {
+            return isLeftHand ? deg : deg - 180.0F;
+        }
+        else
+        {
+            return isLeftHand ? deg - 180.0F : deg;
+        }
     }
 
 }

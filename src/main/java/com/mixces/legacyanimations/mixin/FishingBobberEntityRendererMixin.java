@@ -13,9 +13,11 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.item.Items;
+import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FishingBobberEntityRenderer.class)
@@ -37,13 +39,22 @@ public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<Fi
     )
     public void legacyAnimations$shiftRodBob(FishingBobberEntity fishingBobberEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci)
     {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && player != null)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
         {
-            matrixStack.translate(HandUtils.INSTANCE.handMultiplier(player, dispatcher) * 0.25F, 0.0F, 0.0F);
+            return;
         }
+
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return;
+        }
+
+        matrixStack.translate(HandUtils.INSTANCE.handMultiplier(player, dispatcher) * 0.25F, 0.0F, 0.0F);
     }
 
+    //todo: cameraVecPos bullshit and left handed rod line
 //    @Redirect(
 //            method = "render(Lnet/minecraft/entity/projectile/FishingBobberEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
 //            at = @At(

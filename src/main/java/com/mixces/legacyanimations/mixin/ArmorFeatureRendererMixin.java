@@ -1,12 +1,16 @@
 package com.mixces.legacyanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
+import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
@@ -51,8 +55,31 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
         return RenderLayer.getEntityCutoutNoCullZOffset(overlay);
     }
 
+    @WrapOperation(
+            method = "renderTrim",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/texture/Sprite;getTextureSpecificVertexConsumer(Lnet/minecraft/client/render/VertexConsumer;)Lnet/minecraft/client/render/VertexConsumer;"
+            )
+    )
+    private VertexConsumer legacyAnimations$useEntityLayerRenderer2(Sprite instance, VertexConsumer consumer, Operation<VertexConsumer> original, @Local(ordinal = 0, argsOnly = true) VertexConsumerProvider vertexConsumers)
+    {
+        if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
+        {
+            return original.call(instance, consumer);
+        }
+
+        if (legacyAnimations$entity.deathTime > 0 || legacyAnimations$entity.hurtTime > 0) {
+            return instance.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(RenderLayer.getEntityCutoutNoCullZOffset(instance.getAtlasId())));
+        }
+        return original.call(instance, consumer);
+    }
+
     @ModifyArg(
-            method = "renderArmorParts",
+            method = {
+                    "renderArmorParts",
+                    "renderTrim"
+            },
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"
@@ -65,13 +92,10 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
         {
             return par3;
         }
-        return OverlayTexture.packUv(OverlayTexture.getU(0.0F), OverlayTexture.getV(isEntityDying(legacyAnimations$entity)));
-    }
-
-    @Unique
-    private boolean isEntityDying(T entity)
-    {
-        return entity.deathTime > 0 || entity.hurtTime > 0;
+        return OverlayTexture.packUv(
+                OverlayTexture.getU(0.0F),
+                OverlayTexture.getV(legacyAnimations$entity.deathTime > 0 || legacyAnimations$entity.hurtTime > 0)
+        );
     }
 
 }

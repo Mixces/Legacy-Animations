@@ -3,6 +3,7 @@ package com.mixces.legacyanimations.mixin;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerInteractionManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -19,6 +20,8 @@ public abstract class ClientPlayerInteractionManagerMixin
 
     @Shadow @Final private MinecraftClient client;
     @Shadow public abstract boolean isBreakingBlock();
+    @Shadow public abstract void cancelBlockBreaking();
+    @Shadow private float currentBreakingProgress;
 
     @ModifyExpressionValue(
             method = "updateBlockBreakingProgress",
@@ -29,7 +32,11 @@ public abstract class ClientPlayerInteractionManagerMixin
     )
     public boolean legacyAnimations$fixBreakingBlockCheck(boolean original)
     {
-        return (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage || isBreakingBlock()) && original;
+        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        {
+            return original;
+        }
+        return original && isBreakingBlock();
     }
 
     @Inject(
@@ -42,8 +49,25 @@ public abstract class ClientPlayerInteractionManagerMixin
             cancellable = true)
     public void legacyAnimations$cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && client.player != null && client.player.isUsingItem())
+        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
         {
+            return;
+        }
+
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return;
+        }
+
+        if (player.isUsingItem() && player.canModifyBlocks())
+        {
+            if (currentBreakingProgress > 0.0f)
+            {
+                cancelBlockBreaking();
+            }
+
             cir.setReturnValue(true);
         }
     }

@@ -13,8 +13,10 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BuiltinModelItemRenderer.class)
-public class BuiltinModelItemRendererMixin
+public abstract class BuiltinModelItemRendererMixin
 {
+
+    //todo: re-write shields
 
     @ModifyExpressionValue(
             method = "render",

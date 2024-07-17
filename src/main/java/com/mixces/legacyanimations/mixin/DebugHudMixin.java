@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(DebugHud.class)
-public class DebugHudMixin
+public abstract class DebugHudMixin
 {
 
     @WrapWithCondition(

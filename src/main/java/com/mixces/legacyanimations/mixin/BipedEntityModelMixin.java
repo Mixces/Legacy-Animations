@@ -16,6 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BipedEntityModelMixin<T extends LivingEntity>
 {
 
+    //todo: thorough investigation needed
+
     @Shadow public BipedEntityModel.ArmPose leftArmPose;
     @Shadow public BipedEntityModel.ArmPose rightArmPose;
     @Shadow @Final public ModelPart rightArm;
