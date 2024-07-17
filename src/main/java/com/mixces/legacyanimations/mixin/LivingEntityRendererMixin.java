@@ -16,7 +16,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntityRenderer.class)
-public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>> {
+public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extends EntityModel<T>>
+{
 
     @ModifyExpressionValue(
             method = "render(Lnet/minecraft/entity/LivingEntity;FFLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V",
@@ -25,7 +26,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                     target = "Lnet/minecraft/entity/LivingEntity;isAlive()Z"
             )
     )
-    private boolean legacyAnimations$oldDeathLimbs(boolean original) {
+    private boolean legacyAnimations$oldDeathLimbs(boolean original)
+    {
         return LegacyAnimationsSettings.CONFIG.instance().oldDeath || original;
     }
 
@@ -37,10 +39,12 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
                     ordinal = 1
             )
     )
-    private void legacyAnimations$updateThirdPersonSneak(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    private void legacyAnimations$updateThirdPersonSneak(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci)
+    {
         if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
             PlayerEntity clientPlayer = MinecraftClient.getInstance().player;
-            if (livingEntity instanceof PlayerEntity && clientPlayer != null) {
+            if (livingEntity instanceof PlayerEntity && clientPlayer != null)
+            {
                 Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
                 boolean player = livingEntity.getName().equals(clientPlayer.getName());
                 float eyeHeight = player ? MathHelper.lerp(g, ((AccessorCamera) camera).getLastCameraY(), ((AccessorCamera) camera).getCameraY()) : livingEntity.getStandingEyeHeight();

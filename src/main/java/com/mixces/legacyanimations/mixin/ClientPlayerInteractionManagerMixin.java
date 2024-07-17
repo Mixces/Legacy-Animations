@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ClientPlayerInteractionManager.class)
-public abstract class ClientPlayerInteractionManagerMixin {
+public abstract class ClientPlayerInteractionManagerMixin
+{
 
     @Shadow @Final private MinecraftClient client;
     @Shadow public abstract boolean isBreakingBlock();
@@ -26,7 +27,8 @@ public abstract class ClientPlayerInteractionManagerMixin {
                     target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isCurrentlyBreaking(Lnet/minecraft/util/math/BlockPos;)Z"
             )
     )
-    public boolean legacyAnimations$fixBreakingBlockCheck(boolean original) {
+    public boolean legacyAnimations$fixBreakingBlockCheck(boolean original)
+    {
         return (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage || isBreakingBlock()) && original;
     }
 
@@ -38,8 +40,10 @@ public abstract class ClientPlayerInteractionManagerMixin {
                     shift = At.Shift.AFTER
             ),
             cancellable = true)
-    public void legacyAnimations$cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir) {
-        if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && client.player != null && client.player.isUsingItem()) {
+    public void legacyAnimations$cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && client.player != null && client.player.isUsingItem())
+        {
             cir.setReturnValue(true);
         }
     }

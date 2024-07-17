@@ -4,14 +4,16 @@
 	"version": "${version}",
 	"name": "Legacy Animations",
 	"description": "Brings back the legacy animations and visuals from versions before 1.9!",
-	"authors": [
+	"authors":
+	[
 		"Mixces",
 		"Wyvest",
 		"Microcontrollers",
 		"ImToggle",
 		"Cecer (CecerMCProjects)"
 	],
-	"contact": {
+	"contact":
+	{
 		"homepage": "https://github.com/Mixces",
 		"sources": "https://github.com/Mixces/Legacy-Animations",
 		"issues": "https://github.com/Mixces/Legacy-Animations/issues"
@@ -19,27 +21,35 @@
 	"license": "LGPLV3",
 	"icon": "assets/legacyanimations/icon.png",
 	"environment": "*",
-	"entrypoints": {
-		"main": [
+	"entrypoints":
+	{
+		"main":
+		[
 			"com.mixces.legacyanimations.LegacyAnimations"
 		],
-		"modmenu": [
+		"modmenu":
+		[
 			"com.mixces.legacyanimations.config.ModMenuIntegration"
 		]
 	},
-	"mixins": [
+	"mixins":
+	[
       "legacyanimations.mixins.json"
 	],
-	"depends": {
+	"depends":
+	{
 		"fabricloader": ">=0.15.10",
 		"minecraft": "~1.20.6",
 		"java": ">=21",
 		"fabric-api": "*",
 		"yet_another_config_lib_v3": "*"
 	},
-	"custom": {
-		"modmenu": {
-			"links": {
+	"custom":
+	{
+		"modmenu":
+		{
+			"links":
+			{
 				"modmenu.discord": "https://discord.gg/polyfrost"
 			},
 			"update_checker": true

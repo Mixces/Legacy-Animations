@@ -19,9 +19,11 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FishingBobberEntityRenderer.class)
-public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<FishingBobberEntity> {
+public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<FishingBobberEntity>
+{
 
-    protected FishingBobberEntityRendererMixin(EntityRendererFactory.Context ctx) {
+    protected FishingBobberEntityRendererMixin(EntityRendererFactory.Context ctx)
+    {
         super(ctx);
     }
 
@@ -33,9 +35,11 @@ public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<Fi
                     ordinal = 0
             )
     )
-    public void legacyAnimations$shiftRodBob(FishingBobberEntity fishingBobberEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
+    public void legacyAnimations$shiftRodBob(FishingBobberEntity fishingBobberEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci)
+    {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && player != null) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && player != null)
+        {
             matrixStack.translate(HandUtils.INSTANCE.handMultiplier(player, dispatcher) * 0.25F, 0.0F, 0.0F);
         }
     }
@@ -58,7 +62,8 @@ public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<Fi
                     target = "Lnet/minecraft/item/ItemStack;isOf(Lnet/minecraft/item/Item;)Z"
             )
     )
-    public boolean legacyAnimations$fixWrongRodLine(boolean original, PlayerEntity player, float f, float tickDelta) {
+    public boolean legacyAnimations$fixWrongRodLine(boolean original, PlayerEntity player, float f, float tickDelta)
+    {
         return original || !player.getOffHandStack().isOf(Items.FISHING_ROD);
     }
 

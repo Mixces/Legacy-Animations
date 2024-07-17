@@ -14,7 +14,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
-public class GameRendererMixin {
+public class GameRendererMixin
+{
 
     @Inject(
             method = "bobView",
@@ -25,8 +26,10 @@ public class GameRendererMixin {
                     shift = At.Shift.AFTER
             )
     )
-    private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob) {
+    private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        {
             float h = MathHelper.lerp(
                     tickDelta,
                     ((PlayerPitchInterface) playerEntity).legacyAnimations$getPrevPlayerPitch(),

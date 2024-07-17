@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Entity.class)
-public class EntityMixin {
+public class EntityMixin
+{
 
     @Final @Shadow private EntityType<?> type;
     @Final @Shadow protected DataTracker dataTracker;
@@ -25,9 +26,11 @@ public class EntityMixin {
                     value = "RETURN"
             )
     )
-    public EntityPose legacyAnimations$revertSwimPose(EntityPose original) {
+    public EntityPose legacyAnimations$revertSwimPose(EntityPose original)
+    {
         Entity entity = (Entity) (Object) this;
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwim && type == EntityType.PLAYER && entity.isSwimming()) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSwim && type == EntityType.PLAYER && entity.isSwimming())
+        {
             EntityPose pose = dataTracker.get(POSE);
             if (pose == EntityPose.SWIMMING) {
                 pose = EntityPose.STANDING;

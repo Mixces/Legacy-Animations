@@ -26,17 +26,21 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mixin(ItemRenderer.class)
-public class ItemRendererMixin {
+public class ItemRendererMixin
+{
 
     @Shadow @Final private MinecraftClient client;
 
     @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
-    private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model) {
-        if (LegacyAnimationsSettings.CONFIG.instance().fastItems && client.player != null && TransformationModeUtils.shouldBeSprite() && !model.hasDepth()) {
+    private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().fastItems && client.player != null && TransformationModeUtils.shouldBeSprite() && !model.hasDepth())
+        {
             boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(client.player, client.getEntityRenderDispatcher());
             boolean isFrontView = client.getEntityRenderDispatcher().gameOptions.getPerspective().isFrontView();
             Direction perspectiveFace = legacyAnimations$determineDirection(isFrontView, isLeftHand);
-            if (TransformationModeUtils.getTransformationMode() == ModelTransformationMode.GROUND) {
+            if (TransformationModeUtils.getTransformationMode() == ModelTransformationMode.GROUND)
+            {
                 return legacyAnimations$filterQuadsByDirection(quads, perspectiveFace);
             }
             return legacyAnimations$filterQuadsByDirection(quads, Direction.SOUTH);
@@ -50,22 +54,27 @@ public class ItemRendererMixin {
                     value = "HEAD"
             )
     )
-    private void legacyAnimations$getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        if (LegacyAnimationsSettings.CONFIG.instance().fastItems) {
+    private void legacyAnimations$getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().fastItems)
+        {
             TransformationModeUtils.setTransformationMode(renderMode);
         }
     }
 
     @Unique
-    private static Direction legacyAnimations$determineDirection(boolean isFrontView, boolean isLeftHand) {
-        if (isFrontView) {
+    private static Direction legacyAnimations$determineDirection(boolean isFrontView, boolean isLeftHand)
+    {
+        if (isFrontView)
+        {
             return isLeftHand ? Direction.SOUTH : Direction.NORTH;
         }
         return isLeftHand ? Direction.NORTH : Direction.SOUTH;
     }
 
     @Unique
-    private static List<BakedQuad> legacyAnimations$filterQuadsByDirection(List<BakedQuad> quads, Direction face) {
+    private static List<BakedQuad> legacyAnimations$filterQuadsByDirection(List<BakedQuad> quads, Direction face)
+    {
         return quads.stream().filter(baked -> baked.getFace() == face).collect(Collectors.toList());
     }
 

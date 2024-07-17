@@ -1,6 +1,7 @@
 package com.mixces.legacyanimations.duck;
 
-public interface PlayerPitchInterface {
+public interface PlayerPitchInterface
+{
 
     float legacyAnimations$getPrevPlayerPitch();
 

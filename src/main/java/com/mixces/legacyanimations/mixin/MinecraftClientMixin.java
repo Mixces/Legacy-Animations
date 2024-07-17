@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class MinecraftClientMixin {
 
 	@Shadow public ClientPlayerEntity player;
-
 	@Shadow public int attackCooldown;
 
 	@ModifyExpressionValue(
@@ -28,7 +27,8 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"
 			)
 	)
-	private boolean legacyAnimations$interruptBlockBreaking(boolean original) {
+	private boolean legacyAnimations$interruptBlockBreaking(boolean original)
+	{
 		return !LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && original;
 	}
 
@@ -39,8 +39,10 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"
 			)
 	)
-	private boolean legacyAnimations$allowWhileUsingItem(ClientPlayerEntity instance) {
-		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage) {
+	private boolean legacyAnimations$allowWhileUsingItem(ClientPlayerEntity instance)
+	{
+		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+		{
 			return !instance.canModifyBlocks();
 		}
 		return instance.isUsingItem();
@@ -53,10 +55,14 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"
 			)
 	)
-	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand) {
-		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isUsingItem()) {
+	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand)
+	{
+		if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage && instance.isUsingItem())
+		{
 			legacyAnimations$fakeSwingHand(instance, hand);
-		} else {
+		}
+		else
+		{
 			instance.swingHand(hand);
 		}
 	}
@@ -67,15 +73,19 @@ public class MinecraftClientMixin {
 					value = "HEAD"
 			)
 	)
-	private void legacyAnimations$removeMissPenalty(CallbackInfoReturnable<Boolean> cir) {
-		if (ServerUtils.INSTANCE.isOnHypixel()) {
+	private void legacyAnimations$removeMissPenalty(CallbackInfoReturnable<Boolean> cir)
+	{
+		if (ServerUtils.INSTANCE.isOnHypixel())
+		{
 			attackCooldown = 0;
 		}
 	}
 
 	@Unique
-	private static void legacyAnimations$fakeSwingHand(ClientPlayerEntity player, Hand hand) {
-		if (!player.handSwinging || player.handSwingTicks >= ((LivingEntityInvoker) player).invokeGetHandSwingDuration() / 2 || player.handSwingTicks < 0) {
+	private static void legacyAnimations$fakeSwingHand(ClientPlayerEntity player, Hand hand)
+	{
+		if (!player.handSwinging || player.handSwingTicks >= ((LivingEntityInvoker) player).invokeGetHandSwingDuration() / 2 || player.handSwingTicks < 0)
+		{
 			player.handSwingTicks = -1;
 			player.handSwinging = true;
 			player.preferredHand = hand;

@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(BuiltinModelItemRenderer.class)
-public class BuiltinModelItemRendererMixin {
+public class BuiltinModelItemRendererMixin
+{
 
     @ModifyExpressionValue(
             method = "render",
@@ -23,11 +24,13 @@ public class BuiltinModelItemRendererMixin {
                     ordinal = 0
             )
     )
-    private boolean legacyAnimations$disableShieldRendering(boolean original, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && TransformationModeUtils.isValidPerspective(mode)) {
-            return !ItemUtils.INSTANCE.isValidItem(stack, stack.getUseAction());
+    private boolean legacyAnimations$disableShieldRendering(boolean original, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && TransformationModeUtils.isValidPerspective(mode))
+        {
+            return original;
         }
-        return original;
+        return !ItemUtils.INSTANCE.isValidItem(stack, stack.getUseAction());
     }
 
 }

@@ -20,9 +20,11 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(FlyingItemEntityRenderer.class)
-public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingItemEntity> extends EntityRenderer<T> {
+public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingItemEntity> extends EntityRenderer<T>
+{
 
-    protected FlyingItemEntityRendererMixin(EntityRendererFactory.Context ctx) {
+    protected FlyingItemEntityRendererMixin(EntityRendererFactory.Context ctx)
+    {
         super(ctx);
     }
 
@@ -34,7 +36,8 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
                     target = "Lnet/minecraft/entity/Entity;age:I"
             )
     )
-    public int legacyAnimations$disableCleanView(Entity instance, Operation<Integer> original) {
+    public int legacyAnimations$disableCleanView(Entity instance, Operation<Integer> original)
+    {
         return LegacyAnimationsSettings.CONFIG.instance().oldProjectiles ? original.call(instance) + 2 : original.call(instance);
     }
 
@@ -45,8 +48,10 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
                     target = "Lnet/minecraft/client/render/item/ItemRenderer;renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;IILnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;Lnet/minecraft/world/World;I)V"
             )
     )
-    public void legacyAnimations$shiftProjectile(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles) {
+    public void legacyAnimations$shiftProjectile(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        {
             matrices.translate((!dispatcher.gameOptions.getPerspective().isFrontView() ? 1 : -1) * 0.25F, 0.0F, 0.0F);
         }
     }
@@ -59,12 +64,17 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
             ),
             index = 0
     )
-    private float legacyAnimations$rotateProjectileAccordingly(float deg) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && MinecraftClient.getInstance().player != null) {
+    private float legacyAnimations$rotateProjectileAccordingly(float deg)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles && MinecraftClient.getInstance().player != null)
+        {
             boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher);
-            if (!dispatcher.gameOptions.getPerspective().isFrontView()) {
+            if (!dispatcher.gameOptions.getPerspective().isFrontView())
+            {
                 return isLeftHand ? deg - 180.0F : deg;
-            } else {
+            }
+            else
+            {
                 return isLeftHand ? deg : deg - 180.0F;
             }
         }

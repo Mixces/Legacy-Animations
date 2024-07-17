@@ -17,15 +17,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(InGameHud.class)
-public abstract class InGameHudMixin {
+public abstract class InGameHudMixin
+{
 
     @WrapOperation(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
-    private boolean cancelOffhandHotbar(ItemStack itemStack, Operation<Boolean> original) {
+    private boolean cancelOffhandHotbar(ItemStack itemStack, Operation<Boolean> original)
+    {
         ClientPlayerEntity player = MinecraftClient.getInstance().player;
         if (player != null) {
             ItemStack mainStack = player.getMainHandStack();
             UseAction action = mainStack.getUseAction();
-            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action)) {
+            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action))
+            {
                 return original.call(itemStack) || itemStack.isOf(Items.SHIELD);
             }
         }
@@ -40,7 +43,8 @@ public abstract class InGameHudMixin {
                     ordinal = 2
             )
     )
-    private boolean legacyAnimations$cancelFlash(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half) {
+    private boolean legacyAnimations$cancelFlash(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half)
+    {
         return !LegacyAnimationsSettings.CONFIG.instance().oldHearts;
     }
 
@@ -51,7 +55,8 @@ public abstract class InGameHudMixin {
                     target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"
             )
     )
-    private boolean legacyAnimations$removePerspectiveCheck(boolean original) {
+    private boolean legacyAnimations$removePerspectiveCheck(boolean original)
+    {
         return LegacyAnimationsSettings.CONFIG.instance().perspectiveCrosshair || original;
     }
 

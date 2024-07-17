@@ -13,7 +13,8 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin implements PlayerPitchInterface {
+public abstract class LivingEntityMixin implements PlayerPitchInterface
+{
 
     @Shadow public abstract ItemStack getMainHandStack();
     @Shadow public abstract boolean isUsingItem();
@@ -21,8 +22,10 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
     @Unique public float legacyAnimations$cameraPitch;
 
     @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-    private int legacyAnimations$fixSync(int constant) {
-        if (ServerUtils.INSTANCE.isOnHypixel()) {
+    private int legacyAnimations$fixSync(int constant)
+    {
+        if (ServerUtils.INSTANCE.isOnHypixel())
+        {
             return 0;
         }
         return constant;
@@ -45,7 +48,8 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
                     )
             )
     )
-    private float legacyAnimations$revertBackwardsWalk(float constant) {
+    private float legacyAnimations$revertBackwardsWalk(float constant)
+    {
         if (LegacyAnimationsSettings.CONFIG.instance().oldWalking)
             return 0.0F;
         return constant;
@@ -60,19 +64,23 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface {
                     ordinal = 0
             )
     )
-    private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob) {
+    private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        {
             legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
         }
     }
 
     @Override
-    public float legacyAnimations$getPrevPlayerPitch() {
+    public float legacyAnimations$getPrevPlayerPitch()
+    {
         return legacyAnimations$prevCameraPitch;
     }
 
     @Override
-    public float legacyAnimations$getPlayerPitch() {
+    public float legacyAnimations$getPlayerPitch()
+    {
         return legacyAnimations$cameraPitch;
     }
 

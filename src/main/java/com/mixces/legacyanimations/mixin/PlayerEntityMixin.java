@@ -22,13 +22,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
-public abstract class PlayerEntityMixin extends LivingEntityMixin {
+public abstract class PlayerEntityMixin extends LivingEntityMixin
+{
 
     @Shadow protected abstract boolean canChangeIntoPose(EntityPose pose);
 
     @Inject(method = "resetLastAttackedTicks", at = @At("HEAD"), cancellable = true)
-    private void legacyAnimations$removeAttackDelay(CallbackInfo ci) {
-        if (ServerUtils.INSTANCE.isOnHypixel()) {
+    private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
+    {
+        if (ServerUtils.INSTANCE.isOnHypixel())
+        {
             ci.cancel();
         }
     }
@@ -59,9 +62,11 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
 //    }
 
     @Inject(method = "getMainArm", at = @At("HEAD"), cancellable = true)
-    public void legacyAnimations$correctHandSide(CallbackInfoReturnable<Arm> cir) {
+    public void legacyAnimations$correctHandSide(CallbackInfoReturnable<Arm> cir)
+    {
         PlayerEntity entity = (PlayerEntity) (Object) this;
-        if (entity instanceof ClientPlayerEntity && ServerUtils.INSTANCE.isOnHypixel()) {
+        if (entity instanceof ClientPlayerEntity && ServerUtils.INSTANCE.isOnHypixel())
+        {
             cir.setReturnValue(MinecraftClient.getInstance().options.getMainArm().getValue());
         }
     }
@@ -75,12 +80,15 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     shift = At.Shift.AFTER
             )
     )
-    private void legacyAnimations$getPitchFromVelocity(CallbackInfo ci) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob) {
+    private void legacyAnimations$getPitchFromVelocity(CallbackInfo ci)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        {
             PlayerEntity entity = (PlayerEntity) (Object) this;
             double velocityY = ((InvokerEntity) entity).invokeGetVelocity().y;
             float f1 = (float) (Math.atan(-velocityY * 0.2F) * 15.0F);
-            if (((InvokerEntity) entity).invokeIsOnGround() || ((LivingEntityInvoker) entity).invokeGetHealth() <= 0.0F) {
+            if (((InvokerEntity) entity).invokeIsOnGround() || ((LivingEntityInvoker) entity).invokeGetHealth() <= 0.0F)
+            {
                 f1 = 0.0F;
             }
             legacyAnimations$cameraPitch += (f1 - legacyAnimations$cameraPitch) * 0.8F;
@@ -94,8 +102,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin {
                     ordinal = 1
             ),
             cancellable = true)
-    private void legacyAnimations$hypixelShieldBug(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> cir) {
-        if (ServerUtils.INSTANCE.isOnHypixel() && getMainHandStack().getItem() instanceof SwordItem && !isUsingItem()) {
+    private void legacyAnimations$hypixelShieldBug(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> cir)
+    {
+        if (ServerUtils.INSTANCE.isOnHypixel() && getMainHandStack().getItem() instanceof SwordItem && !isUsingItem())
+        {
             cir.setReturnValue(new ItemStack(Items.SHIELD));
         }
     }

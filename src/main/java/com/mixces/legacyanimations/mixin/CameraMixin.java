@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin {
+public abstract class CameraMixin
+{
 
     @Shadow private float cameraY;
     @Shadow private Entity focusedEntity;
@@ -26,7 +27,8 @@ public abstract class CameraMixin {
             cancellable = true
     )
     private void legacyAnimations$addOldSneakCalculation(CallbackInfo ci) {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking && focusedEntity.getStandingEyeHeight() < cameraY) {
+        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking && focusedEntity.getStandingEyeHeight() < cameraY)
+        {
             cameraY = focusedEntity.getStandingEyeHeight();
             ci.cancel();
         }

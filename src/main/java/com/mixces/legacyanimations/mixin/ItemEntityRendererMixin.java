@@ -19,9 +19,11 @@ import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ItemEntityRenderer.class)
-public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity> {
+public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
+{
 
-    protected ItemEntityRendererMixin(EntityRendererFactory.Context ctx) {
+    protected ItemEntityRendererMixin(EntityRendererFactory.Context ctx)
+    {
         super(ctx);
     }
 
@@ -32,7 +34,8 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
                     target = "Lnet/minecraft/client/util/math/MatrixStack;multiply(Lorg/joml/Quaternionf;)V"
             )
     )
-    private Quaternionf facePlayer(Quaternionf quaternion, @Local(ordinal = 0) boolean bl) {
+    private Quaternionf facePlayer(Quaternionf quaternion, @Local(ordinal = 0) boolean bl)
+    {
         return LegacyAnimationsSettings.CONFIG.instance().fastItems && !bl ? dispatcher.getRotation() : quaternion;
     }
 
@@ -44,14 +47,21 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
                     shift = At.Shift.AFTER
             )
     )
-    private void rotateItemAccordingly(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci, @Local(ordinal = 0) boolean bl) {
-        if (LegacyAnimationsSettings.CONFIG.instance().fastItems && MinecraftClient.getInstance().player != null && !bl) {
-            if (dispatcher.gameOptions.getPerspective().isFrontView()) {
-                if (HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher)) {
+    private void rotateItemAccordingly(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci, @Local(ordinal = 0) boolean bl)
+    {
+        if (LegacyAnimationsSettings.CONFIG.instance().fastItems && MinecraftClient.getInstance().player != null && !bl)
+        {
+            if (dispatcher.gameOptions.getPerspective().isFrontView())
+            {
+                if (HandUtils.INSTANCE.isLeftHand(MinecraftClient.getInstance().player, dispatcher))
+                {
                     matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                 }
-            } else {
-                if (HandUtils.INSTANCE.isRightHand(MinecraftClient.getInstance().player, dispatcher)) {
+            }
+            else
+            {
+                if (HandUtils.INSTANCE.isRightHand(MinecraftClient.getInstance().player, dispatcher))
+                {
                     matrixStack.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180));
                 }
             }

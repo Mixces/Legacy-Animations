@@ -12,7 +12,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PlayerEntityRenderer.class)
-public class PlayerEntityRendererMixin  {
+public class PlayerEntityRendererMixin
+{
 
 //    @Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
 //    private static void getArmPose_blockArm(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {

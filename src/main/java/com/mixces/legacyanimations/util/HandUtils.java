@@ -6,11 +6,13 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 
-public class HandUtils {
+public class HandUtils
+{
 
     public static HandUtils INSTANCE = new HandUtils();
 
-    public int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher)
+    {
         Hand hand = MoreObjects.firstNonNull(player.preferredHand, Hand.MAIN_HAND);
         boolean bl = hand == Hand.MAIN_HAND;
         Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
@@ -20,11 +22,13 @@ public class HandUtils {
         return bl2 ? perspectiveMultiplier : -perspectiveMultiplier;
     }
 
-    public boolean isLeftHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public boolean isLeftHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher)
+    {
         return handMultiplier(player, dispatcher) == -1;
     }
 
-    public boolean isRightHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher) {
+    public boolean isRightHand(ClientPlayerEntity player, EntityRenderDispatcher dispatcher)
+    {
         return handMultiplier(player, dispatcher) == 1;
     }
 

@@ -14,6 +14,8 @@ import net.minecraft.text.Text;
 
 public class LegacyAnimationsSettings {
 
+    //todo ugly as hell
+
     public static final ConfigClassHandler<LegacyAnimationsSettings> CONFIG = ConfigClassHandler.createBuilder(LegacyAnimationsSettings.class)
             .serializer(config -> GsonConfigSerializerBuilder.create(config)
                 .setPath(FabricLoader.getInstance().getConfigDir().resolve("legacyanimations.json"))
