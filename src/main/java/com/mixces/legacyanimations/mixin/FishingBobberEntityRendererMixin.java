@@ -63,7 +63,7 @@ public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<Fi
 //            )
 //    )
 //    public float useInterpolatedEyeHeight(PlayerEntity instance) {
-//        return MathHelper.lerp(dispatcher.camera.getLastTickDelta(), ((AccessorCamera) dispatcher.camera).getLastCameraY(), ((AccessorCamera) dispatcher.camera).getCameraY());
+//        return MathHelper.lerp(dispatcher.camera.getLastTickDelta(), ((CameraInterface) dispatcher.camera).getLastCameraY(), ((CameraInterface) dispatcher.camera).getCameraY());
 //    }
 
     @ModifyExpressionValue(

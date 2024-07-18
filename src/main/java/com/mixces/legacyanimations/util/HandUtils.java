@@ -9,6 +9,7 @@ import net.minecraft.util.Hand;
 public class HandUtils
 {
 
+    //todo: simplify
     public static HandUtils INSTANCE = new HandUtils();
 
     public int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher)

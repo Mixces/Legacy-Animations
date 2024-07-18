@@ -21,15 +21,16 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     @Unique public float legacyAnimations$prevCameraPitch;
     @Unique public float legacyAnimations$cameraPitch;
 
-    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-    private int legacyAnimations$fixSync(int constant)
-    {
-        if (ServerUtils.INSTANCE.isOnHypixel())
-        {
-            return 0;
-        }
-        return constant;
-    }
+    //todo: hypixel rahh
+//    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
+//    private int legacyAnimations$fixSync(int constant)
+//    {
+//        if (ServerUtils.INSTANCE.isOnHypixel())
+//        {
+//            return 0;
+//        }
+//        return constant;
+//    }
 
     @ModifyConstant(
             method = "tick",
@@ -51,8 +52,10 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     private float legacyAnimations$revertBackwardsWalk(float constant)
     {
         if (LegacyAnimationsSettings.CONFIG.instance().oldWalking)
-            return 0.0F;
-        return constant;
+        {
+            return constant;
+        }
+        return 0.0F;
     }
 
     @Inject(
@@ -66,10 +69,11 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     )
     private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
         {
-            legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
+            return;
         }
+        legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
     }
 
     @Override

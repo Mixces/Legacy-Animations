@@ -12,13 +12,15 @@ public class LegacyAnimations implements ModInitializer
 	public void onInitialize()
 	{
 		LegacyAnimationsSettings.CONFIG.load();
-		ClientTickEvents.END_WORLD_TICK.register(world ->
-		{
-			if (MinecraftClient.getInstance().player != null)
-			{
-				MinecraftClient.getInstance().player.calculateDimensions();
-			}
-		});
+//		ClientTickEvents.END_WORLD_TICK.register(world ->
+//		{
+//			if (MinecraftClient.getInstance().player == null)
+//			{
+//				return;
+//			}
+//
+//			MinecraftClient.getInstance().player.calculateDimensions();
+//		});
 	}
 
 }

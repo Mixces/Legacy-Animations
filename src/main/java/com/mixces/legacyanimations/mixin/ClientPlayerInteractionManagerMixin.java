@@ -18,10 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ClientPlayerInteractionManagerMixin
 {
 
-    @Shadow @Final private MinecraftClient client;
     @Shadow public abstract boolean isBreakingBlock();
     @Shadow public abstract void cancelBlockBreaking();
     @Shadow private float currentBreakingProgress;
+    @Shadow @Final private MinecraftClient client;
 
     @ModifyExpressionValue(
             method = "updateBlockBreakingProgress",
@@ -54,7 +54,7 @@ public abstract class ClientPlayerInteractionManagerMixin
             return;
         }
 
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+        final ClientPlayerEntity player = client.player;
 
         if (player == null)
         {

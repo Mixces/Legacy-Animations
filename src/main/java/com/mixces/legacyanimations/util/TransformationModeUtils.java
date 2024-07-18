@@ -12,7 +12,7 @@ public class TransformationModeUtils
 
     @Setter
     @Getter
-    public static ModelTransformationMode transformationMode;
+    private static ModelTransformationMode transformationMode;
 
     private static final EnumSet<ModelTransformationMode> cameraTypes =
             EnumSet.of(

@@ -15,25 +15,27 @@ import net.minecraft.item.Items;
 import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin
 {
 
-    @WrapOperation(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
-    private boolean cancelOffhandHotbar(ItemStack itemStack, Operation<Boolean> original)
-    {
-        ClientPlayerEntity player = MinecraftClient.getInstance().player;
-        if (player != null) {
-            ItemStack mainStack = player.getMainHandStack();
-            UseAction action = mainStack.getUseAction();
-            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action))
-            {
-                return original.call(itemStack) || itemStack.isOf(Items.SHIELD);
-            }
-        }
-        return original.call(itemStack);
-    }
+    //todo: shield shit
+//    @WrapOperation(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
+//    private boolean cancelOffhandHotbar(ItemStack itemStack, Operation<Boolean> original)
+//    {
+//        ClientPlayerEntity player = MinecraftClient.getInstance().player;
+//        if (player != null) {
+//            ItemStack mainStack = player.getMainHandStack();
+//            UseAction action = mainStack.getUseAction();
+//            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action))
+//            {
+//                return original.call(itemStack) || itemStack.isOf(Items.SHIELD);
+//            }
+//        }
+//        return original.call(itemStack);
+//    }
 
     @WrapWithCondition(
             method = "renderHealthBar",
@@ -57,7 +59,11 @@ public abstract class InGameHudMixin
     )
     private boolean legacyAnimations$removePerspectiveCheck(boolean original)
     {
-        return LegacyAnimationsSettings.CONFIG.instance().perspectiveCrosshair || original;
+        if (!LegacyAnimationsSettings.CONFIG.instance().perspectiveCrosshair)
+        {
+            return original;
+        }
+        return true;
     }
 
 }

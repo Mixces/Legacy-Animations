@@ -34,7 +34,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
                     value = "HEAD"
             )
     )
-    private void legacyAnimations$setEntity(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci)
+    private void legacyAnimations$captureEntity(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci)
     {
         legacyAnimations$entity = entity;
     }
@@ -46,7 +46,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
                     target = "Lnet/minecraft/client/render/VertexConsumerProvider;getBuffer(Lnet/minecraft/client/render/RenderLayer;)Lnet/minecraft/client/render/VertexConsumer;"
             )
     )
-    private RenderLayer legacyAnimations$useEntityLayerRenderer(RenderLayer var1, @Local(ordinal = 0, argsOnly = true) Identifier overlay)
+    private RenderLayer legacyAnimations$useEntityLayerRendererArmor(RenderLayer var1, @Local(ordinal = 0, argsOnly = true) Identifier overlay)
     {
         if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
         {
@@ -62,7 +62,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
                     target = "Lnet/minecraft/client/texture/Sprite;getTextureSpecificVertexConsumer(Lnet/minecraft/client/render/VertexConsumer;)Lnet/minecraft/client/render/VertexConsumer;"
             )
     )
-    private VertexConsumer legacyAnimations$useEntityLayerRenderer2(Sprite instance, VertexConsumer consumer, Operation<VertexConsumer> original, @Local(ordinal = 0, argsOnly = true) VertexConsumerProvider vertexConsumers)
+    private VertexConsumer legacyAnimations$useEntityLayerRendererTrim(Sprite instance, VertexConsumer consumer, Operation<VertexConsumer> original, @Local(ordinal = 0, argsOnly = true) VertexConsumerProvider vertexConsumers)
     {
         if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
         {

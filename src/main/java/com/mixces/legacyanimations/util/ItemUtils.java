@@ -1,7 +1,10 @@
 package com.mixces.legacyanimations.util;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.ItemStack;
@@ -12,6 +15,10 @@ public class ItemUtils
 {
 
     public static ItemUtils INSTANCE = new ItemUtils();
+
+    @Getter
+    @Setter
+    private static BakedModel model;
 
     public boolean isValidItem(ItemStack heldStack, UseAction action)
     {

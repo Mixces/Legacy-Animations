@@ -28,15 +28,16 @@ public class GameRendererMixin
     )
     private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
         {
-            float h = MathHelper.lerp(
-                    tickDelta,
-                    ((PlayerPitchInterface) playerEntity).legacyAnimations$getPrevPlayerPitch(),
-                    ((PlayerPitchInterface) playerEntity).legacyAnimations$getPlayerPitch()
-            );
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(h));
+            return;
         }
+
+        final float prevPlayerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPrevPlayerPitch();
+        final float playerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPlayerPitch();
+        final float h = MathHelper.lerp(tickDelta, prevPlayerPitch, playerPitch);
+
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(h));
     }
 
 }

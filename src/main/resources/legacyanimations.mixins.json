@@ -2,9 +2,7 @@
   "required": true,
   "package": "com.mixces.legacyanimations.mixin",
   "compatibilityLevel": "JAVA_21",
-  "client":
-  [
-    "AccessorCamera",
+  "client": [
     "ArmorFeatureRendererMixin",
     "BipedEntityModelMixin",
     "BuiltinModelItemRendererMixin",
@@ -17,15 +15,17 @@
     "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
-    "InvokerEntity",
     "ItemEntityRendererMixin",
     "ItemRendererMixin",
-    "LivingEntityInvoker",
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
     "PlayerEntityMixin",
-    "PlayerEntityRendererMixin"
+    "PlayerEntityRendererMixin",
+    "VertexConsumerMixin",
+    "interfaces.CameraInterface",
+    "interfaces.EntityInterface",
+    "interfaces.LivingEntityInterface"
   ],
   "injectors": {
     "defaultRequire": 1

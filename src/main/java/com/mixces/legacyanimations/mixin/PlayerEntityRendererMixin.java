@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class PlayerEntityRendererMixin
 {
 
+    //todo: shield shit
 //    @Inject(method = "getArmPose", at = @At(value = "HEAD"), cancellable = true)
 //    private static void getArmPose_blockArm(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
 //        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && player.getStackInHand(hand).getItem() instanceof ShieldItem) {

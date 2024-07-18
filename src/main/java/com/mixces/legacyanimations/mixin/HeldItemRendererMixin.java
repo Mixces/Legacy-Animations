@@ -29,6 +29,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class HeldItemRendererMixin
 {
 
+    //todo: re-write the whole thing :)
     @Shadow protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
     @Shadow private float equipProgressOffHand;
     @Shadow private ItemStack mainHand;

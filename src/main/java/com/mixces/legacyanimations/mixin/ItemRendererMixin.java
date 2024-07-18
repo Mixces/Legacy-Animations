@@ -3,6 +3,7 @@ package com.mixces.legacyanimations.mixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.HandUtils;
+import com.mixces.legacyanimations.util.ItemUtils;
 import com.mixces.legacyanimations.util.TransformationModeUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -31,23 +32,6 @@ public class ItemRendererMixin
 
     @Shadow @Final private MinecraftClient client;
 
-    @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
-    private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model)
-    {
-        if (LegacyAnimationsSettings.CONFIG.instance().fastItems && client.player != null && TransformationModeUtils.shouldBeSprite() && !model.hasDepth())
-        {
-            boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(client.player, client.getEntityRenderDispatcher());
-            boolean isFrontView = client.getEntityRenderDispatcher().gameOptions.getPerspective().isFrontView();
-            Direction perspectiveFace = legacyAnimations$determineDirection(isFrontView, isLeftHand);
-            if (TransformationModeUtils.getTransformationMode() == ModelTransformationMode.GROUND)
-            {
-                return legacyAnimations$filterQuadsByDirection(quads, perspectiveFace);
-            }
-            return legacyAnimations$filterQuadsByDirection(quads, Direction.SOUTH);
-        }
-        return quads;
-    }
-
     @Inject(
             method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
             at = @At(
@@ -56,10 +40,37 @@ public class ItemRendererMixin
     )
     private void legacyAnimations$getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().fastItems)
-        {
-            TransformationModeUtils.setTransformationMode(renderMode);
+        TransformationModeUtils.setTransformationMode(renderMode);
+        ItemUtils.setModel(model);
+    }
+
+    //todo: unfuck left handed sprites and re-write code
+    @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
+    private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model)
+    {
+        if (!LegacyAnimationsSettings.CONFIG.instance().fastItems) {
+            return quads;
         }
+
+        if (client.player == null)
+        {
+            return quads;
+        }
+
+        if (!TransformationModeUtils.shouldBeSprite() || model.hasDepth())
+        {
+            return quads;
+        }
+
+        final boolean isLeftHand = HandUtils.INSTANCE.isLeftHand(client.player, client.getEntityRenderDispatcher());
+        final boolean isFrontView = client.getEntityRenderDispatcher().gameOptions.getPerspective().isFrontView();
+        final Direction perspectiveFace = legacyAnimations$determineDirection(isFrontView, isLeftHand);
+
+        if (TransformationModeUtils.getTransformationMode() == ModelTransformationMode.GROUND)
+        {
+            return legacyAnimations$filterQuadsByDirection(quads, perspectiveFace);
+        }
+        return legacyAnimations$filterQuadsByDirection(quads, Direction.SOUTH);
     }
 
     @Unique

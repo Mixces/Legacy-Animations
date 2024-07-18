@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class EntityMixin
 {
 
-    //todo: revert swimming mechanic
+    //todo: revert swimming mechanic (double jump to leave)
 
     @ModifyReturnValue(
             method = "getPose",
