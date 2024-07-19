@@ -27,7 +27,7 @@ public class SwordItemMixin extends Item
             return UseAction.NONE;
         }
 
-        if (ItemUtils.INSTANCE.isShieldInOffHand())
+        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
         {
             return UseAction.BLOCK;
         }
@@ -42,7 +42,7 @@ public class SwordItemMixin extends Item
             return 0;
         }
 
-        if (ItemUtils.INSTANCE.isShieldInOffHand())
+        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
         {
             return 72000;
         }
@@ -57,7 +57,7 @@ public class SwordItemMixin extends Item
             return TypedActionResult.pass(user.getStackInHand(hand));
         }
 
-        if (ItemUtils.INSTANCE.isShieldInOffHand())
+        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
         {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);

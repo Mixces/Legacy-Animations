@@ -31,7 +31,7 @@ public class ShieldItemMixin {
             return;
         }
 
-        if (!ItemUtils.INSTANCE.isSwordInMainHand())
+        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
         {
             return;
         }
@@ -53,7 +53,7 @@ public class ShieldItemMixin {
             return;
         }
 
-        if (!ItemUtils.INSTANCE.isSwordInMainHand())
+        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
         {
             return;
         }
@@ -75,7 +75,7 @@ public class ShieldItemMixin {
             return;
         }
 
-        if (!ItemUtils.INSTANCE.isSwordInMainHand())
+        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
         {
             return;
         }
