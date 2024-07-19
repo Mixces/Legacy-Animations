@@ -8,17 +8,18 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ShieldItem;
 import net.minecraft.item.SwordItem;
 import net.minecraft.util.UseAction;
 
+@Setter
+@Getter
 public class ItemUtils
 {
 
     public static ItemUtils INSTANCE = new ItemUtils();
 
-    @Getter
-    @Setter
-    private static BakedModel model;
+    private BakedModel model;
 
     public boolean isValidItem(ItemStack heldStack, UseAction action)
     {
@@ -40,9 +41,35 @@ public class ItemUtils
         return heldStack.getItem() instanceof SwordItem || heldStack.getItem() instanceof FishingRodItem;
     }
 
+    public boolean isSwordInMainHand() {
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return false;
+        }
+
+        return player.getMainHandStack().getItem() instanceof SwordItem;
+    }
+
+    public boolean isShieldInOffHand() {
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return false;
+        }
+
+        return player.getOffHandStack().getItem() instanceof ShieldItem;
+    }
+
     public boolean isUsing(ClientPlayerEntity player)
     {
-        return ServerUtils.INSTANCE.isOnHypixel() ? MinecraftClient.getInstance().options.useKey.isPressed() : player.isUsingItem();
+        if (ServerUtils.INSTANCE.isOnHypixel())
+        {
+            return MinecraftClient.getInstance().options.useKey.isPressed();
+        }
+        return player.isUsingItem();
     }
 
 }

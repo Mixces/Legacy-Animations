@@ -22,7 +22,11 @@
     "MinecraftClientMixin",
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
+    "RenderPhaseMixin",
+    "ShieldItemMixin",
+    "SwordItemMixin",
     "VertexConsumerMixin",
+    "interfaces.BasicBakedModelInterface",
     "interfaces.CameraInterface",
     "interfaces.EntityInterface",
     "interfaces.LivingEntityInterface"

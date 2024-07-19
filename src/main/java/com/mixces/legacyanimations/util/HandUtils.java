@@ -14,12 +14,13 @@ public class HandUtils
 
     public int handMultiplier(ClientPlayerEntity player, EntityRenderDispatcher dispatcher)
     {
-        Hand hand = MoreObjects.firstNonNull(player.preferredHand, Hand.MAIN_HAND);
-        boolean bl = hand == Hand.MAIN_HAND;
-        Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
-        boolean bl2 = arm == Arm.RIGHT;
-        boolean isFirstPerson = dispatcher.gameOptions.getPerspective().isFirstPerson();
-        int perspectiveMultiplier = isFirstPerson ? 1 : -1;
+        final Hand hand = MoreObjects.firstNonNull(player.preferredHand, Hand.MAIN_HAND);
+        final boolean bl = hand == Hand.MAIN_HAND;
+        final Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
+        final boolean bl2 = arm == Arm.RIGHT;
+        final boolean isFirstPerson = dispatcher.gameOptions.getPerspective().isFirstPerson();
+        final int perspectiveMultiplier = isFirstPerson ? 1 : -1;
+
         return bl2 ? perspectiveMultiplier : -perspectiveMultiplier;
     }
 

@@ -41,7 +41,7 @@ public class ItemRendererMixin
     private void legacyAnimations$getTransformationMode(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci)
     {
         TransformationModeUtils.setTransformationMode(renderMode);
-        ItemUtils.setModel(model);
+        ItemUtils.INSTANCE.setModel(model);
     }
 
     //todo: unfuck left handed sprites and re-write code

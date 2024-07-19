@@ -23,6 +23,7 @@ public class LegacyAnimationsSettings {
             .build();
 
     @SerialEntry public boolean punchDuringUsage = true;
+    @SerialEntry public boolean itemPositions = true;
     @SerialEntry public boolean oldSwordBlock = true; // TODO: this prevents an item in offhand (e.g., bow) from being used. Also causes to walk slow despite not actually blocking, may trigger ACs
 //    @SerialEntry public boolean blockWithShieldOnly = true; // this fixes the aforementioned issue by requiring a shield in offhand
     @SerialEntry public boolean hideShields = true;
@@ -45,6 +46,17 @@ public class LegacyAnimationsSettings {
     public static Screen configScreen(Screen parent) {
         return YetAnotherConfigLib.create(CONFIG, ((defaults, config, builder) -> builder
                 .title(Text.literal("Old Animations"))
+
+                .category(ConfigCategory.createBuilder()
+                        .name(Text.literal("Item Positions"))
+
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Item Positions"))
+                                .description(OptionDescription.of(Text.of("Brings back the old item positions!")))
+                                .binding(defaults.itemPositions, () -> config.itemPositions, newVal -> config.itemPositions = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .build())
 
                 .category(ConfigCategory.createBuilder()
                         .name(Text.literal("Block-Hitting"))

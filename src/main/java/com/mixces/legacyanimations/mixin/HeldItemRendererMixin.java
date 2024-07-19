@@ -1,19 +1,14 @@
 package com.mixces.legacyanimations.mixin;
 
-import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
-import net.minecraft.item.SwordItem;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.RotationAxis;
@@ -33,7 +28,6 @@ public abstract class HeldItemRendererMixin
     @Shadow protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
     @Shadow private float equipProgressOffHand;
     @Shadow private ItemStack mainHand;
-    @Shadow private ItemStack offHand;
 
     @Inject(
             method = "renderFirstPersonItem",
@@ -55,10 +49,44 @@ public abstract class HeldItemRendererMixin
     )
     private void legacyAnimations$addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
         {
-            applySwingOffset(matrices, arm, swingProgress);
+            return;
         }
+
+        applySwingOffset(matrices, arm, swingProgress);
+    }
+
+    @Inject(
+            method = "renderFirstPersonItem",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEquipOffset(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/util/Arm;F)V",
+                    ordinal = 4,
+                    shift = At.Shift.AFTER
+            )
+    )
+    private void legacyAnimations$addBlockTranslation(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
+    {
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        {
+            return;
+        }
+
+        if (!ItemUtils.INSTANCE.isSwordInMainHand() || !ItemUtils.INSTANCE.isShieldInOffHand())
+        {
+            return;
+        }
+
+        final boolean bl = hand == Hand.MAIN_HAND;
+        final Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
+        final boolean bl2 = arm == Arm.RIGHT;
+        final int l = bl2 ? 1 : -1;
+
+        matrices.translate(l * -0.14142136F, 0.08F, 0.14142136F);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 13.365F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 78.05F));
     }
 
     @Inject(
@@ -69,72 +97,70 @@ public abstract class HeldItemRendererMixin
                     ordinal = 1
             )
     )
-    private void legacyAnimations$addSwordBlock(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
+    private void legacyAnimations$oldItemPositions(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock && item.getItem() instanceof SwordItem && player.getOffHandStack().getItem() instanceof ShieldItem && ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player))
-        {
-            boolean bl = hand == Hand.MAIN_HAND;
-            Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
-            boolean bl2 = arm == Arm.RIGHT;
-            int l = bl2 ? 1 : -1;
-            matrices.translate(l * -0.14142136F, 0.08F, 0.14142136F);
-            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 13.365F));
-            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 78.05F));
+        if (!LegacyAnimationsSettings.CONFIG.instance().itemPositions) {
+            return;
         }
+
+        final boolean bl = hand == Hand.MAIN_HAND;
+        final Arm arm = bl ? player.getMainArm() : player.getMainArm().getOpposite();
+        final boolean bl2 = arm == Arm.RIGHT;
+        final int l = bl2 ? 1 : -1;
+
+        final float scale = 0.7585F / 0.86F;
+        matrices.scale(scale, scale, scale);
+        matrices.translate(l * -0.084F, 0.059F, 0.08F);
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 5.0F));
     }
 
-    @WrapWithCondition(
-            method = "renderFirstPersonItem",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/util/math/MatrixStack;translate(FFF)V",
-                    ordinal = 12
-            )
-    )
-    private boolean legacyAnimations$disableSwingTranslation(MatrixStack instance, float x, float y, float z, AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light)
-    {
-        return !LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock || !(item.getItem() instanceof SwordItem) || !(player.getOffHandStack().getItem() instanceof ShieldItem) || !ItemUtils.INSTANCE.isUsing((ClientPlayerEntity) player);
-    }
-
-    @WrapOperation(
+    @ModifyExpressionValue(
             method = "updateHeldItems",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"
             )
     )
-    public float legacyAnimations$removeCoolDownSpeed(ClientPlayerEntity instance, float v, Operation<Float> original)
+    public float legacyAnimations$removeCoolDownSpeed(float original)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().noCooldown)
-            return 1.0F;
-        return original.call(instance, v);
+        if (!LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
+            return original;
+        }
+        return 1.0f;
     }
 
-    @Inject(method = "resetEquipProgress", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "resetEquipProgress",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
     private void legacyAnimations$removeStartDelay(Hand hand, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
-            ci.cancel();
+        if (!LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
+            return;
         }
+
+        ci.cancel();
     }
 
-    @ModifyArg(
-            method = "updateHeldItems",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F",
-                    ordinal = 3
-            ),
-            index = 0
-    )
-    private float legacyAnimations$conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack)
-    {
-        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && offHand.getItem() instanceof ShieldItem)
-        {
-            return (mainHand == itemStack ? 1.0F : 0.0F) - equipProgressOffHand;
-        }
-        return value;
-    }
+//    @ModifyArg(
+//            method = "updateHeldItems",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/util/math/MathHelper;clamp(FFF)F",
+//                    ordinal = 3
+//            ),
+//            index = 0
+//    )
+//    private float legacyAnimations$conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack)
+//    {
+//        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && ItemUtils.INSTANCE.isShieldInOffHand())
+//        {
+//            return (mainHand == itemStack ? 1.0F : 0.0F) - equipProgressOffHand;
+//        }
+//        return value;
+//    }
 
 }

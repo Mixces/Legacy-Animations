@@ -8,7 +8,7 @@ public class ServerUtils
 
     public static ServerUtils INSTANCE = new ServerUtils();
 
-    public final ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
+    private final ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
 
     public boolean isOnHypixel()
     {
