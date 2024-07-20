@@ -7,7 +7,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(BasicBakedModel.Builder.class)
-public interface BasicBakedModelInterface {
+public interface IBasicBakedModelMixin {
 
     @SuppressWarnings("unused")
     @Invoker("<init>")

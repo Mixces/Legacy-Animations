@@ -2,10 +2,12 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import com.mixces.legacyanimations.hook.TransformHook;
 import com.mixces.legacyanimations.util.HandUtils;
 import com.mixces.legacyanimations.util.ItemUtils;
 import com.mixces.legacyanimations.util.TransformationModeUtils;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
@@ -67,13 +69,20 @@ public class ItemRendererMixin
             return;
         }
 
+        final ClientPlayerEntity player = client.player;
+
+        if (player == null)
+        {
+            return;
+        }
+
         if (ItemUtils.INSTANCE.shouldRotateAroundWhenRendering(stack,true))
         {
             if (renderMode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND || renderMode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND)
             {
                 matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
                 matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(50.0F));
-
+                matrices.translate(0.096F, 0.117F, -0.097F);
                 //todo: add more translations
             }
         }

@@ -4,8 +4,7 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.LivingEntityInterface;
-import com.mixces.legacyanimations.util.ServerUtils;
+import com.mixces.legacyanimations.mixin.interfaces.ILivingEntityMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.screen.Screen;
@@ -95,7 +94,7 @@ public class MinecraftClientMixin {
 					ordinal = 0
 			)
 	)
-	private void mixcesAnimations$addLeftClickCheck(CallbackInfo ci)
+	private void legacyAnimations$addLeftClickCheck(CallbackInfo ci)
 	{
 //		if (!ServerUtils.INSTANCE.isOnHypixel())
 //		{
@@ -128,7 +127,7 @@ public class MinecraftClientMixin {
 	@Unique
 	private static void legacyAnimations$fakeSwingHand(ClientPlayerEntity player, Hand hand)
 	{
-		final int handSwingDuration = ((LivingEntityInterface) player).invokeGetHandSwingDuration();
+		final int handSwingDuration = ((ILivingEntityMixin) player).invokeGetHandSwingDuration();
 
 		if (player.handSwinging && player.handSwingTicks < handSwingDuration / 2 && player.handSwingTicks >= 0)
 		{

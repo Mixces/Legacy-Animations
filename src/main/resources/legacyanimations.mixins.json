@@ -13,6 +13,7 @@
     "FishingBobberEntityRendererMixin",
     "FlyingItemEntityRendererMixin",
     "GameRendererMixin",
+    "HeldItemFeatureRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "ItemEntityRendererMixin",
@@ -26,10 +27,10 @@
     "ShieldItemMixin",
     "SwordItemMixin",
     "VertexConsumerMixin",
-    "interfaces.BasicBakedModelInterface",
-    "interfaces.CameraInterface",
-    "interfaces.EntityInterface",
-    "interfaces.LivingEntityInterface"
+    "interfaces.IBasicBakedModelMixin",
+    "interfaces.ICameraMixin",
+    "interfaces.IEntityMixin",
+    "interfaces.ILivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,17 +1,12 @@
 package com.mixces.legacyanimations.hook;
 
-import com.mixces.legacyanimations.mixin.interfaces.BasicBakedModelInterface;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BasicBakedModel;
-import net.minecraft.client.texture.Sprite;
-
 public class GlintModelHook
 {
 
 	//todo: hijack model with custom sprite :/
 //	public static BakedModel getGlint(BakedModel model)
 //	{
-//		return (BakedModel) BasicBakedModelInterface.Builder(model.useAmbientOcclusion(), model.isSideLit(), model.hasDepth(), model.getTransformation(), model.getOverrides());
+//		return (BakedModel) IBasicBakedModelMixin.Builder(model.useAmbientOcclusion(), model.isSideLit(), model.hasDepth(), model.getTransformation(), model.getOverrides());
 //	}
 //
 //	public static class JustUV extends Sprite

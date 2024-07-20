@@ -2,7 +2,7 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.CameraInterface;
+import com.mixces.legacyanimations.mixin.interfaces.ICameraMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
@@ -60,7 +60,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity>
         final Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         final boolean player = livingEntity.getName().equals(clientPlayer.getName());
 
-        final float lerpCamera = MathHelper.lerp(g, ((CameraInterface) camera).getLastCameraY(), ((CameraInterface) camera).getCameraY());
+        final float lerpCamera = MathHelper.lerp(g, ((ICameraMixin) camera).getLastCameraY(), ((ICameraMixin) camera).getCameraY());
         final float eyeHeight = player ? lerpCamera : livingEntity.getStandingEyeHeight();
 
         matrixStack.translate(0.0F, 1.62F - eyeHeight, 0.0F);

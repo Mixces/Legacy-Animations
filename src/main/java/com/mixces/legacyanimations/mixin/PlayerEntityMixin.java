@@ -2,22 +2,16 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.EntityInterface;
-import com.mixces.legacyanimations.mixin.interfaces.LivingEntityInterface;
-import com.mixces.legacyanimations.util.ServerUtils;
+import com.mixces.legacyanimations.mixin.interfaces.IEntityMixin;
+import com.mixces.legacyanimations.mixin.interfaces.ILivingEntityMixin;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.item.SwordItem;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin
@@ -62,10 +56,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
         }
 
         final PlayerEntity entity = (PlayerEntity) (Object) this;
-        final double velocityY = ((EntityInterface) entity).invokeGetVelocity().y;
+        final double velocityY = ((IEntityMixin) entity).invokeGetVelocity().y;
         float f1 = (float) (Math.atan(-velocityY * 0.2F) * 15.0F);
 
-        if (((EntityInterface) entity).invokeIsOnGround() || ((LivingEntityInterface) entity).invokeGetHealth() <= 0.0F)
+        if (((IEntityMixin) entity).invokeIsOnGround() || ((ILivingEntityMixin) entity).invokeGetHealth() <= 0.0F)
         {
             f1 = 0.0F;
         }

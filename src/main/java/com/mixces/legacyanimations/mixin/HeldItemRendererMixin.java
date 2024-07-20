@@ -11,7 +11,6 @@ import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.item.HeldItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.item.FishingRodItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.Hand;
@@ -36,7 +35,6 @@ public abstract class HeldItemRendererMixin
     @Shadow private ItemStack offHand;
     @Shadow @Final private EntityRenderDispatcher entityRenderDispatcher;
 
-    //todo: unfuck bow position!
     @Inject(
             method = "renderFirstPersonItem",
             at = @At(
@@ -53,9 +51,8 @@ public abstract class HeldItemRendererMixin
 
         final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
 
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * -335));
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * -50.0F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * -335.0F));
-        matrices.translate(0.0F, 0.5F, 0.0F);
     }
 
     @Inject(
@@ -75,9 +72,8 @@ public abstract class HeldItemRendererMixin
 
         final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
 
-        matrices.translate(0.0F, -0.5F, 0.0F);
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 50.0F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 335.0F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 335));
     }
 
     @Inject(
@@ -152,12 +148,13 @@ public abstract class HeldItemRendererMixin
             return;
         }
 
+        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+
         if (ItemUtils.INSTANCE.shouldRotateAroundWhenRendering(item, true))
         {
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(180.0F));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 180.0F));
         }
 
-        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
         final float scale = 0.7585F / 0.86F;
 
         matrices.scale(scale, scale, scale);
@@ -207,7 +204,7 @@ public abstract class HeldItemRendererMixin
 //    )
 //    private float legacyAnimations$conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack)
 //    {
-//        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && ItemUtils.INSTANCE.isShieldInOffHand())
+//        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && ItemUtils.INSTANCE.isShieldInOffHand(offHand))
 //        {
 //            return (mainHand == itemStack ? 1.0F : 0.0F) - equipProgressOffHand;
 //        }
