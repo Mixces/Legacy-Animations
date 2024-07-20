@@ -160,7 +160,7 @@ public class LegacyAnimationsSettings {
                         .name(Text.literal("Miscellaneous"))
 
                         .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Remove Swing Animation"))
+                                .name(Text.literal("Remove Swing Cooldown Animation"))
                                 .description(OptionDescription.of(Text.of("Visually removes the swing cooldown animation!")))
                                 .binding(defaults.noCooldown, () -> config.noCooldown, newVal -> config.noCooldown = newVal)
                                 .controller(TickBoxControllerBuilder::create)
