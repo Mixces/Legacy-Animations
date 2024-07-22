@@ -143,7 +143,7 @@ public class ItemUtils
      */
     public boolean isUsing(ClientPlayerEntity player)
     {
-        if (ServerUtils.INSTANCE.isOnHypixel())
+        if (ServerUtils.INSTANCE.isValidServer())
         {
             return MinecraftClient.getInstance().options.useKey.isPressed();
         }

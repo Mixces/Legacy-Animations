@@ -4,7 +4,9 @@ import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.hook.TransformHook;
 import com.mojang.brigadier.arguments.FloatArgumentType;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 
@@ -15,15 +17,15 @@ public class LegacyAnimations implements ModInitializer
 	public void onInitialize()
 	{
 		LegacyAnimationsSettings.CONFIG.load();
-//		ClientTickEvents.END_WORLD_TICK.register(world ->
-//		{
-//			if (MinecraftClient.getInstance().player == null)
-//			{
-//				return;
-//			}
-//
-//			MinecraftClient.getInstance().player.calculateDimensions();
-//		});
+		ClientTickEvents.END_WORLD_TICK.register(world ->
+		{
+			if (MinecraftClient.getInstance().player == null)
+			{
+				return;
+			}
+
+			MinecraftClient.getInstance().player.calculateDimensions();
+		});
 
 		CommandRegistrationCallback.EVENT.register(
 				(dispatcher, registryAccess, environment) ->
@@ -56,21 +58,53 @@ public class LegacyAnimations implements ModInitializer
 														context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3), false);
 														return 1;
 													})
-//													.then(CommandManager.argument("roll", FloatArgumentType.floatArg())
-//															.executes(context -> {
-//																final float value = FloatArgumentType.getFloat(context, "x");
-//																final float value2 = FloatArgumentType.getFloat(context, "y");
-//																final float value3 = FloatArgumentType.getFloat(context, "z");
-//																final float value4 = FloatArgumentType.getFloat(context, "roll");
-//																TransformHook.translationX = value;
-//																TransformHook.translationY = value2;
-//																TransformHook.translationZ = value3;
-//																TransformHook.rotationY = value4;
-//																context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " roll: " + value4), false);
-//																return 1;
-//															})
-//													)
-									))));
+													.then(CommandManager.argument("yaw", FloatArgumentType.floatArg())
+															.executes(context -> {
+																final float value = FloatArgumentType.getFloat(context, "x");
+																final float value2 = FloatArgumentType.getFloat(context, "y");
+																final float value3 = FloatArgumentType.getFloat(context, "z");
+																final float value4 = FloatArgumentType.getFloat(context, "yaw");
+																TransformHook.translationX = value;
+																TransformHook.translationY = value2;
+																TransformHook.translationZ = value3;
+																TransformHook.rotationX = value4;
+																context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4), false);
+																return 1;
+															})
+															.then(CommandManager.argument("pitch", FloatArgumentType.floatArg())
+																	.executes(context -> {
+																		final float value = FloatArgumentType.getFloat(context, "x");
+																		final float value2 = FloatArgumentType.getFloat(context, "y");
+																		final float value3 = FloatArgumentType.getFloat(context, "z");
+																		final float value4 = FloatArgumentType.getFloat(context, "roll");
+																		final float value5 = FloatArgumentType.getFloat(context, "pitch");
+																		TransformHook.translationX = value;
+																		TransformHook.translationY = value2;
+																		TransformHook.translationZ = value3;
+																		TransformHook.rotationX = value4;
+																		TransformHook.rotationY = value5;
+																		context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4 + " pitch: " + value5), false);
+																		return 1;
+																	})
+																	.then(CommandManager.argument("roll", FloatArgumentType.floatArg())
+																			.executes(context -> {
+																				final float value = FloatArgumentType.getFloat(context, "x");
+																				final float value2 = FloatArgumentType.getFloat(context, "y");
+																				final float value3 = FloatArgumentType.getFloat(context, "z");
+																				final float value4 = FloatArgumentType.getFloat(context, "yaw");
+																				final float value5 = FloatArgumentType.getFloat(context, "pitch");
+																				final float value6 = FloatArgumentType.getFloat(context, "roll");
+																				TransformHook.translationX = value;
+																				TransformHook.translationY = value2;
+																				TransformHook.translationZ = value3;
+																				TransformHook.rotationX = value4;
+																				TransformHook.rotationY = value5;
+																				TransformHook.rotationZ = value6;
+																				context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4 + " pitch: " + value5 + " roll: " + value6), false);
+																				return 1;
+																			})
+
+																	)))))));
 				});
 	}
 

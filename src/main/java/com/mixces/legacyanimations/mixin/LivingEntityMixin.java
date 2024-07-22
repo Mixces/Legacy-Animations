@@ -2,35 +2,47 @@ package com.mixces.legacyanimations.mixin;
 
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.duck.PlayerPitchInterface;
-import com.mixces.legacyanimations.util.ServerUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.UseAction;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin implements PlayerPitchInterface
 {
 
-    @Shadow public abstract ItemStack getMainHandStack();
     @Shadow public abstract boolean isUsingItem();
+    @Shadow protected ItemStack activeItemStack;
     @Unique public float legacyAnimations$prevCameraPitch;
     @Unique public float legacyAnimations$cameraPitch;
 
     //todo: hypixel rahh
-//    @ModifyConstant(method = "isBlocking", constant = @Constant(intValue = 5))
-//    private int legacyAnimations$fixSync(int constant)
-//    {
-//        if (ServerUtils.INSTANCE.isOnHypixel())
+    @Inject(
+            method = "isBlocking",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
+    private void legacyAnimations$fixSync(CallbackInfoReturnable<Boolean> cir)
+    {
+//        if (!ServerUtils.INSTANCE.isValidServer())
 //        {
-//            return 0;
+//            return;
 //        }
-//        return constant;
-//    }
+
+        //todo: shield delay?
+
+        final UseAction action = activeItemStack.getItem().getUseAction(activeItemStack);
+
+        cir.setReturnValue(isUsingItem() && action == UseAction.BLOCK);
+    }
 
     @ModifyConstant(
             method = "tick",
@@ -51,7 +63,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     )
     private float legacyAnimations$revertBackwardsWalk(float constant)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldWalking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldWalking)
         {
             return constant;
         }

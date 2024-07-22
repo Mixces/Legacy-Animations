@@ -16,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class BipedEntityModelMixin<T extends LivingEntity>
 {
 
-    //todo: thorough investigation needed
-
     @Shadow public BipedEntityModel.ArmPose leftArmPose;
     @Shadow public BipedEntityModel.ArmPose rightArmPose;
     @Shadow @Final public ModelPart rightArm;
@@ -37,24 +35,26 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$fixIncorrectArmPlacement(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
         {
-            rightArm.roll = 0.0F;
-            leftArm.roll = 0.0F;
-            if (rightArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
-            {
-                rightArm.yaw = -0.1F + head.yaw;
-                leftArm.yaw = 0.1F + head.yaw + 0.4F;
-                rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-                leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-            }
-            if (leftArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
-            {
-                rightArm.yaw = -0.1F + head.yaw - 0.4F;
-                leftArm.yaw = 0.1F + head.yaw;
-                rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-                leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-            }
+            return;
+        }
+
+        rightArm.roll = 0.0F;
+        leftArm.roll = 0.0F;
+        if (rightArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
+        {
+            rightArm.yaw = -0.1F + head.yaw;
+            leftArm.yaw = 0.1F + head.yaw + 0.4F;
+            rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
+            leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
+        }
+        if (leftArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
+        {
+            rightArm.yaw = -0.1F + head.yaw - 0.4F;
+            leftArm.yaw = 0.1F + head.yaw;
+            rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
+            leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
         }
     }
 
@@ -82,10 +82,12 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue1(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
         {
-            rightLeg.pivotY = 9.0f;
+            return;
         }
+
+        rightLeg.pivotY = 9.0f;
     }
 
     @Inject(
@@ -112,10 +114,12 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
         {
-            leftLeg.pivotY = 9.0f;
+            return;
         }
+
+        leftLeg.pivotY = 9.0f;
     }
 
     @Inject(
@@ -129,10 +133,12 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue3(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
         {
-            rightLeg.pivotZ = 0.1f;
+            return;
         }
+
+        rightLeg.pivotZ = 0.1f;
     }
 
     @Inject(
@@ -146,10 +152,12 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue4(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
         {
-            leftLeg.pivotZ = 0.1f;
+            return;
         }
+
+        leftLeg.pivotZ = 0.1f;
     }
 
     @Inject(
@@ -163,10 +171,12 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue5(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
         {
-            head.pivotY = 1.0f;
+            return;
         }
+
+        head.pivotY = 1.0f;
     }
 
     @WrapWithCondition(
@@ -231,37 +241,13 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     public void legacyAnimations$oldBlockingArm(ModelPart arm, boolean rightArm, CallbackInfo ci)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
         {
-            arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 3);
-            arm.yaw = 0.0F;
+            return;
         }
-    }
 
-    @ModifyArg(
-            method = "positionLeftArm",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;positionBlockingArm(Lnet/minecraft/client/model/ModelPart;Z)V"
-            ),
-            index = 0
-    )
-    private ModelPart legacyAnimations$switchBlockingArm1(ModelPart arm)
-    {
-        return LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock ? rightArm : arm;
-    }
-
-    @ModifyArg(
-            method = "positionRightArm",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;positionBlockingArm(Lnet/minecraft/client/model/ModelPart;Z)V"
-            ),
-            index = 0
-    )
-    private ModelPart legacyAnimations$switchBlockingArm2(ModelPart arm)
-    {
-        return LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock ? leftArm : arm;
+        arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 3);
+        arm.yaw = 0.0F;
     }
 
 }

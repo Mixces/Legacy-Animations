@@ -10,9 +10,9 @@ public class ServerUtils
 
     private final ServerInfo server = MinecraftClient.getInstance().getCurrentServerEntry();
 
-    public boolean isOnHypixel()
+    public boolean isValidServer()
     {
-        return server != null && server.address.endsWith("hypixel.net");
+        return server != null && (server.address.endsWith("hypixel.net") || server.address.endsWith("bedwarspractice.club"));
     }
 
 }

@@ -1,12 +1,14 @@
 package com.mixces.legacyanimations.mixin;
 
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import com.mixces.legacyanimations.hook.TransformHook;
 import com.mixces.legacyanimations.util.ItemUtils;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.HeldItemFeatureRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.RotationAxis;
@@ -18,29 +20,36 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(HeldItemFeatureRenderer.class)
 public class HeldItemFeatureRendererMixin {
 
-//    @Inject(
-//            method = "renderItem",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"
-//            )
-//    )
-//    private void legacyAnimations$swordBlockTransform(LivingEntity entity, ItemStack stack, ModelTransformationMode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
-//    {
-//        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
-//        {
-//            return;
-//        }
-//
-//        if (!ItemUtils.INSTANCE.isSwordInMainHand(stack) || !ItemUtils.INSTANCE.isShieldInOffHand(stack))
-//        {
-//            return;
-//        }
-//
-//        matrices.translate(0.05f, 0.0f, -0.1f);
-//        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(-50.0F));
-//        matrices.multiply(RotationAxis.POSITIVE_X.rotation(-10.0F));
-//        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(-60.0F));
-//    }
+    @Inject(
+            method = "renderItem",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/item/HeldItemRenderer;renderItem(Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformationMode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;I)V"
+            )
+    )
+    private void legacyAnimations$swordBlockTransform(LivingEntity entity, ItemStack stack, ModelTransformationMode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
+    {
+        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        {
+            return;
+        }
+
+        if (!entity.isBlocking())
+        {
+            return;
+        }
+
+        if (!ItemUtils.INSTANCE.isShieldInOffHand(entity.getOffHandStack()) || !ItemUtils.INSTANCE.isSwordInMainHand(entity.getMainHandStack()))
+        {
+            return;
+        }
+
+        matrices.translate(TransformHook.translationX, TransformHook.translationY, TransformHook.translationZ);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation(TransformHook.rotationX));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(TransformHook.rotationY));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(TransformHook.rotationZ));
+
+        // x: -0.2 y: 0.0 z: 0.1 yaw: 21.0 pitch: 90.0 roll: -90.0
+    }
 
 }

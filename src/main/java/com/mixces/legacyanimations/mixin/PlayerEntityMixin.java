@@ -4,9 +4,13 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.mixin.interfaces.IEntityMixin;
 import com.mixces.legacyanimations.mixin.interfaces.ILivingEntityMixin;
+import com.mixces.legacyanimations.util.ItemUtils;
+import com.mixces.legacyanimations.util.ServerUtils;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,27 +20,50 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin
 {
-
     //todo: hypixel
-//    @Inject(method = "resetLastAttackedTicks", at = @At("HEAD"), cancellable = true)
-//    private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
+
+//    @ModifyReturnValue(
+//            method = "getEquippedStack",
+//            at = @At(
+//                    value = "RETURN",
+//                    ordinal = 1
+//            )
+//    )
+//    private ItemStack legacyAnimations$fakeShield(ItemStack original)
 //    {
-//        if (ServerUtils.INSTANCE.isOnHypixel())
+//        if (!ServerUtils.INSTANCE.isValidServer())
 //        {
-//            ci.cancel();
+//            return original;
 //        }
+//
+//        if (isBlocking())
+//        {
+//            return original;
+//        }
+//
+//        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
+//        {
+//            return original;
+//        }
+//
+//        return new ItemStack(Items.SHIELD);
 //    }
 
-    //todo: hypixel
-//    @Inject(method = "getMainArm", at = @At("HEAD"), cancellable = true)
-//    public void legacyAnimations$correctHandSide(CallbackInfoReturnable<Arm> cir)
+//    @Inject(
+//            method = "resetLastAttackedTicks",
+//            at = @At(
+//                    value = "HEAD"
+//            ),
+//            cancellable = true
+//    )
+//    private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
 //    {
-//        final PlayerEntity entity = (PlayerEntity) (Object) this;
-//
-//        if (entity instanceof ClientPlayerEntity && ServerUtils.INSTANCE.isOnHypixel())
+//        if (!ServerUtils.INSTANCE.isValidServer())
 //        {
-//            cir.setReturnValue(MinecraftClient.getInstance().options.getMainArm().getValue());
+//            return;
 //        }
+//
+//        ci.cancel();
 //    }
 
     @Inject(
@@ -65,21 +92,6 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
         }
         legacyAnimations$cameraPitch += (f1 - legacyAnimations$cameraPitch) * 0.8F;
     }
-
-//    @Inject(
-//            method = "getEquippedStack",
-//            at = @At(
-//                    value = "RETURN",
-//                    ordinal = 1
-//            ),
-//            cancellable = true)
-//    private void legacyAnimations$hypixelShieldBug(EquipmentSlot slot, CallbackInfoReturnable<ItemStack> cir)
-//    {
-//        if (ServerUtils.INSTANCE.isOnHypixel() && getMainHandStack().getItem() instanceof SwordItem && !isUsingItem())
-//        {
-//            cir.setReturnValue(new ItemStack(Items.SHIELD));
-//        }
-//    }
 
     @ModifyReturnValue(
             method = "getBaseDimensions",
