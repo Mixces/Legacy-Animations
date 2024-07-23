@@ -193,6 +193,8 @@ public abstract class HeldItemRendererMixin
         ci.cancel();
     }
 
+    //todo: old re-equip logic needed frfr
+
 //    @ModifyArg(
 //            method = "updateHeldItems",
 //            at = @At(

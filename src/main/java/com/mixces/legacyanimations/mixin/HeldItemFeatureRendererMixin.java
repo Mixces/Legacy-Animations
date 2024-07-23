@@ -44,10 +44,15 @@ public class HeldItemFeatureRendererMixin {
             return;
         }
 
-        matrices.translate(TransformHook.translationX, TransformHook.translationY, TransformHook.translationZ);
-        matrices.multiply(RotationAxis.POSITIVE_X.rotation(TransformHook.rotationX));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(TransformHook.rotationY));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(TransformHook.rotationZ));
+//        matrices.translate(TransformHook.translationX, TransformHook.translationY, TransformHook.translationZ);
+//        matrices.multiply(RotationAxis.POSITIVE_X.rotation(TransformHook.rotationX));
+//        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(TransformHook.rotationY));
+//        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(TransformHook.rotationZ));
+
+        matrices.translate(-0.2F, 0.0F, 0.1F);
+        matrices.multiply(RotationAxis.POSITIVE_X.rotation(21.0F));
+        matrices.multiply(RotationAxis.POSITIVE_Y.rotation(90.0F));
+        matrices.multiply(RotationAxis.POSITIVE_Z.rotation(-90.0F));
 
         // x: -0.2 y: 0.0 z: 0.1 yaw: 21.0 pitch: 90.0 roll: -90.0
     }

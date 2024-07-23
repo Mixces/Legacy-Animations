@@ -16,6 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class PlayerEntityRendererMixin
 {
 
+    //todo: holding sword, eating, and bow fixes needed!
     @Inject(
             method = "getArmPose",
             at = @At(
