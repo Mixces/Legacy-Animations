@@ -33,29 +33,38 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 1
             )
     )
-    private void legacyAnimations$fixIncorrectArmPlacement(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
+    private void legacyAnimations$fixIncorrectArmPlacement2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
         {
             return;
         }
 
-        rightArm.roll = 0.0F;
-        leftArm.roll = 0.0F;
-        if (rightArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
+        final BipedEntityModel.ArmPose BOW_AND_ARROW = BipedEntityModel.ArmPose.BOW_AND_ARROW;
+        final boolean isRightArmPose = rightArmPose == BOW_AND_ARROW;
+        final boolean isLeftArmPose = leftArmPose == BOW_AND_ARROW;
+
+        if (!isRightArmPose && !isLeftArmPose)
         {
+            return;
+        }
+
+        if (isRightArmPose)
+        {
+            rightArm.roll = 0.0F;
             rightArm.yaw = -0.1F + head.yaw;
             leftArm.yaw = 0.1F + head.yaw + 0.4F;
-            rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-            leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
         }
-        if (leftArmPose == BipedEntityModel.ArmPose.BOW_AND_ARROW)
+
+        if (isLeftArmPose)
         {
+            leftArm.roll = 0.0F;
             rightArm.yaw = -0.1F + head.yaw - 0.4F;
             leftArm.yaw = 0.1F + head.yaw;
-            rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
-            leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
         }
+
+        rightArm.pitch = (float) (-Math.PI / 2) + head.pitch;
+        leftArm.pitch = (float) (-Math.PI / 2) + head.pitch;
     }
 
     @Inject(
@@ -82,7 +91,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue1(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return;
         }
@@ -114,7 +123,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return;
         }
@@ -133,7 +142,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue3(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return;
         }
@@ -246,7 +255,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
             return;
         }
 
-        arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 3);
+        arm.pitch *= 0.5F - (float) (Math.PI / 10) * 3;
         arm.yaw = 0.0F;
     }
 

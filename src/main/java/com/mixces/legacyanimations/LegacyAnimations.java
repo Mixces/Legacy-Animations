@@ -58,12 +58,12 @@ public class LegacyAnimations implements ModInitializer
 														context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3), false);
 														return 1;
 													})
-													.then(CommandManager.argument("yaw", FloatArgumentType.floatArg())
+													.then(CommandManager.argument("pitch", FloatArgumentType.floatArg())
 															.executes(context -> {
 																final float value = FloatArgumentType.getFloat(context, "x");
 																final float value2 = FloatArgumentType.getFloat(context, "y");
 																final float value3 = FloatArgumentType.getFloat(context, "z");
-																final float value4 = FloatArgumentType.getFloat(context, "yaw");
+																final float value4 = FloatArgumentType.getFloat(context, "pitch");
 																TransformHook.translationX = value;
 																TransformHook.translationY = value2;
 																TransformHook.translationZ = value3;
@@ -71,13 +71,13 @@ public class LegacyAnimations implements ModInitializer
 																context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4), false);
 																return 1;
 															})
-															.then(CommandManager.argument("pitch", FloatArgumentType.floatArg())
+															.then(CommandManager.argument("yaw", FloatArgumentType.floatArg())
 																	.executes(context -> {
 																		final float value = FloatArgumentType.getFloat(context, "x");
 																		final float value2 = FloatArgumentType.getFloat(context, "y");
 																		final float value3 = FloatArgumentType.getFloat(context, "z");
-																		final float value4 = FloatArgumentType.getFloat(context, "roll");
-																		final float value5 = FloatArgumentType.getFloat(context, "pitch");
+																		final float value4 = FloatArgumentType.getFloat(context, "pitch");
+																		final float value5 = FloatArgumentType.getFloat(context, "yaw");
 																		TransformHook.translationX = value;
 																		TransformHook.translationY = value2;
 																		TransformHook.translationZ = value3;
@@ -91,8 +91,8 @@ public class LegacyAnimations implements ModInitializer
 																				final float value = FloatArgumentType.getFloat(context, "x");
 																				final float value2 = FloatArgumentType.getFloat(context, "y");
 																				final float value3 = FloatArgumentType.getFloat(context, "z");
-																				final float value4 = FloatArgumentType.getFloat(context, "yaw");
-																				final float value5 = FloatArgumentType.getFloat(context, "pitch");
+																				final float value4 = FloatArgumentType.getFloat(context, "pitch");
+																				final float value5 = FloatArgumentType.getFloat(context, "yaw");
 																				final float value6 = FloatArgumentType.getFloat(context, "roll");
 																				TransformHook.translationX = value;
 																				TransformHook.translationY = value2;
