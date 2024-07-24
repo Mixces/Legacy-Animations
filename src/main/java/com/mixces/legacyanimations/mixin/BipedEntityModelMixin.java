@@ -1,10 +1,17 @@
 package com.mixces.legacyanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.Arm;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,6 +30,33 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     @Shadow @Final public ModelPart head;
     @Shadow @Final public ModelPart rightLeg;
     @Shadow @Final public ModelPart leftLeg;
+    @Shadow protected abstract ModelPart getArm(Arm arm);
+
+    @Shadow @Final public ModelPart body;
+
+    @Inject(
+            method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;animateArms(Lnet/minecraft/entity/LivingEntity;F)V"
+            )
+    )
+    public void legacyAnimations$adjustArmYaw(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
+    {
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
+        {
+            return;
+        }
+
+        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+        if (player == null)
+        {
+            return;
+        }
+
+        getArm(player.getMainArm()).yaw = 0.0F;
+    }
 
     @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
@@ -242,6 +276,47 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
         return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
+    @WrapOperation(
+            method = "animateArms",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/model/ModelPart;yaw:F",
+                    ordinal = 9
+            )
+    )
+    public float legacyAnimations$removeConflictingFields3(ModelPart instance, Operation<Float> original)
+    {
+        return 0.0F;
+    }
+
+    @Inject(
+            method = "animateArms",
+            at = @At(
+                    value = "FIELD",
+                    opcode = Opcodes.GETFIELD,
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;handSwingProgress:F",
+                    ordinal = 2
+            )
+    )
+    public void legacyAnimations$mirrorSwing(T entity, float animationProgress, CallbackInfo ci, @Local Arm arm, @Local ModelPart modelPart)
+    {
+        modelPart.pitch += (arm == Arm.LEFT ? -1 : 1) * body.yaw;
+    }
+
+    @ModifyExpressionValue(
+            method = "animateArms",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/math/MathHelper;sin(F)F",
+                    ordinal = 5
+            )
+    )
+    public float legacyAnimations$mirrorSwing2(float original, @Local Arm arm)
+    {
+        return (arm == Arm.LEFT ? -1 : 1) * original;
+    }
+
     @Inject(
             method = "positionBlockingArm",
             at = @At(
@@ -255,8 +330,8 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
             return;
         }
 
-        arm.pitch *= 0.5F - (float) (Math.PI / 10) * 3;
-        arm.yaw = 0.0F;
+        arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 10) * 3;
+        arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
     }
 
 }
