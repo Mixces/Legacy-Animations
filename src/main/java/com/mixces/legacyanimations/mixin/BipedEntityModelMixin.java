@@ -152,7 +152,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue4(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return;
         }
@@ -171,7 +171,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     private void legacyAnimations$oldSneakValue5(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return;
         }
@@ -203,7 +203,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     public boolean legacyAnimations$removeConflictingFields1(ModelPart instance, float value)
     {
-        return !LegacyAnimationsSettings.CONFIG.instance().oldSneaking;
+        return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
     @WrapWithCondition(
@@ -230,7 +230,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     public boolean legacyAnimations$removeConflictingFields2(ModelPart instance, float value)
     {
-        return !LegacyAnimationsSettings.CONFIG.instance().oldSneaking;
+        return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
     @Inject(
@@ -241,7 +241,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     )
     public void legacyAnimations$oldBlockingArm(ModelPart arm, boolean rightArm, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }

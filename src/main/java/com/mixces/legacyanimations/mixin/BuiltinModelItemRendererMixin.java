@@ -27,7 +27,7 @@ public abstract class BuiltinModelItemRendererMixin
     )
     private boolean legacyAnimations$disableShieldRendering(boolean original, ItemStack stack, ModelTransformationMode mode, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().hideShields || !TransformationModeUtils.isValidPerspective(mode))
+        if (!LegacyAnimationsSettings.getInstance().hideShields || !TransformationModeUtils.isValidPerspective(mode))
         {
             return original;
         }

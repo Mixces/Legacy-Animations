@@ -15,7 +15,6 @@ import net.minecraft.item.Items;
 import net.minecraft.util.UseAction;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin
@@ -29,7 +28,7 @@ public abstract class InGameHudMixin
 //        if (player != null) {
 //            ItemStack mainStack = player.getMainHandStack();
 //            UseAction action = mainStack.getUseAction();
-//            if (LegacyAnimationsSettings.CONFIG.instance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action))
+//            if (LegacyAnimationsSettings.getInstance().hideShieldHotbar && ItemUtils.INSTANCE.isValidItem(mainStack, action))
 //            {
 //                return original.call(itemStack) || itemStack.isOf(Items.SHIELD);
 //            }
@@ -47,7 +46,7 @@ public abstract class InGameHudMixin
     )
     private boolean legacyAnimations$cancelFlash(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half)
     {
-        return !LegacyAnimationsSettings.CONFIG.instance().oldHearts;
+        return !LegacyAnimationsSettings.getInstance().oldHearts;
     }
 
     @ModifyExpressionValue(
@@ -59,7 +58,7 @@ public abstract class InGameHudMixin
     )
     private boolean legacyAnimations$removePerspectiveCheck(boolean original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().perspectiveCrosshair)
+        if (!LegacyAnimationsSettings.getInstance().perspectiveCrosshair)
         {
             return original;
         }

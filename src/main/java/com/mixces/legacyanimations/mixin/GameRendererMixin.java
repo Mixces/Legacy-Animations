@@ -28,7 +28,7 @@ public class GameRendererMixin
     )
     private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        if (!LegacyAnimationsSettings.getInstance().oldViewBob)
         {
             return;
         }

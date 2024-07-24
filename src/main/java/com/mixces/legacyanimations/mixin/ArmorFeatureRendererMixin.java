@@ -48,7 +48,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
     )
     private RenderLayer legacyAnimations$useEntityLayerRendererArmor(RenderLayer var1, @Local(ordinal = 0, argsOnly = true) Identifier overlay)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
+        if (!LegacyAnimationsSettings.getInstance().armorTint)
         {
             return var1;
         }
@@ -64,7 +64,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
     )
     private VertexConsumer legacyAnimations$useEntityLayerRendererTrim(Sprite instance, VertexConsumer consumer, Operation<VertexConsumer> original, @Local(ordinal = 0, argsOnly = true) VertexConsumerProvider vertexConsumers)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
+        if (!LegacyAnimationsSettings.getInstance().armorTint)
         {
             return original.call(instance, consumer);
         }
@@ -88,7 +88,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, A extend
     )
     private int legacyAnimations$useDamageUVOverlay(int par3)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().armorTint)
+        if (!LegacyAnimationsSettings.getInstance().armorTint)
         {
             return par3;
         }

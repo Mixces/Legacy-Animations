@@ -22,49 +22,49 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
 {
     //todo: hypixel
 
-//    @ModifyReturnValue(
-//            method = "getEquippedStack",
-//            at = @At(
-//                    value = "RETURN",
-//                    ordinal = 1
-//            )
-//    )
-//    private ItemStack legacyAnimations$fakeShield(ItemStack original)
-//    {
+    @ModifyReturnValue(
+            method = "getEquippedStack",
+            at = @At(
+                    value = "RETURN",
+                    ordinal = 1
+            )
+    )
+    private ItemStack legacyAnimations$fakeShield(ItemStack original)
+    {
 //        if (!ServerUtils.INSTANCE.isValidServer())
 //        {
 //            return original;
 //        }
-//
+
 //        if (isBlocking())
 //        {
 //            return original;
 //        }
-//
-//        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
-//        {
-//            return original;
-//        }
-//
-//        return new ItemStack(Items.SHIELD);
-//    }
 
-//    @Inject(
-//            method = "resetLastAttackedTicks",
-//            at = @At(
-//                    value = "HEAD"
-//            ),
-//            cancellable = true
-//    )
-//    private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
-//    {
+        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
+        {
+            return original;
+        }
+
+        return new ItemStack(Items.SHIELD);
+    }
+
+    @Inject(
+            method = "resetLastAttackedTicks",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
+    private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
+    {
 //        if (!ServerUtils.INSTANCE.isValidServer())
 //        {
 //            return;
 //        }
-//
-//        ci.cancel();
-//    }
+
+        ci.cancel();
+    }
 
     @Inject(
             method = "tickMovement",
@@ -77,7 +77,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
     )
     private void legacyAnimations$getPitchFromVelocity(CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        if (!LegacyAnimationsSettings.getInstance().oldViewBob)
         {
             return;
         }
@@ -101,7 +101,7 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
     )
     private EntityDimensions legacyAnimations$modifyStandingEyeHeight(EntityDimensions original, EntityPose pose)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return original;
         }

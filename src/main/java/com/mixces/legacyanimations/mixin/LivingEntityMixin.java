@@ -63,7 +63,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     )
     private float legacyAnimations$revertBackwardsWalk(float constant)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldWalking)
+        if (!LegacyAnimationsSettings.getInstance().oldWalking)
         {
             return constant;
         }
@@ -81,7 +81,7 @@ public abstract class LivingEntityMixin implements PlayerPitchInterface
     )
     private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldViewBob)
+        if (!LegacyAnimationsSettings.getInstance().oldViewBob)
         {
             return;
         }

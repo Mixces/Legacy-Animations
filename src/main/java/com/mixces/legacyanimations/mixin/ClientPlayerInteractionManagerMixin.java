@@ -32,7 +32,7 @@ public abstract class ClientPlayerInteractionManagerMixin
     )
     public boolean legacyAnimations$fixBreakingBlockCheck(boolean original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
         {
             return original;
         }
@@ -49,7 +49,7 @@ public abstract class ClientPlayerInteractionManagerMixin
             cancellable = true)
     public void legacyAnimations$cancelIllegalDestroy(BlockPos pos, Direction direction, CallbackInfoReturnable<Boolean> cir)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
         {
             return;
         }
@@ -70,6 +70,22 @@ public abstract class ClientPlayerInteractionManagerMixin
 
             cir.setReturnValue(true);
         }
+    }
+
+    @Inject(
+            method = "getBlockBreakingProgress",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
+    private void legacyAnimations$oldMiningProgress(CallbackInfoReturnable<Integer> cir)
+    {
+        if (!LegacyAnimationsSettings.getInstance().oldBreakProgress)
+        {
+            return;
+        }
+        cir.setReturnValue((int)(this.currentBreakingProgress * 10.0f) - 1);
     }
 
 }

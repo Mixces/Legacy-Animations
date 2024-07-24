@@ -21,7 +21,7 @@ public abstract class DebugHudMixin
     )
     private boolean legacyAnimations$removeDebugBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color)
     {
-        return !LegacyAnimationsSettings.CONFIG.instance().oldDebug;
+        return !LegacyAnimationsSettings.getInstance().oldDebug;
     }
 
     @ModifyArg(
@@ -34,7 +34,7 @@ public abstract class DebugHudMixin
     )
     private boolean legacyAnimations$addDebugShadow(boolean shadow)
     {
-        return LegacyAnimationsSettings.CONFIG.instance().oldDebug;
+        return LegacyAnimationsSettings.getInstance().oldDebug;
     }
 
 }

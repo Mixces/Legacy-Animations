@@ -44,7 +44,7 @@ public abstract class HeldItemRendererMixin
             )
     )
     private void legacyAnimations$preBowTransform(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!LegacyAnimationsSettings.CONFIG.instance().itemPositions)
+        if (!LegacyAnimationsSettings.getInstance().itemPositions)
         {
             return;
         }
@@ -65,7 +65,7 @@ public abstract class HeldItemRendererMixin
             )
     )
     private void legacyAnimations$postBowTransform(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!LegacyAnimationsSettings.CONFIG.instance().itemPositions)
+        if (!LegacyAnimationsSettings.getInstance().itemPositions)
         {
             return;
         }
@@ -96,7 +96,7 @@ public abstract class HeldItemRendererMixin
     )
     private void legacyAnimations$addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
         {
             return;
         }
@@ -115,7 +115,7 @@ public abstract class HeldItemRendererMixin
     )
     private void legacyAnimations$addBlockTranslation(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }
@@ -143,7 +143,7 @@ public abstract class HeldItemRendererMixin
     )
     private void legacyAnimations$oldItemPositions(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().itemPositions)
+        if (!LegacyAnimationsSettings.getInstance().itemPositions)
         {
             return;
         }
@@ -171,7 +171,7 @@ public abstract class HeldItemRendererMixin
     )
     public float legacyAnimations$removeCoolDownSpeed(float original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
+        if (!LegacyAnimationsSettings.getInstance().noCooldown) {
             return original;
         }
         return 1.0f;
@@ -186,7 +186,7 @@ public abstract class HeldItemRendererMixin
     )
     private void legacyAnimations$removeStartDelay(Hand hand, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().noCooldown) {
+        if (!LegacyAnimationsSettings.getInstance().noCooldown) {
             return;
         }
 
@@ -206,7 +206,7 @@ public abstract class HeldItemRendererMixin
 //    )
 //    private float legacyAnimations$conditionallyUpdateShield(float value, @Local(ordinal = 0) ItemStack itemStack)
 //    {
-//        if (LegacyAnimationsSettings.CONFIG.instance().hideShields && ItemUtils.INSTANCE.isShieldInOffHand(offHand))
+//        if (LegacyAnimationsSettings.getInstance().hideShields && ItemUtils.INSTANCE.isShieldInOffHand(offHand))
 //        {
 //            return (mainHand == itemStack ? 1.0F : 0.0F) - equipProgressOffHand;
 //        }

@@ -27,7 +27,7 @@ public abstract class CameraMixin
     )
     private void legacyAnimations$addOldSneakCalculation(Camera instance, float value, Operation<Void> original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             original.call(instance, value);
         }

@@ -22,7 +22,7 @@ public class SwordItemMixin extends Item
     @Override
     public UseAction getUseAction(ItemStack stack)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return UseAction.NONE;
         }
@@ -37,7 +37,7 @@ public class SwordItemMixin extends Item
     @Override
     public int getMaxUseTime(ItemStack stack)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return 0;
         }
@@ -52,7 +52,7 @@ public class SwordItemMixin extends Item
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return TypedActionResult.pass(user.getStackInHand(hand));
         }

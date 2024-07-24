@@ -59,7 +59,7 @@ public class ItemRendererMixin
     )
     private void legacyAnimations$modelTransforms(ItemStack stack, ModelTransformationMode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci, @Local(ordinal = 1, index = 9) boolean bl)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().itemPositions)
+        if (!LegacyAnimationsSettings.getInstance().itemPositions)
         {
             return;
         }
@@ -92,7 +92,7 @@ public class ItemRendererMixin
     @ModifyArg(method = "renderBakedItemModel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/item/ItemRenderer;renderBakedItemQuads(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;Ljava/util/List;Lnet/minecraft/item/ItemStack;II)V", ordinal = 1), index = 2)
     private List<BakedQuad> legacyAnimations$changeToSprite(List<BakedQuad> quads, @Local(ordinal = 0, argsOnly = true) BakedModel model)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().fastItems) {
+        if (!LegacyAnimationsSettings.getInstance().fastItems) {
             return quads;
         }
 

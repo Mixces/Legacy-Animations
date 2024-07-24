@@ -26,7 +26,7 @@ public class ShieldItemMixin {
     )
     public void legacyAnimations$getUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> cir)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }
@@ -48,7 +48,7 @@ public class ShieldItemMixin {
     )
     public void legacyAnimations$lowerMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> cir)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }
@@ -70,7 +70,7 @@ public class ShieldItemMixin {
     )
     public void disableUseWithSword(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }

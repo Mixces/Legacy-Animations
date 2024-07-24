@@ -42,7 +42,7 @@ public abstract class FishingBobberEntityRendererMixin extends EntityRenderer<Fi
     )
     public void legacyAnimations$shiftRodBob(FishingBobberEntity fishingBobberEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        if (!LegacyAnimationsSettings.getInstance().oldProjectiles)
         {
             return;
         }

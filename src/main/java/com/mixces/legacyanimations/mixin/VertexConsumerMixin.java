@@ -25,7 +25,7 @@ public interface VertexConsumerMixin {
     )
     default void legacyAnimations$modifyNormal(Args args, @Local(ordinal = 0) Vec3i vec3i)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().fastItems)
+        if (!LegacyAnimationsSettings.getInstance().fastItems)
         {
             return;
         }

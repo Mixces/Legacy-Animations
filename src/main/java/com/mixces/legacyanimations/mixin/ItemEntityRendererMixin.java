@@ -36,7 +36,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
     )
     private Quaternionf legacyAnimations$facePlayer(Quaternionf quaternion, @Local(ordinal = 0) boolean bl)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().fastItems) {
+        if (!LegacyAnimationsSettings.getInstance().fastItems) {
             return quaternion;
         }
 
@@ -57,7 +57,7 @@ public abstract class ItemEntityRendererMixin extends EntityRenderer<ItemEntity>
     )
     private void legacyAnimations$rotateItemAccordingly(ItemEntity itemEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci, @Local(ordinal = 0) boolean bl)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().fastItems)
+        if (!LegacyAnimationsSettings.getInstance().fastItems)
         {
             return;
         }

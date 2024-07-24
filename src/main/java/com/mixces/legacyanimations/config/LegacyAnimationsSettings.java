@@ -16,12 +16,6 @@ public class LegacyAnimationsSettings {
 
     //todo ugly as hell
 
-    public static final ConfigClassHandler<LegacyAnimationsSettings> CONFIG = ConfigClassHandler.createBuilder(LegacyAnimationsSettings.class)
-            .serializer(config -> GsonConfigSerializerBuilder.create(config)
-                .setPath(FabricLoader.getInstance().getConfigDir().resolve("legacyanimations.json"))
-                .build())
-            .build();
-
     @SerialEntry public boolean punchDuringUsage = true;
     @SerialEntry public boolean itemPositions = true;
     @SerialEntry public boolean oldSwordBlock = true; // TODO: this prevents an item in offhand (e.g., bow) from being used. Also causes to walk slow despite not actually blocking, may trigger ACs
@@ -29,6 +23,7 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean hideShields = true;
     @SerialEntry public boolean hideShieldHotbar = true;
     @SerialEntry public boolean noCooldown = true;
+    @SerialEntry public boolean oldMovement = true;
     @SerialEntry public boolean oldSneaking = true;
     @SerialEntry public boolean oldWalking = true;
     @SerialEntry public boolean oldDeath = true;
@@ -40,6 +35,7 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean oldViewBob = true;
     @SerialEntry public boolean fastItems = true;
     @SerialEntry public boolean armorTint = true;
+    @SerialEntry public boolean oldBreakProgress = true;
 
 
     @SuppressWarnings("deprecation")
@@ -166,6 +162,12 @@ public class LegacyAnimationsSettings {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Movement"))
+                                .description(OptionDescription.of(Text.of("Completely stops the player's sprint while blocking, drawing a bow, or consuming a consumable item.")))
+                                .binding(defaults.oldMovement, () -> config.oldMovement, newVal -> config.oldMovement = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Old View Bobbing"))
                                 .description(OptionDescription.of(Text.of("Changes the held item's position while moving based on the player's yaw")))
                                 .binding(defaults.oldViewBob, () -> config.oldViewBob, newVal -> config.oldViewBob = newVal)
@@ -183,9 +185,30 @@ public class LegacyAnimationsSettings {
                                 .binding(defaults.fastItems, () -> config.fastItems, newVal -> config.fastItems = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Block Break Progress"))
+                                .description(OptionDescription.of(Text.of("Delays the block breaking animation.")))
+                                .binding(defaults.oldBreakProgress, () -> config.oldBreakProgress, newVal -> config.oldBreakProgress = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
                         .build())
 
         )).generateScreen(parent);
+    }
+
+    public static final ConfigClassHandler<LegacyAnimationsSettings> CONFIG = ConfigClassHandler
+            .createBuilder(LegacyAnimationsSettings.class)
+            .serializer(config ->
+                    GsonConfigSerializerBuilder.create(config)
+                            .setPath(FabricLoader.getInstance()
+                                    .getConfigDir()
+                                    .resolve("legacyanimations.json"))
+                            .build())
+            .build();
+
+    public static LegacyAnimationsSettings getInstance()
+    {
+        return CONFIG.instance();
     }
 
 }

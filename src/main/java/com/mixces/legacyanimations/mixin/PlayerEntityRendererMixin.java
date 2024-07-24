@@ -25,7 +25,7 @@ public class PlayerEntityRendererMixin
             cancellable = true
     )
     private static void legacyAnimations$removeShieldArm(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
-        if (!LegacyAnimationsSettings.CONFIG.instance().hideShields)
+        if (!LegacyAnimationsSettings.getInstance().hideShields)
         {
             return;
         }
@@ -56,7 +56,7 @@ public class PlayerEntityRendererMixin
             )
     )
     private boolean legacyAnimations$disableSneakOffset(AbstractClientPlayerEntity player) {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking)
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
         {
             return player.isInSneakingPose();
         }

@@ -28,7 +28,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity>
     )
     private boolean legacyAnimations$oldDeathLimbs(boolean original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldDeath)
+        if (!LegacyAnimationsSettings.getInstance().oldDeath)
         {
             return true;
         }
@@ -46,7 +46,7 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity>
     )
     private void legacyAnimations$modelSneak(T livingEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSneaking) {
+        if (!LegacyAnimationsSettings.getInstance().oldSneaking) {
             return;
         }
 

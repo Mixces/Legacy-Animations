@@ -38,7 +38,7 @@ public class MinecraftClientMixin {
 	)
 	private boolean legacyAnimations$interruptBlockBreaking(boolean original)
 	{
-		if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
 		{
 			return original;
 		}
@@ -54,7 +54,7 @@ public class MinecraftClientMixin {
 	)
 	private boolean legacyAnimations$allowWhileUsingItem(boolean original)
 	{
-		if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
 		{
 			return original;
 		}
@@ -70,7 +70,7 @@ public class MinecraftClientMixin {
 	)
 	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand, Operation<Void> original)
 	{
-		if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
 		{
 			original.call(instance, hand);
 
@@ -117,7 +117,7 @@ public class MinecraftClientMixin {
 	)
 	private boolean legacyAnimations$removeCondition(boolean original)
 	{
-		if (!LegacyAnimationsSettings.CONFIG.instance().punchDuringUsage)
+		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
 		{
 			return original;
 		}

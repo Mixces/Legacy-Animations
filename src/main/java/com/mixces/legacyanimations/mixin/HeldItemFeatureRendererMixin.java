@@ -29,7 +29,7 @@ public class HeldItemFeatureRendererMixin {
     )
     private void legacyAnimations$swordBlockTransform(LivingEntity entity, ItemStack stack, ModelTransformationMode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwordBlock)
+        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
             return;
         }

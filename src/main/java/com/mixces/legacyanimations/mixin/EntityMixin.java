@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -32,7 +33,7 @@ public abstract class EntityMixin implements EntityInterface
     )
     public EntityPose legacyAnimations$revertSwimPose(EntityPose original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldSwim)
+        if (!LegacyAnimationsSettings.getInstance().oldSwim)
         {
             return original;
         }
@@ -54,5 +55,14 @@ public abstract class EntityMixin implements EntityInterface
 
         return new Vec3d(d, e, f);
     }
+
+//    /**
+//     * @author Mixces
+//     * @reason Old hitbox margin
+//     */
+//    @Overwrite
+//    public float getTargetingMargin() {
+//        return 0.1f;
+//    }
 
 }

@@ -39,7 +39,7 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     public int legacyAnimations$disableDelay(Entity instance, Operation<Integer> original)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        if (!LegacyAnimationsSettings.getInstance().oldProjectiles)
         {
             return original.call(instance);
         }
@@ -55,7 +55,7 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     public void legacyAnimations$shiftProjectile(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-        if (!LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        if (!LegacyAnimationsSettings.getInstance().oldProjectiles)
         {
             return;
         }
@@ -75,7 +75,7 @@ public abstract class FlyingItemEntityRendererMixin<T extends Entity & FlyingIte
     )
     private float legacyAnimations$rotateProjectileAccordingly(float deg)
     {
-        if (LegacyAnimationsSettings.CONFIG.instance().oldProjectiles)
+        if (LegacyAnimationsSettings.getInstance().oldProjectiles)
         {
             return deg;
         }
