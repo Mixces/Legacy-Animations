@@ -32,8 +32,6 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
     @Shadow @Final public ModelPart leftLeg;
     @Shadow protected abstract ModelPart getArm(Arm arm);
 
-    @Shadow @Final public ModelPart body;
-
     @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
             at = @At(
@@ -276,7 +274,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
         return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
-    @WrapOperation(
+    @ModifyExpressionValue(
             method = "animateArms",
             at = @At(
                     value = "FIELD",
@@ -285,23 +283,23 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 9
             )
     )
-    public float legacyAnimations$removeConflictingFields3(ModelPart instance, Operation<Float> original)
+    public float legacyAnimations$mirrorSwing1(float original, @Local Arm arm)
     {
-        return 0.0F;
+        return (arm == Arm.LEFT ? -1 : 1) * original;
     }
 
-    @Inject(
+    @WrapOperation(
             method = "animateArms",
             at = @At(
                     value = "FIELD",
                     opcode = Opcodes.GETFIELD,
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;handSwingProgress:F",
-                    ordinal = 2
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;leftArm:Lnet/minecraft/client/model/ModelPart;",
+                    ordinal = 3
             )
     )
-    public void legacyAnimations$mirrorSwing(T entity, float animationProgress, CallbackInfo ci, @Local Arm arm, @Local ModelPart modelPart)
+    public ModelPart legacyAnimations$mirrorSwing2(BipedEntityModel<T> instance, Operation<ModelPart> original, @Local ModelPart modelPart)
     {
-        modelPart.pitch += (arm == Arm.LEFT ? -1 : 1) * body.yaw;
+        return modelPart;
     }
 
     @ModifyExpressionValue(
@@ -312,7 +310,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 5
             )
     )
-    public float legacyAnimations$mirrorSwing2(float original, @Local Arm arm)
+    public float legacyAnimations$mirrorSwing3(float original, @Local Arm arm)
     {
         return (arm == Arm.LEFT ? -1 : 1) * original;
     }
@@ -332,6 +330,18 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
 
         arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 10) * 3;
         arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
+    }
+
+    @WrapOperation(
+            method = "positionRightArm",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
+            )
+    )
+    private int shit(BipedEntityModel.ArmPose instance, Operation<Integer> original)
+    {
+        return 2;
     }
 
 }

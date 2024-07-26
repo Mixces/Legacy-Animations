@@ -2,7 +2,7 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.ICameraMixin;
+import com.mixces.legacyanimations.mixin.access.ICameraMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.LivingEntityRenderer;

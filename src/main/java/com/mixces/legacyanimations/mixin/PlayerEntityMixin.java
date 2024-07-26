@@ -2,15 +2,15 @@ package com.mixces.legacyanimations.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.IEntityMixin;
-import com.mixces.legacyanimations.mixin.interfaces.ILivingEntityMixin;
+import com.mixces.legacyanimations.mixin.access.IEntityMixin;
+import com.mixces.legacyanimations.mixin.access.ILivingEntityMixin;
 import com.mixces.legacyanimations.util.ItemUtils;
 import com.mixces.legacyanimations.util.ServerUtils;
-import net.minecraft.entity.EntityDimensions;
-import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -20,6 +20,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntityMixin
 {
+
+    public PlayerEntityMixin(EntityType<?> type, World world) {
+        super(type, world);
+    }
+
     //todo: hypixel
 
     @ModifyReturnValue(
@@ -31,15 +36,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
     )
     private ItemStack legacyAnimations$fakeShield(ItemStack original)
     {
-//        if (!ServerUtils.INSTANCE.isValidServer())
-//        {
-//            return original;
-//        }
-
-//        if (isBlocking())
-//        {
-//            return original;
-//        }
+        if (!ServerUtils.INSTANCE.isValidServer())
+        {
+            return original;
+        }
 
         if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
         {
@@ -58,10 +58,10 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
     )
     private void legacyAnimations$removeAttackDelay(CallbackInfo ci)
     {
-//        if (!ServerUtils.INSTANCE.isValidServer())
-//        {
-//            return;
-//        }
+        if (!ServerUtils.INSTANCE.isValidServer())
+        {
+            return;
+        }
 
         ci.cancel();
     }
@@ -112,6 +112,8 @@ public abstract class PlayerEntityMixin extends LivingEntityMixin
             return original;
         }
         return original.withEyeHeight(original.eyeHeight() + 0.27F);
+
+//        EntityDimensions.changing(0.6f, 1.5f).withEyeHeight(original.eyeHeight() + 0.27F).withAttachments(EntityAttachments.builder().add(EntityAttachmentType.VEHICLE, VEHICLE_ATTACHMENT_POS))
     }
 
 }

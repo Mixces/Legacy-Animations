@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.duck.EntityInterface;
-import com.mixces.legacyanimations.mixin.interfaces.ICameraMixin;
+import com.mixces.legacyanimations.mixin.access.ICameraMixin;
 import com.mixces.legacyanimations.util.HandUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;

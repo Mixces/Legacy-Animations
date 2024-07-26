@@ -36,6 +36,10 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean fastItems = true;
     @SerialEntry public boolean armorTint = true;
     @SerialEntry public boolean oldBreakProgress = true;
+    @SerialEntry public boolean oldDamageTilt = true;
+//    @SerialEntry public boolean noSwing = true;
+    @SerialEntry public boolean oldPotionGlint = true;
+    @SerialEntry public boolean noShieldDelay = true;
 
 
     @SuppressWarnings("deprecation")
@@ -85,6 +89,12 @@ public class LegacyAnimationsSettings {
                                 .name(Text.literal("Hide Shield Offhand Hotbar"))
                                 .description(OptionDescription.of(Text.of("Hides the offhand hotbar if the item held is a shield.")))
                                 .binding(defaults.hideShieldHotbar, () -> config.hideShieldHotbar, newVal -> config.hideShieldHotbar = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Remove Shield Delay"))
+                                .description(OptionDescription.of(Text.of("Removes the 5ms delay preventing you from instantly activating your shield.")))
+                                .binding(defaults.noShieldDelay, () -> config.noShieldDelay, newVal -> config.noShieldDelay = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())
@@ -174,6 +184,12 @@ public class LegacyAnimationsSettings {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Damage Tilt"))
+                                .description(OptionDescription.of(Text.of("Changes the yaw component of the damage tilt.")))
+                                .binding(defaults.oldViewBob, () -> config.oldViewBob, newVal -> config.oldViewBob = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Old Projectiles"))
                                 .description(OptionDescription.of(Text.of("Reverts the projectile's positions back to the older style.")))
                                 .binding(defaults.oldProjectiles, () -> config.oldProjectiles, newVal -> config.oldProjectiles = newVal)
@@ -189,6 +205,18 @@ public class LegacyAnimationsSettings {
                                 .name(Text.literal("Old Block Break Progress"))
                                 .description(OptionDescription.of(Text.of("Delays the block breaking animation.")))
                                 .binding(defaults.oldBreakProgress, () -> config.oldBreakProgress, newVal -> config.oldBreakProgress = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+//                        .option(Option.createBuilder(boolean.class)
+//                                .name(Text.literal("Old Item Throw/Drop"))
+//                                .description(OptionDescription.of(Text.of("Disables the swing animation while throwing/dropping items.")))
+//                                .binding(defaults.noSwing, () -> config.noSwing, newVal -> config.noSwing = newVal)
+//                                .controller(TickBoxControllerBuilder::create)
+//                                .build())
+                        .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Potion Glint"))
+                                .description(OptionDescription.of(Text.of("Brings back the enchantment glint on potions!")))
+                                .binding(defaults.oldPotionGlint, () -> config.oldPotionGlint, newVal -> config.oldPotionGlint = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .build())

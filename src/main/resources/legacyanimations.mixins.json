@@ -22,16 +22,18 @@
     "LivingEntityMixin",
     "LivingEntityRendererMixin",
     "MinecraftClientMixin",
+    "OtherClientPlayerEntityMixin",
     "PlayerEntityMixin",
     "PlayerEntityRendererMixin",
+    "PotionItemMixin",
     "RenderPhaseMixin",
     "ShieldItemMixin",
     "SwordItemMixin",
     "VertexConsumerMixin",
-    "interfaces.IBasicBakedModelMixin",
-    "interfaces.ICameraMixin",
-    "interfaces.IEntityMixin",
-    "interfaces.ILivingEntityMixin"
+    "access.IBasicBakedModelMixin",
+    "access.ICameraMixin",
+    "access.IEntityMixin",
+    "access.ILivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

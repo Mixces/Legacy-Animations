@@ -4,7 +4,8 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import com.mixces.legacyanimations.mixin.interfaces.ILivingEntityMixin;
+import com.mixces.legacyanimations.mixin.access.ILivingEntityMixin;
+import com.mixces.legacyanimations.util.ServerUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.gui.screen.Screen;
@@ -96,10 +97,10 @@ public class MinecraftClientMixin {
 	)
 	private void legacyAnimations$addLeftClickCheck(CallbackInfo ci)
 	{
-//		if (!ServerUtils.INSTANCE.isOnHypixel())
-//		{
-//			return;
-//		}
+		if (!ServerUtils.INSTANCE.isValidServer())
+		{
+			return;
+		}
 
 		if (currentScreen != null || !options.attackKey.isPressed() || !mouse.isCursorLocked())
 		{

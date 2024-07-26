@@ -5,6 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.HandUtils;
 import com.mixces.legacyanimations.util.ItemUtils;
+import com.mixces.legacyanimations.util.MatrixUtil;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -18,10 +19,7 @@ import net.minecraft.util.math.RotationAxis;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Slice;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
@@ -126,11 +124,10 @@ public abstract class HeldItemRendererMixin
         }
 
         final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+        final MatrixUtil matrix = new MatrixUtil(matrices);
 
         matrices.translate(l * -0.14142136F, 0.08F, 0.14142136F);
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(-102.25F));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 13.365F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 78.05F));
+        matrix.pitch(-102.25F).yaw(l * 13.365F).roll(l * 78.05F);
     }
 
     @Inject(

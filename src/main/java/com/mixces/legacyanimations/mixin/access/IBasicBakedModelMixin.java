@@ -1,4 +1,4 @@
-package com.mixces.legacyanimations.mixin.interfaces;
+package com.mixces.legacyanimations.mixin.access;
 
 import net.minecraft.client.render.model.BasicBakedModel;
 import net.minecraft.client.render.model.json.ModelOverrideList;

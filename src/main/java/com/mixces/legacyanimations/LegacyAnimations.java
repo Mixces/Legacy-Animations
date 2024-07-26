@@ -7,6 +7,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 
@@ -17,16 +18,27 @@ public class LegacyAnimations implements ModInitializer
 	public void onInitialize()
 	{
 		LegacyAnimationsSettings.CONFIG.load();
+		updatePlayerState();
+		registerCommands();
+	}
+
+	private void updatePlayerState()
+	{
 		ClientTickEvents.END_WORLD_TICK.register(world ->
 		{
-			if (MinecraftClient.getInstance().player == null)
+			final ClientPlayerEntity player = MinecraftClient.getInstance().player;
+
+			if (player == null)
 			{
 				return;
 			}
 
-			MinecraftClient.getInstance().player.calculateDimensions();
+			player.calculateDimensions();
 		});
+	}
 
+	private void registerCommands()
+	{
 		CommandRegistrationCallback.EVENT.register(
 				(dispatcher, registryAccess, environment) ->
 				{

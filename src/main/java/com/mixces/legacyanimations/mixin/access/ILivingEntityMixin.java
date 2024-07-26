@@ -1,4 +1,4 @@
-package com.mixces.legacyanimations.mixin.interfaces;
+package com.mixces.legacyanimations.mixin.access;
 
 import net.minecraft.entity.LivingEntity;
 import org.spongepowered.asm.mixin.Mixin;
