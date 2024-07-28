@@ -332,16 +332,16 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
         arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
     }
 
-    @WrapOperation(
-            method = "positionRightArm",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
-            )
-    )
-    private int shit(BipedEntityModel.ArmPose instance, Operation<Integer> original)
-    {
-        return 2;
-    }
+//    @WrapOperation(
+//            method = "positionRightArm",
+//            at = @At(
+//                    value = "INVOKE",
+//                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
+//            )
+//    )
+//    private int shit(BipedEntityModel.ArmPose instance, Operation<Integer> original)
+//    {
+//        return 2;
+//    }
 
 }

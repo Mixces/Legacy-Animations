@@ -30,15 +30,15 @@ public class HeldItemFeatureRendererMixin {
     )
     private void legacyAnimations$swordBlockTransform(LivingEntity entity, ItemStack stack, ModelTransformationMode transformationMode, Arm arm, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
     {
-//        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && entity.isBlocking() &&
-//                ItemUtils.INSTANCE.isShieldInOffHand(entity.getOffHandStack()) &&
-//                ItemUtils.INSTANCE.isSwordInMainHand(entity.getMainHandStack()))
-//        {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && entity.isBlocking() &&
+                ItemUtils.INSTANCE.isShieldInOffHand(entity.getOffHandStack()) &&
+                ItemUtils.INSTANCE.isSwordInMainHand(entity.getMainHandStack()))
+        {
             final MatrixUtil matrix = new MatrixUtil(matrices);
 
             matrices.translate(TransformHook.translationX, TransformHook.translationY, TransformHook.translationZ);
             matrix.yaw(TransformHook.rotationX).pitch(TransformHook.rotationY).roll(TransformHook.rotationZ);
-//        }
+        }
 
         // x: -0.2 y: 0.0 z: 0.1 yaw: 21.0 pitch: 90.0 roll: -90.0
     }
