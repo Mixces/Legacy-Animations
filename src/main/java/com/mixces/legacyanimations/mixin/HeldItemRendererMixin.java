@@ -23,15 +23,24 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HeldItemRenderer.class)
-public abstract class HeldItemRendererMixin
-{
+public abstract class HeldItemRendererMixin {
 
     //todo: re-write the whole thing :)
-    @Shadow protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
-    @Shadow private float equipProgressOffHand;
-    @Shadow private ItemStack mainHand;
-    @Shadow private ItemStack offHand;
-    @Shadow @Final private EntityRenderDispatcher entityRenderDispatcher;
+    @Shadow
+    protected abstract void applySwingOffset(MatrixStack matrices, Arm arm, float swingProgress);
+
+    @Shadow
+    private float equipProgressOffHand;
+
+    @Shadow
+    private ItemStack mainHand;
+
+    @Shadow
+    private ItemStack offHand;
+
+    @Shadow
+    @Final
+    private EntityRenderDispatcher entityRenderDispatcher;
 
     @Inject(
             method = "renderFirstPersonItem",
@@ -42,15 +51,11 @@ public abstract class HeldItemRendererMixin
             )
     )
     private void legacyAnimations$preBowTransform(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!LegacyAnimationsSettings.getInstance().itemPositions)
-        {
-            return;
+        if (LegacyAnimationsSettings.getInstance().itemPositions) {
+            final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * -335));
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * -50.0F));
         }
-
-        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
-
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * -335));
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * -50.0F));
     }
 
     @Inject(
@@ -63,15 +68,11 @@ public abstract class HeldItemRendererMixin
             )
     )
     private void legacyAnimations$postBowTransform(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (!LegacyAnimationsSettings.getInstance().itemPositions)
-        {
-            return;
+        if (LegacyAnimationsSettings.getInstance().itemPositions) {
+            final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 50.0F));
+            matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 335));
         }
-
-        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
-
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 50.0F));
-        matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(l * 335));
     }
 
     @Inject(
@@ -84,22 +85,18 @@ public abstract class HeldItemRendererMixin
             slice = @Slice(
                     from = @At(
                             value = "INVOKE",
-                            target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEatOrDrinkTransformation(Lnet/minecraft/client/util/math/MatrixStack;FLnet/minecraft/util/Arm;Lnet/minecraft/item/ItemStack;)V"
+                            target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyEatOrDrinkTransformation(Lnet/minecraft/client/util/math/MatrixStack;FLnet/minecraft/util/Arm;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;)V"
                     ),
                     to = @At(
                             value = "INVOKE",
-                            target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyBrushTransformation(Lnet/minecraft/client/util/math/MatrixStack;FLnet/minecraft/util/Arm;Lnet/minecraft/item/ItemStack;F)V"
+                            target = "Lnet/minecraft/client/render/item/HeldItemRenderer;applyBrushTransformation(Lnet/minecraft/client/util/math/MatrixStack;FLnet/minecraft/util/Arm;Lnet/minecraft/item/ItemStack;Lnet/minecraft/entity/player/PlayerEntity;F)V"
                     )
             )
     )
-    private void legacyAnimations$addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm)
-    {
-        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-        {
-            return;
+    private void legacyAnimations$addSwingOffset(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci, @Local Arm arm) {
+        if (LegacyAnimationsSettings.getInstance().punchDuringUsage) {
+            applySwingOffset(matrices, arm, swingProgress);
         }
-
-        applySwingOffset(matrices, arm, swingProgress);
     }
 
     @Inject(
@@ -111,23 +108,14 @@ public abstract class HeldItemRendererMixin
                     shift = At.Shift.AFTER
             )
     )
-    private void legacyAnimations$addBlockTranslation(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    private void legacyAnimations$addBlockTranslation(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock) {
+            if (!ItemUtils.INSTANCE.isSwordInMainHand(mainHand) || !ItemUtils.INSTANCE.isShieldInOffHand(offHand)) return;
+            final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+            final MatrixUtil matrix = new MatrixUtil(matrices);
+            matrices.translate(l * -0.14142136F, 0.08F, 0.14142136F);
+            matrix.pitch(-102.25F).yaw(l * 13.365F).roll(l * 78.05F);
         }
-
-        if (!ItemUtils.INSTANCE.isSwordInMainHand(mainHand) || !ItemUtils.INSTANCE.isShieldInOffHand(offHand))
-        {
-            return;
-        }
-
-        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
-        final MatrixUtil matrix = new MatrixUtil(matrices);
-
-        matrices.translate(l * -0.14142136F, 0.08F, 0.14142136F);
-        matrix.pitch(-102.25F).yaw(l * 13.365F).roll(l * 78.05F);
     }
 
     @Inject(
@@ -138,25 +126,17 @@ public abstract class HeldItemRendererMixin
                     ordinal = 1
             )
     )
-    private void legacyAnimations$oldItemPositions(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().itemPositions)
-        {
-            return;
+    private void legacyAnimations$oldItemPositions(AbstractClientPlayerEntity player, float tickDelta, float pitch, Hand hand, float swingProgress, ItemStack item, float equipProgress, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().itemPositions) {
+            final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
+            if (ItemUtils.INSTANCE.shouldRotateAroundWhenRendering(item, true)) {
+                matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 180.0F));
+            }
+            final float scale = 0.7585F / 0.86F;
+            matrices.scale(scale, scale, scale);
+            matrices.translate(l * -0.084F, 0.059F, 0.08F);
+            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 5.0F));
         }
-
-        final int l = HandUtils.INSTANCE.handMultiplier((ClientPlayerEntity) player, entityRenderDispatcher);
-
-        if (ItemUtils.INSTANCE.shouldRotateAroundWhenRendering(item, true))
-        {
-            matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 180.0F));
-        }
-
-        final float scale = 0.7585F / 0.86F;
-
-        matrices.scale(scale, scale, scale);
-        matrices.translate(l * -0.084F, 0.059F, 0.08F);
-        matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(l * 5.0F));
     }
 
     @ModifyExpressionValue(
@@ -166,12 +146,8 @@ public abstract class HeldItemRendererMixin
                     target = "Lnet/minecraft/client/network/ClientPlayerEntity;getAttackCooldownProgress(F)F"
             )
     )
-    public float legacyAnimations$removeCoolDownSpeed(float original)
-    {
-        if (!LegacyAnimationsSettings.getInstance().noCooldown) {
-            return original;
-        }
-        return 1.0f;
+    public float legacyAnimations$removeCoolDownSpeed(float original) {
+        return LegacyAnimationsSettings.getInstance().noCooldown ? 1.0f : original;
     }
 
     @Inject(
@@ -181,13 +157,10 @@ public abstract class HeldItemRendererMixin
             ),
             cancellable = true
     )
-    private void legacyAnimations$removeStartDelay(Hand hand, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().noCooldown) {
-            return;
+    private void legacyAnimations$removeStartDelay(Hand hand, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().noCooldown) {
+            ci.cancel();
         }
-
-        ci.cancel();
     }
 
     //todo: old re-equip logic needed frfr
@@ -209,5 +182,4 @@ public abstract class HeldItemRendererMixin
 //        }
 //        return value;
 //    }
-
 }

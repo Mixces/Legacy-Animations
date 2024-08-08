@@ -23,7 +23,7 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean hideShields = true;
     @SerialEntry public boolean hideShieldHotbar = true;
     @SerialEntry public boolean noCooldown = true;
-    @SerialEntry public boolean oldMovement = true;
+//    @SerialEntry public boolean oldMovement = true; // already in viafabric
     @SerialEntry public boolean oldSneaking = true;
     @SerialEntry public boolean oldWalking = true;
     @SerialEntry public boolean oldDeath = true;
@@ -234,8 +234,7 @@ public class LegacyAnimationsSettings {
                             .build())
             .build();
 
-    public static LegacyAnimationsSettings getInstance()
-    {
+    public static LegacyAnimationsSettings getInstance() {
         return CONFIG.instance();
     }
 

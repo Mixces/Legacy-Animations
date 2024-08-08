@@ -11,11 +11,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin
-{
+public abstract class CameraMixin {
 
-    @Shadow private float cameraY;
-    @Shadow private Entity focusedEntity;
+    @Shadow
+    private float cameraY;
+
+    @Shadow
+    private Entity focusedEntity;
 
     @WrapOperation(
             method = "updateEyeHeight",
@@ -25,21 +27,11 @@ public abstract class CameraMixin
                     target = "Lnet/minecraft/client/render/Camera;cameraY:F"
             )
     )
-    private void legacyAnimations$addOldSneakCalculation(Camera instance, float value, Operation<Void> original)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            original.call(instance, value);
-        }
-
-        if (focusedEntity.getStandingEyeHeight() < cameraY)
-        {
+    private void legacyAnimations$addOldSneakCalculation(Camera instance, float value, Operation<Void> original) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking && focusedEntity.getStandingEyeHeight() < cameraY) {
             cameraY = focusedEntity.getStandingEyeHeight();
-        }
-        else
-        {
+        } else {
             original.call(instance, value);
         }
     }
-
 }

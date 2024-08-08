@@ -2,6 +2,7 @@ package com.mixces.legacyanimations.mixin;
 
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.ItemUtils;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ShieldItem;
@@ -46,7 +47,7 @@ public class ShieldItemMixin {
             ),
             cancellable = true
     )
-    public void legacyAnimations$lowerMaxUseTime(ItemStack stack, CallbackInfoReturnable<Integer> cir)
+    public void legacyAnimations$lowerMaxUseTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir)
     {
         if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {

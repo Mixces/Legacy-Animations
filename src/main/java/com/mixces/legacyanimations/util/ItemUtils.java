@@ -1,7 +1,5 @@
 package com.mixces.legacyanimations.util;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.model.BakedModel;
@@ -10,8 +8,6 @@ import net.minecraft.component.type.FoodComponent;
 import net.minecraft.item.*;
 import net.minecraft.util.UseAction;
 
-@Setter
-@Getter
 public class ItemUtils
 {
 

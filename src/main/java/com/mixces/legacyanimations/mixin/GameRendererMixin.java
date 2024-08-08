@@ -17,8 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
-public class GameRendererMixin
-{
+public class GameRendererMixin {
 
     @WrapOperation(
             method = "tiltViewWhenHurt",
@@ -28,11 +27,7 @@ public class GameRendererMixin
             )
     )
     private float legacyAnimations$revertYaw(LivingEntity instance, Operation<Float> original) {
-        if (!LegacyAnimationsSettings.getInstance().oldDamageTilt)
-        {
-            return original.call(instance);
-        }
-        return 0.0F;
+        return LegacyAnimationsSettings.getInstance().oldDamageTilt ? 0.0F : original.call(instance);
     }
 
     @Inject(
@@ -44,18 +39,12 @@ public class GameRendererMixin
                     shift = At.Shift.AFTER
             )
     )
-    private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldViewBob)
-        {
-            return;
+    private void legacyAnimations$addOldPitchRotation(MatrixStack matrices, float tickDelta, CallbackInfo ci, @Local(ordinal = 0) PlayerEntity playerEntity) {
+        if (LegacyAnimationsSettings.getInstance().oldViewBob) {
+            final float prevPlayerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPrevPlayerPitch();
+            final float playerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPlayerPitch();
+            final float h = MathHelper.lerp(tickDelta, prevPlayerPitch, playerPitch);
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(h));
         }
-
-        final float prevPlayerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPrevPlayerPitch();
-        final float playerPitch = ((PlayerPitchInterface) playerEntity).legacyAnimations$getPlayerPitch();
-        final float h = MathHelper.lerp(tickDelta, prevPlayerPitch, playerPitch);
-
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(h));
     }
-
 }

@@ -20,17 +20,36 @@ import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BipedEntityModel.class)
-public abstract class BipedEntityModelMixin<T extends LivingEntity>
-{
+public abstract class BipedEntityModelMixin<T extends LivingEntity> {
 
-    @Shadow public BipedEntityModel.ArmPose leftArmPose;
-    @Shadow public BipedEntityModel.ArmPose rightArmPose;
-    @Shadow @Final public ModelPart rightArm;
-    @Shadow @Final public ModelPart leftArm;
-    @Shadow @Final public ModelPart head;
-    @Shadow @Final public ModelPart rightLeg;
-    @Shadow @Final public ModelPart leftLeg;
-    @Shadow protected abstract ModelPart getArm(Arm arm);
+    @Shadow
+    public BipedEntityModel.ArmPose leftArmPose;
+
+    @Shadow
+    public BipedEntityModel.ArmPose rightArmPose;
+
+    @Shadow
+    @Final
+    public ModelPart rightArm;
+
+    @Shadow
+    @Final
+    public ModelPart leftArm;
+
+    @Shadow
+    @Final
+    public ModelPart head;
+
+    @Shadow
+    @Final
+    public ModelPart rightLeg;
+
+    @Shadow
+    @Final
+    public ModelPart leftLeg;
+
+    @Shadow
+    protected abstract ModelPart getArm(Arm arm);
 
     @Inject(
             method = "setAngles(Lnet/minecraft/entity/LivingEntity;FFFFF)V",
@@ -39,21 +58,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;animateArms(Lnet/minecraft/entity/LivingEntity;F)V"
             )
     )
-    public void legacyAnimations$adjustArmYaw(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    public void legacyAnimations$adjustArmYaw(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock) {
+            getArm(livingEntity.getMainArm()).yaw = 0.0F;
         }
-
-        final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-        if (player == null)
-        {
-            return;
-        }
-
-        getArm(player.getMainArm()).yaw = 0.0F;
     }
 
     @Inject(
@@ -65,10 +73,8 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 1
             )
     )
-    private void legacyAnimations$fixIncorrectArmPlacement2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-        {
+    private void legacyAnimations$fixIncorrectArmPlacement2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (!LegacyAnimationsSettings.getInstance().punchDuringUsage) {
             return;
         }
 
@@ -76,20 +82,17 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
         final boolean isRightArmPose = rightArmPose == BOW_AND_ARROW;
         final boolean isLeftArmPose = leftArmPose == BOW_AND_ARROW;
 
-        if (!isRightArmPose && !isLeftArmPose)
-        {
+        if (!isRightArmPose && !isLeftArmPose) {
             return;
         }
 
-        if (isRightArmPose)
-        {
+        if (isRightArmPose) {
             rightArm.roll = 0.0F;
             rightArm.yaw = -0.1F + head.yaw;
             leftArm.yaw = 0.1F + head.yaw + 0.4F;
         }
 
-        if (isLeftArmPose)
-        {
+        if (isLeftArmPose) {
             leftArm.roll = 0.0F;
             rightArm.yaw = -0.1F + head.yaw - 0.4F;
             leftArm.yaw = 0.1F + head.yaw;
@@ -121,14 +124,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     )
             )
     )
-    private void legacyAnimations$oldSneakValue1(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return;
+    private void legacyAnimations$oldSneakValue1(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking) {
+            rightLeg.pivotY = 9.0f;
         }
-
-        rightLeg.pivotY = 9.0f;
     }
 
     @Inject(
@@ -153,14 +152,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     )
             )
     )
-    private void legacyAnimations$oldSneakValue2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return;
+    private void legacyAnimations$oldSneakValue2(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking) {
+            leftLeg.pivotY = 9.0f;
         }
-
-        leftLeg.pivotY = 9.0f;
     }
 
     @Inject(
@@ -172,14 +167,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 9
             )
     )
-    private void legacyAnimations$oldSneakValue3(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return;
+    private void legacyAnimations$oldSneakValue3(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking) {
+            rightLeg.pivotZ = 0.1f;
         }
-
-        rightLeg.pivotZ = 0.1f;
     }
 
     @Inject(
@@ -191,14 +182,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 5
             )
     )
-    private void legacyAnimations$oldSneakValue4(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return;
+    private void legacyAnimations$oldSneakValue4(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking) {
+            leftLeg.pivotZ = 0.1f;
         }
-
-        leftLeg.pivotZ = 0.1f;
     }
 
     @Inject(
@@ -210,14 +197,10 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 2
             )
     )
-    private void legacyAnimations$oldSneakValue5(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return;
+    private void legacyAnimations$oldSneakValue5(T livingEntity, float f, float g, float h, float i, float j, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSneaking) {
+            head.pivotY = 1.0f;
         }
-
-        head.pivotY = 1.0f;
     }
 
     @WrapWithCondition(
@@ -242,8 +225,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     target = "Lnet/minecraft/client/model/ModelPart;pivotY:F"
             )
     )
-    public boolean legacyAnimations$removeConflictingFields1(ModelPart instance, float value)
-    {
+    public boolean legacyAnimations$removeConflictingFields1(ModelPart instance, float value) {
         return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
@@ -269,8 +251,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     target = "Lnet/minecraft/client/model/ModelPart;pivotY:F"
             )
     )
-    public boolean legacyAnimations$removeConflictingFields2(ModelPart instance, float value)
-    {
+    public boolean legacyAnimations$removeConflictingFields2(ModelPart instance, float value) {
         return !LegacyAnimationsSettings.getInstance().oldSneaking;
     }
 
@@ -283,8 +264,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 9
             )
     )
-    public float legacyAnimations$mirrorSwing1(float original, @Local Arm arm)
-    {
+    public float legacyAnimations$mirrorSwing1(float original, @Local Arm arm) {
         return (arm == Arm.LEFT ? -1 : 1) * original;
     }
 
@@ -297,8 +277,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 3
             )
     )
-    public ModelPart legacyAnimations$mirrorSwing2(BipedEntityModel<T> instance, Operation<ModelPart> original, @Local ModelPart modelPart)
-    {
+    public ModelPart legacyAnimations$mirrorSwing2(BipedEntityModel<T> instance, Operation<ModelPart> original, @Local ModelPart modelPart) {
         return modelPart;
     }
 
@@ -310,8 +289,7 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     ordinal = 5
             )
     )
-    public float legacyAnimations$mirrorSwing3(float original, @Local Arm arm)
-    {
+    public float legacyAnimations$mirrorSwing3(float original, @Local Arm arm) {
         return (arm == Arm.LEFT ? -1 : 1) * original;
     }
 
@@ -321,15 +299,11 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity>
                     value = "TAIL"
             )
     )
-    public void legacyAnimations$oldBlockingArm(ModelPart arm, boolean rightArm, CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    public void legacyAnimations$oldBlockingArm(ModelPart arm, boolean rightArm, CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock) {
+            arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 10) * 3;
+            arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
         }
-
-        arm.pitch = arm.pitch * 0.5F - (float) (Math.PI / 10) * 3;
-        arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
     }
 
 //    @WrapOperation(

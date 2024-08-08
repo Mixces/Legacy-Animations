@@ -17,8 +17,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(InGameHud.class)
-public abstract class InGameHudMixin
-{
+public abstract class InGameHudMixin {
 
     //todo: shield shit
 //    @WrapOperation(method = "renderHotbar", at = @At(value = "INVOKE", target = "Lnet/minecraft/item/ItemStack;isEmpty()Z"))
@@ -44,8 +43,7 @@ public abstract class InGameHudMixin
                     ordinal = 2
             )
     )
-    private boolean legacyAnimations$cancelFlash(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half)
-    {
+    private boolean legacyAnimations$cancelFlash(InGameHud instance, DrawContext context, InGameHud.HeartType type, int x, int y, boolean hardcore, boolean blinking, boolean half) {
         return !LegacyAnimationsSettings.getInstance().oldHearts;
     }
 
@@ -56,13 +54,7 @@ public abstract class InGameHudMixin
                     target = "Lnet/minecraft/client/option/Perspective;isFirstPerson()Z"
             )
     )
-    private boolean legacyAnimations$removePerspectiveCheck(boolean original)
-    {
-        if (!LegacyAnimationsSettings.getInstance().perspectiveCrosshair)
-        {
-            return original;
-        }
-        return true;
+    private boolean legacyAnimations$removePerspectiveCheck(boolean original) {
+        return LegacyAnimationsSettings.getInstance().perspectiveCrosshair || original;
     }
-
 }

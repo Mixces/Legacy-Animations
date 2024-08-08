@@ -1,7 +1,5 @@
 package com.mixces.legacyanimations.util;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 
 import java.util.EnumSet;
@@ -10,8 +8,6 @@ import java.util.EnumSet;
 public class TransformationModeUtils
 {
 
-    @Setter
-    @Getter
     private static ModelTransformationMode transformationMode;
 
     private static final EnumSet<ModelTransformationMode> cameraTypes =

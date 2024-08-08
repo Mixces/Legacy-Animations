@@ -9,8 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
 @Mixin(DebugHud.class)
-public abstract class DebugHudMixin
-{
+public abstract class DebugHudMixin {
 
     @WrapWithCondition(
             method = "drawText",
@@ -19,8 +18,7 @@ public abstract class DebugHudMixin
                     target = "Lnet/minecraft/client/gui/DrawContext;fill(IIIII)V"
             )
     )
-    private boolean legacyAnimations$removeDebugBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color)
-    {
+    private boolean legacyAnimations$removeDebugBackground(DrawContext instance, int x1, int y1, int x2, int y2, int color) {
         return !LegacyAnimationsSettings.getInstance().oldDebug;
     }
 
@@ -32,9 +30,7 @@ public abstract class DebugHudMixin
             ),
             index = 5
     )
-    private boolean legacyAnimations$addDebugShadow(boolean shadow)
-    {
+    private boolean legacyAnimations$addDebugShadow(boolean shadow) {
         return LegacyAnimationsSettings.getInstance().oldDebug;
     }
-
 }

@@ -6,8 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Invoker;
 
 @Mixin(Entity.class)
-public interface IEntityMixin
-{
+public interface IEntityMixin {
 
     @Invoker Vec3d invokeGetVelocity();
 

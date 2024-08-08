@@ -8,22 +8,34 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(Entity.class)
-public abstract class EntityMixin implements EntityInterface
-{
+public abstract class EntityMixin implements EntityInterface {
 
     //todo: revert swimming mechanic (double jump to leave)
 
-    @Shadow public double prevX;
-    @Shadow public double prevY;
-    @Shadow public double prevZ;
-    @Shadow public abstract double getX();
-    @Shadow public abstract double getY();
-    @Shadow public abstract double getZ();
+    @Shadow
+    public double prevX;
+
+    @Shadow
+    public double prevY;
+
+    @Shadow
+    public double prevZ;
+
+    @Shadow
+    public abstract double getX();
+
+    @Shadow
+    public abstract double getY();
+
+    @Shadow
+    public abstract double getZ();
+
+    @Shadow
+    public abstract boolean isSwimming();
 
     @ModifyReturnValue(
             method = "getPose",
@@ -31,20 +43,8 @@ public abstract class EntityMixin implements EntityInterface
                     value = "RETURN"
             )
     )
-    public EntityPose legacyAnimations$revertSwimPose(EntityPose original)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwim)
-        {
-            return original;
-        }
-
-        final Entity entity = (Entity) (Object) this;
-
-        if (entity.isSwimming())
-        {
-            return EntityPose.STANDING;
-        }
-        return original;
+    public EntityPose legacyAnimations$revertSwimPose(EntityPose original) {
+        return LegacyAnimationsSettings.getInstance().oldSwim && isSwimming() ? EntityPose.STANDING : original;
     }
 
     @Override
@@ -52,17 +52,6 @@ public abstract class EntityMixin implements EntityInterface
         final double d = MathHelper.lerp(tickDelta, prevX, getX());
         final double e = MathHelper.lerp(tickDelta, prevY, getY()) + (double) eyeHeight;
         final double f = MathHelper.lerp(tickDelta, prevZ, getZ());
-
         return new Vec3d(d, e, f);
     }
-
-//    /**
-//     * @author Mixces
-//     * @reason Old hitbox margin
-//     */
-//    @Overwrite
-//    public float getTargetingMargin() {
-//        return 0.1f;
-//    }
-
 }

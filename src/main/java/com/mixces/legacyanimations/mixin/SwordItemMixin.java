@@ -2,6 +2,7 @@ package com.mixces.legacyanimations.mixin;
 
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.ItemUtils;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.*;
 import net.minecraft.util.Hand;
@@ -35,7 +36,7 @@ public class SwordItemMixin extends Item
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack)
+    public int getMaxUseTime(ItemStack stack, LivingEntity user)
     {
         if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
         {
