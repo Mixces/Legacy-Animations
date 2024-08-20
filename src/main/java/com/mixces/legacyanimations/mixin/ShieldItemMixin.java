@@ -25,19 +25,10 @@ public class ShieldItemMixin {
         ),
         cancellable = true
     )
-    public void legacyAnimations$getUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> cir)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    public void legacyAnimations$getUseAction(ItemStack stack, CallbackInfoReturnable<UseAction> cir) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isSwordInMainHand(null)) {
+            cir.setReturnValue(UseAction.NONE);
         }
-
-        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
-        {
-            return;
-        }
-
-        cir.setReturnValue(UseAction.NONE);
     }
 
     @Inject(
@@ -47,19 +38,10 @@ public class ShieldItemMixin {
             ),
             cancellable = true
     )
-    public void legacyAnimations$lowerMaxUseTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    public void legacyAnimations$lowerMaxUseTime(ItemStack stack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isSwordInMainHand(null)) {
+            cir.setReturnValue(0);
         }
-
-        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
-        {
-            return;
-        }
-
-        cir.setReturnValue(0);
     }
 
     @Inject(
@@ -69,19 +51,9 @@ public class ShieldItemMixin {
             ),
             cancellable = true
     )
-    public void disableUseWithSword(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return;
+    public void disableUseWithSword(World world, PlayerEntity user, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> cir) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isSwordInMainHand(null)) {
+            cir.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
         }
-
-        if (!ItemUtils.INSTANCE.isSwordInMainHand(null))
-        {
-            return;
-        }
-
-        cir.setReturnValue(TypedActionResult.pass(user.getStackInHand(hand)));
     }
-
 }

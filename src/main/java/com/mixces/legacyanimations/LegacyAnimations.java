@@ -11,37 +11,26 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.text.Text;
 
-public class LegacyAnimations implements ModInitializer
-{
+public class LegacyAnimations implements ModInitializer {
 
 	@Override
-	public void onInitialize()
-	{
+	public void onInitialize() {
 		LegacyAnimationsSettings.CONFIG.load();
 		updatePlayerState();
 		registerCommands();
 	}
 
-	private void updatePlayerState()
-	{
-		ClientTickEvents.END_WORLD_TICK.register(world ->
-		{
+	private void updatePlayerState() {
+		ClientTickEvents.END_WORLD_TICK.register(world -> {
 			final ClientPlayerEntity player = MinecraftClient.getInstance().player;
-
-			if (player == null)
-			{
-				return;
-			}
-
+			if (player == null) return;
 			player.calculateDimensions();
 		});
 	}
 
-	private void registerCommands()
-	{
+	private void registerCommands() {
 		CommandRegistrationCallback.EVENT.register(
-				(dispatcher, registryAccess, environment) ->
-				{
+				(dispatcher, registryAccess, environment) -> {
 					dispatcher.register(CommandManager.literal("legacyanimations")
 							.then(CommandManager.argument("x", FloatArgumentType.floatArg())
 									.executes(context -> {
@@ -80,7 +69,7 @@ public class LegacyAnimations implements ModInitializer
 																TransformHook.translationY = value2;
 																TransformHook.translationZ = value3;
 																TransformHook.rotationX = value4;
-																context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4), false);
+																context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " pitch: " + value4), false);
 																return 1;
 															})
 															.then(CommandManager.argument("yaw", FloatArgumentType.floatArg())
@@ -95,7 +84,7 @@ public class LegacyAnimations implements ModInitializer
 																		TransformHook.translationZ = value3;
 																		TransformHook.rotationX = value4;
 																		TransformHook.rotationY = value5;
-																		context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4 + " pitch: " + value5), false);
+																		context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " pitch: " + value4 + " yaw: " + value5), false);
 																		return 1;
 																	})
 																	.then(CommandManager.argument("roll", FloatArgumentType.floatArg())
@@ -112,12 +101,11 @@ public class LegacyAnimations implements ModInitializer
 																				TransformHook.rotationX = value4;
 																				TransformHook.rotationY = value5;
 																				TransformHook.rotationZ = value6;
-																				context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " yaw: " + value4 + " pitch: " + value5 + " roll: " + value6), false);
+																				context.getSource().sendFeedback(() -> Text.literal("x: " + value + " y: " + value2 + " z: " + value3 + " pitch: " + value4 + " yaw: " + value5 + " roll: " + value6), false);
 																				return 1;
 																			})
 
 																	)))))));
 				});
 	}
-
 }

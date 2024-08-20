@@ -7,13 +7,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderPhase.class)
-public class RenderPhaseMixin
-{
+public class RenderPhaseMixin {
 
-    @Inject(method = "setupGlintTexturing", at = @At(value = "HEAD"))
-    private static void legacyAnimations$injectGlint(float scale, CallbackInfo ci)
-    {
+    @Inject(
+            method = "setupGlintTexturing",
+            at = @At("HEAD")
+    )
+    private static void legacyAnimations$injectGlint(float scale, CallbackInfo ci) {
 //        System.out.println("glint rendering");
     }
-
 }

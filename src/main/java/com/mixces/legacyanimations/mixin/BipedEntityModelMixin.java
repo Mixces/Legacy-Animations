@@ -6,9 +6,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.Arm;
@@ -305,17 +303,4 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> {
             arm.yaw = (rightArm ? -1.0f : 1.0f) * (float) (-Math.PI / 6);
         }
     }
-
-//    @WrapOperation(
-//            method = "positionRightArm",
-//            at = @At(
-//                    value = "INVOKE",
-//                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
-//            )
-//    )
-//    private int shit(BipedEntityModel.ArmPose instance, Operation<Integer> original)
-//    {
-//        return 2;
-//    }
-
 }

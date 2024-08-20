@@ -15,21 +15,16 @@ public class PotionItemMixin extends Item {
         super(settings);
     }
 
+    //todo: better way to write this?
     @Override
     public boolean hasGlint(ItemStack stack) {
-        if (LegacyAnimationsSettings.getInstance().oldPotionGlint)
-        {
+        if (LegacyAnimationsSettings.getInstance().oldPotionGlint) {
             final PotionContentsComponent potionContents = stack.get(DataComponentTypes.POTION_CONTENTS);
-
-            if (potionContents == null)
-            {
-                return false;
+            if (potionContents != null) {
+                return potionContents.hasEffects();
             }
-
-            return potionContents.hasEffects();
+            return false;
         }
-
         return super.hasGlint(stack);
     }
-
 }

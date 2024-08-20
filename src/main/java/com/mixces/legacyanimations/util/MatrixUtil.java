@@ -3,6 +3,9 @@ package com.mixces.legacyanimations.util;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.math.RotationAxis;
 
+/**
+ * This was made purely for fun lol :p
+ */
 public class MatrixUtil {
     private final MatrixStack stack;
 

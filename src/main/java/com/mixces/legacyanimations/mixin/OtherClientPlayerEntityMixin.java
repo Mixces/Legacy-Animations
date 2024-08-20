@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(OtherClientPlayerEntity.class)
 public class OtherClientPlayerEntityMixin {
 
+    //todo: fix this
 //    @ModifyExpressionValue(
 //            method = "tickMovement",
 //            at = @At(

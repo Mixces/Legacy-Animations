@@ -12,59 +12,35 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(SwordItem.class)
-public class SwordItemMixin extends Item
-{
+public class SwordItemMixin extends Item {
 
-    public SwordItemMixin(Settings settings)
-    {
+    public SwordItemMixin(Settings settings) {
         super(settings);
     }
 
     @Override
-    public UseAction getUseAction(ItemStack stack)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return UseAction.NONE;
-        }
-
-        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
-        {
+    public UseAction getUseAction(ItemStack stack) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isShieldInOffHand(null)) {
             return UseAction.BLOCK;
         }
         return UseAction.NONE;
     }
 
     @Override
-    public int getMaxUseTime(ItemStack stack, LivingEntity user)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return 0;
-        }
-
-        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
-        {
+    public int getMaxUseTime(ItemStack stack, LivingEntity user) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isShieldInOffHand(null)) {
             return 72000;
         }
         return 0;
     }
 
     @Override
-    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldSwordBlock)
-        {
-            return TypedActionResult.pass(user.getStackInHand(hand));
-        }
-
-        if (ItemUtils.INSTANCE.isShieldInOffHand(null))
-        {
+    public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        if (LegacyAnimationsSettings.getInstance().oldSwordBlock && ItemUtils.INSTANCE.isShieldInOffHand(null)) {
             ItemStack itemStack = user.getStackInHand(hand);
             user.setCurrentHand(hand);
             return TypedActionResult.consume(itemStack);
         }
         return TypedActionResult.pass(user.getStackInHand(hand));
     }
-
 }

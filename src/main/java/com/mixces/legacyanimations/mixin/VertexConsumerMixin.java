@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 @Mixin(VertexConsumer.class)
 public interface VertexConsumerMixin {
 
-//    //todo: maybe there's a better way?
+    //todo: maybe there's a better way?
 //    @ModifyArgs(
 //            method = "quad(Lnet/minecraft/client/util/math/MatrixStack$Entry;Lnet/minecraft/client/render/model/BakedQuad;[FFFFF[IIZ)V",
 //            at = @At(

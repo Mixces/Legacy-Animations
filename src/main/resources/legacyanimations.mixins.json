@@ -7,7 +7,7 @@
     "BipedEntityModelMixin",
     "BuiltinModelItemRendererMixin",
     "CameraMixin",
-    "ClientPlayerEntityMixin",
+    "CapeFeatureRendererMixin",
     "ClientPlayerInteractionManagerMixin",
     "DebugHudMixin",
     "EntityMixin",

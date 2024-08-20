@@ -5,10 +5,9 @@ import net.minecraft.client.render.model.json.ModelTransformationMode;
 import java.util.EnumSet;
 
 
-public class TransformationModeUtils
-{
+public class TransformationModeUtils {
 
-    private static ModelTransformationMode transformationMode;
+    public static ModelTransformationMode transformationMode;
 
     private static final EnumSet<ModelTransformationMode> cameraTypes =
             EnumSet.of(
@@ -16,27 +15,22 @@ public class TransformationModeUtils
                     ModelTransformationMode.FIXED
             );
 
-    public static boolean isValidPerspective(ModelTransformationMode mode)
-    {
+    public static boolean isValidPerspective(ModelTransformationMode mode) {
         return mode == ModelTransformationMode.FIRST_PERSON_LEFT_HAND ||
                 mode == ModelTransformationMode.FIRST_PERSON_RIGHT_HAND ||
                 mode == ModelTransformationMode.THIRD_PERSON_LEFT_HAND ||
                 mode == ModelTransformationMode.THIRD_PERSON_RIGHT_HAND;
     }
 
-    public static boolean shouldBeSprite()
-    {
+    public static boolean shouldBeSprite() {
         return shouldNotHaveGlint() || isRenderingInGUI();
     }
 
-    public static boolean isRenderingInGUI()
-    {
-        return getTransformationMode() == ModelTransformationMode.GUI;
+    public static boolean isRenderingInGUI() {
+        return transformationMode == ModelTransformationMode.GUI;
     }
 
-    public static boolean shouldNotHaveGlint()
-    {
-        return cameraTypes.contains(getTransformationMode());
+    public static boolean shouldNotHaveGlint() {
+        return cameraTypes.contains(transformationMode);
     }
-
 }

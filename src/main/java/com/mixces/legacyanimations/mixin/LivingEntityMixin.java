@@ -1,5 +1,7 @@
 package com.mixces.legacyanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.duck.PlayerPitchInterface;
 import com.mixces.legacyanimations.util.ServerUtils;
@@ -8,9 +10,11 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.UseAction;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.*;
@@ -18,18 +22,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
-public abstract class LivingEntityMixin extends Entity implements PlayerPitchInterface
-{
+public abstract class LivingEntityMixin extends Entity implements PlayerPitchInterface {
+
+    @Shadow
+    public abstract boolean isUsingItem();
+
+    @Shadow
+    protected ItemStack activeItemStack;
+
+    @Shadow
+    public float bodyYaw;
+
+    @Unique
+    public float legacyAnimations$prevCameraPitch;
+
+    @Unique
+    public float legacyAnimations$cameraPitch;
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
-
-    @Shadow public abstract boolean isUsingItem();
-    @Shadow protected ItemStack activeItemStack;
-    @Shadow public float bodyYaw;
-    @Unique public float legacyAnimations$prevCameraPitch;
-    @Unique public float legacyAnimations$cameraPitch;
 
     //todo: hypixel rahh
     @Inject(
@@ -39,42 +51,22 @@ public abstract class LivingEntityMixin extends Entity implements PlayerPitchInt
             ),
             cancellable = true
     )
-    private void legacyAnimations$fixSync(CallbackInfoReturnable<Boolean> cir)
-    {
-        if (!LegacyAnimationsSettings.getInstance().noShieldDelay)
-        {
-            return;
+    private void legacyAnimations$fixSync(CallbackInfoReturnable<Boolean> cir) {
+        if (LegacyAnimationsSettings.getInstance().noShieldDelay) {
+            final UseAction action = activeItemStack.getItem().getUseAction(activeItemStack);
+            cir.setReturnValue(isUsingItem() && action == UseAction.BLOCK);
         }
-
-        final UseAction action = activeItemStack.getItem().getUseAction(activeItemStack);
-
-        cir.setReturnValue(isUsingItem() && action == UseAction.BLOCK);
     }
 
-    @ModifyConstant(
+    @WrapOperation(
             method = "tick",
-            constant = @Constant(
-                    floatValue = 180.0f
-            ),
-            slice = @Slice(
-                    from = @At(
-                            value = "INVOKE",
-                            target = "Lnet/minecraft/util/math/MathHelper;abs(F)F"
-                    ),
-                    to = @At(
-                            value = "FIELD",
-                            opcode = Opcodes.GETFIELD,
-                            target = "Lnet/minecraft/entity/LivingEntity;handSwingProgress:F"
-                    )
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/util/math/MathHelper;abs(F)F"
             )
     )
-    private float legacyAnimations$revertBackwardsWalk(float constant)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldWalking)
-        {
-            return constant;
-        }
-        return 0.0F;
+    private float legacyAnimations$revertBackwardsWalk(float value, Operation<Float> original) {
+        return LegacyAnimationsSettings.getInstance().oldWalking ? 0.0F : original.call(value);
     }
 
     @Inject(
@@ -86,51 +78,31 @@ public abstract class LivingEntityMixin extends Entity implements PlayerPitchInt
                     ordinal = 0
             )
     )
-    private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci)
-    {
-        if (!LegacyAnimationsSettings.getInstance().oldViewBob)
-        {
-            return;
+    private void legacyAnimations$setPrevCameraPitch(CallbackInfo ci) {
+        if (LegacyAnimationsSettings.getInstance().oldViewBob) {
+            legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
         }
-        legacyAnimations$prevCameraPitch = legacyAnimations$cameraPitch;
     }
 
-//    /**
-//     * @author Mixces
-//     * @reason Head movement
-//     */
-//    @Overwrite
-//    public float turnHead(float bodyRotation, float headRotation)
-//    {
-//        final float f = MathHelper.wrapDegrees(bodyRotation - bodyYaw);
-//        bodyYaw += f * 0.3F;
-//        float f1 = MathHelper.wrapDegrees(getYaw() - bodyYaw);
-//        final boolean flag = f1 < -90.0F || f1 >= 90.0F;
-//
-//        if (f1 < -75.0F)
-//        {
-//            f1 = -75.0F;
-//        }
-//
-//        if (f1 >= 75.0F)
-//        {
-//            f1 = 75.0F;
-//        }
-//
-//        bodyYaw = getYaw() - f1;
-//
-//        if (f1 * f1 > 2500.0F)
-//        {
-//            bodyYaw += f1 * 0.2F;
-//        }
-//
-//        if (flag)
-//        {
-//            headRotation *= -1.0F;
-//        }
-//
-//        return headRotation;
-//    }
+    //todo: make this not be overwritten
+    //note for lowercasebtw: this code right here is necessary to make the old backwards walk to look 1:1 with 1.8
+    /**
+     * @author Mixces
+     * @reason Head movement
+     */
+    @Overwrite
+    public float turnHead(float bodyRotation, float headRotation) {
+        final float f = MathHelper.wrapDegrees(bodyRotation - bodyYaw);
+        bodyYaw += f * 0.3F;
+        float f1 = MathHelper.wrapDegrees(getYaw() - bodyYaw);
+        final boolean flag = f1 < -90.0F || f1 >= 90.0F;
+        if (f1 < -75.0F) f1 = -75.0F;
+        if (f1 >= 75.0F) f1 = 75.0F;
+        bodyYaw = getYaw() - f1;
+        if (f1 * f1 > 2500.0F) bodyYaw += f1 * 0.2F;
+        if (flag) headRotation *= -1.0F;
+        return headRotation;
+    }
 //
 //    @ModifyExpressionValue(
 //            method = "tickMovement",
@@ -157,15 +129,12 @@ public abstract class LivingEntityMixin extends Entity implements PlayerPitchInt
 //    }
 
     @Override
-    public float legacyAnimations$getPrevPlayerPitch()
-    {
+    public float legacyAnimations$getPrevPlayerPitch() {
         return legacyAnimations$prevCameraPitch;
     }
 
     @Override
-    public float legacyAnimations$getPlayerPitch()
-    {
+    public float legacyAnimations$getPlayerPitch() {
         return legacyAnimations$cameraPitch;
     }
-
 }

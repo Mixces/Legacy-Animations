@@ -24,11 +24,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 
-	@Shadow public ClientPlayerEntity player;
-	@Shadow public int attackCooldown;
-	@Shadow public Screen currentScreen;
-	@Shadow @Final public GameOptions options;
-	@Shadow @Final public Mouse mouse;
+	@Shadow
+	public ClientPlayerEntity player;
+
+	@Shadow
+	public int attackCooldown;
+
+	@Shadow
+	public Screen currentScreen;
+
+	@Shadow
+	@Final
+	public GameOptions options;
+
+	@Shadow
+	@Final
+	public Mouse mouse;
 
 	@ModifyExpressionValue(
 			method = "doItemUse",
@@ -37,13 +48,8 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerInteractionManager;isBreakingBlock()Z"
 			)
 	)
-	private boolean legacyAnimations$interruptBlockBreaking(boolean original)
-	{
-		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-		{
-			return original;
-		}
-		return false;
+	private boolean legacyAnimations$interruptBlockBreaking(boolean original) {
+		return !LegacyAnimationsSettings.getInstance().punchDuringUsage && original;
 	}
 
 	@ModifyExpressionValue(
@@ -53,13 +59,8 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;isUsingItem()Z"
 			)
 	)
-	private boolean legacyAnimations$allowWhileUsingItem(boolean original)
-	{
-		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-		{
-			return original;
-		}
-		return false;
+	private boolean legacyAnimations$allowWhileUsingItem(boolean original) {
+		return !LegacyAnimationsSettings.getInstance().punchDuringUsage && original;
 	}
 
 	@WrapOperation(
@@ -69,24 +70,17 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/network/ClientPlayerEntity;swingHand(Lnet/minecraft/util/Hand;)V"
 			)
 	)
-	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand, Operation<Void> original)
-	{
-		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-		{
-			original.call(instance, hand);
-
-		}
-
-		if (instance.isUsingItem())
-		{
-			legacyAnimations$fakeSwingHand(instance, hand);
-		}
-		else
-		{
-			original.call(instance, hand);
+	private void legacyAnimations$swapForFakeSwing(ClientPlayerEntity instance, Hand hand, Operation<Void> original) {
+		if (LegacyAnimationsSettings.getInstance().punchDuringUsage) {
+			if (instance.isUsingItem()) {
+				legacyAnimations$fakeSwingHand(instance, hand);
+			} else {
+				original.call(instance, hand);
+			}
 		}
 	}
 
+	//todo: hmm
 	@Inject(
 			method = "handleInputEvents",
 			at = @At(
@@ -95,17 +89,14 @@ public class MinecraftClientMixin {
 					ordinal = 0
 			)
 	)
-	private void legacyAnimations$addLeftClickCheck(CallbackInfo ci)
-	{
-		if (!ServerUtils.INSTANCE.isValidServer())
-		{
-			return;
-		}
+	private void legacyAnimations$addLeftClickCheck(CallbackInfo ci) {
+//		if (!ServerUtils.INSTANCE.isValidServer()) {
+//			return;
+//		}
 
-		if (currentScreen != null || !options.attackKey.isPressed() || !mouse.isCursorLocked())
-		{
+//		if (currentScreen != null || !options.attackKey.isPressed() || !mouse.isCursorLocked()) {
 			attackCooldown = 0;
-		}
+//		}
 	}
 
 	//todo: find better way to do this?
@@ -116,28 +107,20 @@ public class MinecraftClientMixin {
 					target = "Lnet/minecraft/client/MinecraftClient;handleBlockBreaking(Z)V"
 			)
 	)
-	private boolean legacyAnimations$removeCondition(boolean original)
-	{
-		if (!LegacyAnimationsSettings.getInstance().punchDuringUsage)
-		{
-			return original;
+	private boolean legacyAnimations$removeCondition(boolean original) {
+		if (LegacyAnimationsSettings.getInstance().punchDuringUsage) {
+			return currentScreen == null && options.attackKey.isPressed() && mouse.isCursorLocked();
 		}
-		return currentScreen == null && options.attackKey.isPressed() && mouse.isCursorLocked();
+		return original;
 	}
 
 	@Unique
-	private static void legacyAnimations$fakeSwingHand(ClientPlayerEntity player, Hand hand)
-	{
+	private static void legacyAnimations$fakeSwingHand(ClientPlayerEntity player, Hand hand) {
 		final int handSwingDuration = ((ILivingEntityMixin) player).invokeGetHandSwingDuration();
-
-		if (player.handSwinging && player.handSwingTicks < handSwingDuration / 2 && player.handSwingTicks >= 0)
-		{
-			return;
+		if (!player.handSwinging || player.handSwingTicks >= handSwingDuration / 2 || player.handSwingTicks < 0) {
+			player.handSwingTicks = -1;
+			player.handSwinging = true;
+			player.preferredHand = hand;
 		}
-
-		player.handSwingTicks = -1;
-		player.handSwinging = true;
-		player.preferredHand = hand;
 	}
-
 }

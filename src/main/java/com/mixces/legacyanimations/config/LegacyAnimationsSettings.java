@@ -18,14 +18,13 @@ public class LegacyAnimationsSettings {
 
     @SerialEntry public boolean punchDuringUsage = true;
     @SerialEntry public boolean itemPositions = true;
-    @SerialEntry public boolean oldSwordBlock = true; // TODO: this prevents an item in offhand (e.g., bow) from being used. Also causes to walk slow despite not actually blocking, may trigger ACs
-//    @SerialEntry public boolean blockWithShieldOnly = true; // this fixes the aforementioned issue by requiring a shield in offhand
+    @SerialEntry public boolean oldSwordBlock = true;
     @SerialEntry public boolean hideShields = true;
     @SerialEntry public boolean hideShieldHotbar = true;
     @SerialEntry public boolean noCooldown = true;
-//    @SerialEntry public boolean oldMovement = true; // already in viafabric
     @SerialEntry public boolean oldSneaking = true;
     @SerialEntry public boolean oldWalking = true;
+    @SerialEntry public boolean oldCape = true;
     @SerialEntry public boolean oldDeath = true;
     @SerialEntry public boolean oldSwim = true;
     @SerialEntry public boolean oldHearts = true;
@@ -37,7 +36,6 @@ public class LegacyAnimationsSettings {
     @SerialEntry public boolean armorTint = true;
     @SerialEntry public boolean oldBreakProgress = true;
     @SerialEntry public boolean oldDamageTilt = true;
-//    @SerialEntry public boolean noSwing = true;
     @SerialEntry public boolean oldPotionGlint = true;
     @SerialEntry public boolean noShieldDelay = true;
 
@@ -73,12 +71,6 @@ public class LegacyAnimationsSettings {
                                 .binding(defaults.oldSwordBlock, () -> config.oldSwordBlock, newVal -> config.oldSwordBlock = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
-//                        .option(Option.createBuilder(boolean.class)
-//                                .name(Text.literal("Block Only when Holding Shield"))
-//                                .description(OptionDescription.of(Text.of("Only blocks with your sword when you hold a shield in your offhand.")))
-//                                .binding(defaults.blockWithShieldOnly, () -> config.blockWithShieldOnly, newVal -> config.blockWithShieldOnly = newVal)
-//                                .controller(TickBoxControllerBuilder::create)
-//                                .build())
                         .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Hide Shield Model"))
                                 .description(OptionDescription.of(Text.of("Hides the shield model from rendering.")))
@@ -149,6 +141,12 @@ public class LegacyAnimationsSettings {
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)
+                                .name(Text.literal("Old Cape Physics"))
+                                .description(OptionDescription.of(Text.of("Reverts the cape physics to it's former glory.")))
+                                .binding(defaults.oldCape, () -> config.oldCape, newVal -> config.oldCape = newVal)
+                                .controller(TickBoxControllerBuilder::create)
+                                .build())
+                        .option(Option.createBuilder(boolean.class)
                                 .name(Text.literal("Old Entity Death Animation"))
                                 .description(OptionDescription.of(Text.of("Allows dead entity corpse limbs to move.")))
                                 .binding(defaults.oldDeath, () -> config.oldDeath, newVal -> config.oldDeath = newVal)
@@ -169,12 +167,6 @@ public class LegacyAnimationsSettings {
                                 .name(Text.literal("Remove Swing Cooldown Animation"))
                                 .description(OptionDescription.of(Text.of("Visually removes the swing cooldown animation!")))
                                 .binding(defaults.noCooldown, () -> config.noCooldown, newVal -> config.noCooldown = newVal)
-                                .controller(TickBoxControllerBuilder::create)
-                                .build())
-                        .option(Option.createBuilder(boolean.class)
-                                .name(Text.literal("Old Movement"))
-                                .description(OptionDescription.of(Text.of("Completely stops the player's sprint while blocking, drawing a bow, or consuming a consumable item.")))
-                                .binding(defaults.oldMovement, () -> config.oldMovement, newVal -> config.oldMovement = newVal)
                                 .controller(TickBoxControllerBuilder::create)
                                 .build())
                         .option(Option.createBuilder(boolean.class)

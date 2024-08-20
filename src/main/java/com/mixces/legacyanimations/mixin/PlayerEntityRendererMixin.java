@@ -1,5 +1,6 @@
 package com.mixces.legacyanimations.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.mixces.legacyanimations.config.LegacyAnimationsSettings;
 import com.mixces.legacyanimations.util.ItemUtils;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -13,8 +14,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(PlayerEntityRenderer.class)
-public class PlayerEntityRendererMixin
-{
+public class PlayerEntityRendererMixin {
 
     //todo: holding sword, eating, and bow fixes needed!
     @Inject(
@@ -25,42 +25,23 @@ public class PlayerEntityRendererMixin
             cancellable = true
     )
     private static void legacyAnimations$removeShieldArm(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<BipedEntityModel.ArmPose> cir) {
-        if (!LegacyAnimationsSettings.getInstance().hideShields)
-        {
-            return;
-        }
-
-        final Hand offhand = Hand.OFF_HAND;
-
-        if (!ItemUtils.INSTANCE.isShieldInOffHand(player.getStackInHand(offhand)))
-        {
-            return;
-        }
-
-        if (!ItemUtils.INSTANCE.isSwordInMainHand(player.getStackInHand(Hand.MAIN_HAND)))
-        {
-            return;
-        }
-
-        if (hand == offhand)
-        {
-            cir.setReturnValue(BipedEntityModel.ArmPose.EMPTY);
+        if (LegacyAnimationsSettings.getInstance().hideShields) {
+            final Hand offhand = Hand.OFF_HAND;
+            if (!ItemUtils.INSTANCE.isShieldInOffHand(player.getStackInHand(offhand))) return;
+            if (!ItemUtils.INSTANCE.isSwordInMainHand(player.getStackInHand(Hand.MAIN_HAND))) return;
+            if (hand == offhand) cir.setReturnValue(BipedEntityModel.ArmPose.EMPTY);
         }
     }
 
-    @Redirect(
+    //todo: creative fly lowercasebtw
+    @ModifyExpressionValue(
             method = "getPositionOffset(Lnet/minecraft/client/network/AbstractClientPlayerEntity;F)Lnet/minecraft/util/math/Vec3d;",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/network/AbstractClientPlayerEntity;isInSneakingPose()Z"
             )
     )
-    private boolean legacyAnimations$disableSneakOffset(AbstractClientPlayerEntity player) {
-        if (!LegacyAnimationsSettings.getInstance().oldSneaking)
-        {
-            return player.isInSneakingPose();
-        }
-        return false;
+    private boolean legacyAnimations$disableSneakOffset(boolean original) {
+        return !LegacyAnimationsSettings.getInstance().oldSneaking && original;
     }
-
 }
