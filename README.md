@@ -1,3 +1,1 @@
-# Legacy Animations
-
-Brings back the various animations and visuals from pre 1.9!
+Please check out https://github.com/Mixces/Animatium. This is a more up-to-date and alternative version of this mod!
